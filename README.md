@@ -1,2 +1,2 @@
 # hivebotica
- A P2P MMO RTS game.
+ A P2P MMO RTS game

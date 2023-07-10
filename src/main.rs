@@ -9,8 +9,20 @@ pub mod simulation;
 
 fn main() {
     App::new()
-    .add_plugins(DefaultPlugins)
-    .add_startup_system(graphics::camera::camera_setup)
-    .add_startup_system(simulation::gameworld_manager::gamesector_generator::generate_base_sector_map)
-    .run ();
+        .add_plugins(DefaultPlugins)
+        .add_plugins(graphics::HiveboticaGraphicsPluginGroup)
+        .add_plugins(simulation::HiveboticaSimulationPluginGroup)
+        // Everything below this in this expression is test code
+        .add_systems(Startup, testing_mode_startup)
+        .add_event::<GenerateBaseSectorMap>()
+        .run();
+}
+
+// This is test code to start the game before I add the menu. It will eventually be deleted.
+
+#[derive(Event, Default)]
+pub struct GenerateBaseSectorMap;
+
+fn testing_mode_startup(mut writer: EventWriter<GenerateBaseSectorMap>) {
+    writer.send(GenerateBaseSectorMap);
 }

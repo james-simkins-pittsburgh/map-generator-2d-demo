@@ -7,6 +7,10 @@ pub mod menu;
 pub mod network;
 pub mod simulation;
 
+// Sector size must be an odd number larger than 100 and smaller than 32,768.
+const SECTOR_SIZE:u16 = 101;
+
+
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)

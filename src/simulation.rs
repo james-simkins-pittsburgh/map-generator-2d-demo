@@ -13,8 +13,10 @@ impl PluginGroup for HiveboticaSimulationPluginGroup {
         PluginGroupBuilder::start::<Self>().add(gameworld_manager::HiveboticaGameworldManagerPlugin)
     }
 }
-enum TileType {
-    Standard,
+
+#[derive(Copy, Clone)]
+pub enum TileType {
+    Open,
     Vegetated,
     Elevated,
 }
@@ -28,8 +30,12 @@ enum SectorBiome {
 }
 
 #[derive(Component)]
-pub struct GamesectorTileMap {
-    pub sector_coordinates: (u16, u16),
-    pub sector_biome: SectorBiome,
-    pub tile_array: [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize],
+    struct GamesectorTileMap {
+    sector_coordinates: (i32, i32),
+    sector_biome: SectorBiome,
+    tile_array: [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize],
+}
+#[derive(Bundle)]
+pub struct GamesectorBundle {
+    gamesector_tile_map: GamesectorTileMap,
 }

@@ -5,7 +5,7 @@ impl Plugin for HiveboticaGameworldManagerPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             Update,
-            gamesector_generator::generate_sector_map,
+            gamesector_generator::generate_sector,
         ).init_resource::<SectorToBeGenerated>();
     }
 }

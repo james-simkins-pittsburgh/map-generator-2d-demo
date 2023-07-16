@@ -17,27 +17,27 @@ fn main() {
         .add_plugins(simulation::HiveboticaSimulationPluginGroup)
         // Everything below this in this expression is test code
         .add_systems(Startup, testing_mode_startup)
-        .add_event::<GenerateSectorMap>()
+        .add_event::<GenerateNewSector>()
         .run();
 }
 
 // This is test code to start the game before I add the menu. It will eventually be deleted.
 
 #[derive(Event, Default)]
-pub struct GenerateSectorMap;
+pub struct GenerateNewSector;
 
 fn testing_mode_startup(
     mut gameworld_seed: ResMut<GameworldSeed>,
     mut sector_to_be_generated: ResMut<simulation::gameworld_manager::SectorToBeGenerated>,
-    mut writer: EventWriter<GenerateSectorMap>,
+    mut writer: EventWriter<GenerateNewSector>,
     
 ) {
-    gameworld_seed.gameworld_seed_array = [0; 12];
+    gameworld_seed.gameworld_seed_num = 0 as u64;
     sector_to_be_generated.sector_to_be_generated_coordinates.push((0, 0));
-    writer.send(GenerateSectorMap);
+    writer.send(GenerateNewSector);
 }
 
-#[derive(Resource, Default)]
+#[derive(Resource)]
 pub struct GameworldSeed {
-    pub gameworld_seed_array: [u8; 12],
+    pub gameworld_seed_num: u64,
 }

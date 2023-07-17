@@ -33,7 +33,7 @@ fn testing_mode_startup(
     
 ) {
     gameworld_seed.gameworld_seed_num = 0 as u64;
-    sector_to_be_generated.sector_to_be_generated_coordinates.push((0, 0));
+    sector_to_be_generated.sector_to_be_generated_list.push((0, 0, simulation::gameworld_manager::InitializationType::Player));
     writer.send(GenerateNewSector);
 }
 

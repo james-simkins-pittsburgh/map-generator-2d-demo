@@ -19,6 +19,11 @@ pub enum TileType {
     Open,
     Vegetated,
     Elevated,
+    Ruin1x1,
+    Ruin1x2,
+    Ruin1x3,
+    Ruin2x2,
+    Ruin2x3,
 }
 
 enum SectorBiome {
@@ -26,21 +31,24 @@ enum SectorBiome {
     Plains,
     Desert,
     Frozen,
+    Mountains,
     Ruins,
 }
 
 #[derive(Component)]
-struct GamesectorTileMap {
+struct GamesectorBasics {
     sector_coordinates: (i32, i32),
     sector_biome: SectorBiome,
-    tile_array: [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize],
+    tile_array: [[(TileType, u8); SECTOR_SIZE as usize]; SECTOR_SIZE as usize],
 }
 
 enum UnitClass {
     Trench,
+    AboveGroundFortification,
     Building,
     Mothership,
     SupplyBot,
+    EngineeringBot,
     GroundCombatBot,
     Munition,
     AirCombatBot,
@@ -51,7 +59,7 @@ enum UnitType {
     InfantryFactory,
     TankFactory,
     ArtilleryFactory,
-    AerialDroneFactory,
+    AerialDroneHangar,
     EngineeringFactory,
     SupplyDepot,
     IronMine,
@@ -66,12 +74,14 @@ enum UnitType {
     Mothership,
     TrainDrone,
     TruckDrone,
+    EngineeringBot,
+    MineBot,
     ScoutBot,
     SpecialBot,
     SniperBot,
     InfantryBot,
     AntitankBot,
-    StingerBot,
+    ManPadBot,
     LightTankBot,
     HeavyTankBot,
     FlakBot,
@@ -80,39 +90,88 @@ enum UnitType {
     SurfaceToAirBot,
     RadarBot,
     SurveillanceDrone,
-    MultipurposeDrone,
-    HeavyGroundAttackDrone,
-    FighterDrone,
+    MultipurposeAttackDrone,
+    GroundAttackDrone,
+    AirAttackDrone,
     Bullet,
     SniperBullet,
     InfantryShell,
-    InfantryRocket,
     ClusterMunition,
-    AntitankMissle,
-    StingerMissle,
+    Bomblet,
+    BombletMine,
+    AntitankMissile,
+    ManPadMissile,
     LightTankRound,
-    HeavyTankround,
+    HeavyTankRound,
     FlakRound,
     ArtilleryRound,
     ArtilleryRocket,
     AirtoAirMissle,
-    AirMultipurposeMissile,
-    AirtoGroundMissle,
-    CompoundGroundMissle,
+    AirtoGroundMissileLight,
+    AirtoGroundMissileHeavy,
+    AirtoGroundMissileCluster,
+}
+
+enum GraphicalVariation {
+    Standing,
+    Moving,
+    Firing,
+    Building,
+    Demolishing,
+    ClimbingDown,
+    ClimbingUp,
+    CrossingTrench,
+    StandingEntrenched,
+    MovingEntrenched,
+    FiringEntrenched,
+    DiggingIn,
+    DugInStanding,
+    DugInFiring,
+    Hiding,
+    Hidden,
+    HiddenFiring,
+    Ascending,
+    Exploding,
+    ShutDown,
+    Disintegrating,
+    GivingSupply,
+}
+
+enum UnitFaction {
+    Industrialist,
+    Guardian,
+    Rogue,
+}
+
+struct UnitAttributes {
+    x_location: u16,
+    y_location: u16,
+    height: u16,
+    xy_rotation: u16,
+    xz_rotation: u16,
+    unit_class: UnitClass,
+    unit_type: UnitType,
+    graphical_variation: GraphicalVariation,
+    unit_faction: UnitFaction,
+    unit_allegiance_address: u16,
+    unit_hive_address: u16,
+    player_unit: bool,
+    health_out_of_100: u8,
+    energy_units: u8,
+    supply_one_units: u8,
+    supply_two_units: u8,
+    visibility: u8,
+    visibletoplayer: bool,
+    additional_supply_address: u16,
 }
 
 #[derive(Component)]
 struct GamesectorUnits {
-    // First type is x location and second type is y location.
-    // Third type is unit class. Forth type is unit type.
-    // Fith type is unit health out of 100.
-    // Sixth type is unit energy of of 100.
-    // Seventh type is unit supply out of 200.
-    // Eighth type is visbility of our 100.
-    unit_array: Vec<(u16, u16, UnitClass, UnitType, u8, u8, u8, u8)>,
+    unit_array: Vec<UnitAttributes>,
 }
 
 #[derive(Bundle)]
 pub struct GamesectorBundle {
-    gamesector_tile_map: GamesectorTileMap,
+    gamesector_basics: GamesectorBasics,
+    gamesector_units: GamesectorUnits,
 }

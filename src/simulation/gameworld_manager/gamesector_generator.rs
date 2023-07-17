@@ -77,7 +77,7 @@ fn generate_map(
 
     // Code to generate gameworld will go here.
 
-    let mut seeded_prng = rand_chacha::ChaCha8Rng::seed_from_u64(gameworld_seed_num.clone());
+    let mut _seeded_prng = rand_chacha::ChaCha8Rng::seed_from_u64(gameworld_seed_num.clone());
 
     (gamesector_environment_array, sector_biome, (x_coordinate, y_coordinate))
 }

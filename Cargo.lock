@@ -1820,7 +1820,6 @@ version = "0.1.0"
 dependencies = [
  "bevy",
  "rand_chacha",
- "rand_core",
 ]
 
 [[package]]

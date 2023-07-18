@@ -15,7 +15,7 @@ impl PluginGroup for HiveboticaSimulationPluginGroup {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq)]
 pub enum TileType {
     Open,
     Vegetated,

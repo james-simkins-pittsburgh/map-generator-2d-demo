@@ -1,7 +1,6 @@
 use bevy::prelude::*;
 
 use rand_chacha::rand_core::SeedableRng;
-use rand_core::RngCore;
 use rand_chacha;
 
 // These use declaration are just to make the code more readable.
@@ -20,7 +19,8 @@ pub fn generate_sector(
     mut generate_new_sector_event: EventReader<crate::GenerateNewSector>,
     mut sector_to_be_generated: ResMut<super::SectorToBeGenerated>,
     gameworld_seed: Res<crate::GameworldSeed>,
-    mut commands: Commands
+    mut commands: Commands,
+    mut make_tiles_now: ResMut<crate::graphics::testing_mode_tile_map::MakeTilesNow>,
 ) {
     // If there are events recorded in generate sector then the rest of the function runs.
 
@@ -61,7 +61,12 @@ pub fn generate_sector(
                 },
                 gamesector_units: GamesectorUnits { unit_array: new_sector_units},
             });
+
+            
+
         }
+
+        make_tiles_now.ready_now.0 = true;
     }
 
     // This clears the event so sectors aren't generated more than once.

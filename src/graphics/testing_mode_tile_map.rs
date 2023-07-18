@@ -11,7 +11,7 @@ pub fn testing_mode_tile_map(
     if make_tiles_now.ready_now.0 && make_tiles_now.ready_now.1 {
         for graphics_sector_memory in graphics_memory_sector_query.iter() {
             if graphics_sector_memory.sector_coordinates == (0, 0) {
-                let mut tile_graphics_path = "void1";
+                let mut tile_graphics_path = "void1.png";
 
                 for index_one in 0..crate::SECTOR_SIZE as usize {
                     for index_two in 0..crate::SECTOR_SIZE as usize {
@@ -19,21 +19,21 @@ pub fn testing_mode_tile_map(
                             graphics_sector_memory.tile_array[index_one][index_two].0 ==
                             TileType::Open
                         {
-                            tile_graphics_path = "plains1";
+                            tile_graphics_path = "plains1.png";
                         } else if
                             graphics_sector_memory.tile_array[index_one][index_two].0 ==
                             TileType::Elevated
                         {
-                            tile_graphics_path = "rock1";
+                            tile_graphics_path = "rock1.png";
                         } else {
-                            tile_graphics_path = "void1";
+                            tile_graphics_path = "void1.png";
                         }
 
                         commands.spawn(SpriteBundle {
-                            texture: asset_server.load(tile_graphics_path),
+                            texture: asset_server.load("plains1.png"),
                             transform: Transform::from_xyz(
-                                ((index_one - 50) * 96) as f32,
-                                ((index_two - 50) * 96) as f32,
+                                ((index_one as f32 - 50.0) * 96.0) as f32,
+                                ((index_two as f32 - 50.0) * 96.0) as f32,
                                 0.0
                             ),
                             ..default()
@@ -42,10 +42,10 @@ pub fn testing_mode_tile_map(
                 }
             }
         }
-    }
 
-    make_tiles_now.ready_now.0 = false;
-    make_tiles_now.ready_now.1 = false;
+        make_tiles_now.ready_now.0 = false;
+        make_tiles_now.ready_now.1 = false;
+    }
 }
 
 #[derive(Resource, Default)]

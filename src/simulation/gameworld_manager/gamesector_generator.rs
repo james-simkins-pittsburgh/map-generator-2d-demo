@@ -103,7 +103,7 @@ fn generate_units (
     _y_coordinate: i32,
     _initiatization_type: &InitializationType) -> Vec<UnitAttributes> {
     
-    let mut unit_list: Vec<UnitAttributes>  = Vec::new();
+    let unit_list: Vec<UnitAttributes>  = Vec::new();
 
     unit_list
 

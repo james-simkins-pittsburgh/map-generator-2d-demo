@@ -8,6 +8,9 @@ pub fn testing_mode_tile_map(
     asset_server: Res<AssetServer>
 ) {
     if make_tiles_now.ready_now.0 && make_tiles_now.ready_now.1 {
+
+
+        
         for graphics_sector_memory in graphics_memory_sector_query.iter() {
             if graphics_sector_memory.sector_coordinates == (0,0) {
 

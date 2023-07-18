@@ -6,6 +6,7 @@ use crate::SECTOR_SIZE;
 pub(super) mod gameworld_manager;
 pub(super) mod gamesector_simulator;
 pub(super) mod travelator_simulator;
+pub mod testing_mode_simtographics_copier;
 pub struct HiveboticaSimulationPluginGroup;
 
 impl PluginGroup for HiveboticaSimulationPluginGroup {
@@ -26,7 +27,9 @@ pub enum TileType {
     Ruin2x3,
 }
 
-enum SectorBiome {
+
+#[derive(Copy, Clone)]
+pub enum SectorBiome {
     Base,
     Plains,
     Desert,
@@ -36,13 +39,13 @@ enum SectorBiome {
 }
 
 #[derive(Component)]
-struct GamesectorBasics {
-    sector_coordinates: (i32, i32),
-    sector_biome: SectorBiome,
-    tile_array: [[(TileType, u8); SECTOR_SIZE as usize]; SECTOR_SIZE as usize],
+pub struct GamesectorBasics {
+    pub sector_coordinates: (i32, i32),
+    pub sector_biome: SectorBiome,
+    pub tile_array: [[(TileType, u8); SECTOR_SIZE as usize]; SECTOR_SIZE as usize],
 }
 
-enum UnitClass {
+pub enum UnitClass {
     Trench,
     AboveGroundFortification,
     Building,
@@ -54,7 +57,7 @@ enum UnitClass {
     AirCombatBot,
 }
 
-enum UnitType {
+pub enum UnitType {
     Trench,
     InfantryFactory,
     TankFactory,
@@ -112,7 +115,7 @@ enum UnitType {
     AirtoGroundMissileCluster,
 }
 
-enum GraphicalVariation {
+pub enum GraphicalVariation {
     Standing,
     Moving,
     Firing,
@@ -137,41 +140,41 @@ enum GraphicalVariation {
     GivingSupply,
 }
 
-enum UnitFaction {
+pub enum UnitFaction {
     Industrialist,
     Guardian,
     Rogue,
 }
 
-struct UnitAttributes {
-    x_location: u16,
-    y_location: u16,
-    height: u16,
-    xy_rotation: u16,
-    xz_rotation: u16,
-    unit_class: UnitClass,
-    unit_type: UnitType,
-    graphical_variation: GraphicalVariation,
-    unit_faction: UnitFaction,
-    unit_allegiance_address: u16,
-    unit_hive_address: u16,
-    player_unit: bool,
-    health_out_of_100: u8,
-    energy_units: u8,
-    supply_one_units: u8,
-    supply_two_units: u8,
-    visibility: u8,
-    visibletoplayer: bool,
-    additional_supply_address: u16,
+pub struct UnitAttributes {
+    pub x_location: u16,
+    pub y_location: u16,
+    pub height: u16,
+    pub xy_rotation: u16,
+    pub xz_rotation: u16,
+    pub unit_class: UnitClass,
+    pub unit_type: UnitType,
+    pub graphical_variation: GraphicalVariation,
+    pub unit_faction: UnitFaction,
+    pub unit_allegiance_address: u16,
+    pub unit_hive_address: u16,
+    pub player_unit: bool,
+    pub health_out_of_100: u8,
+    pub energy_in_units: u8,
+    pub supply_one_in_units: u8,
+    pub supply_two_in_units: u8,
+    pub visibility_out_of_100: u8,
+    pub visible_to_player: bool,
+    pub additional_supply_address: u16,
 }
 
 #[derive(Component)]
-struct GamesectorUnits {
-    unit_array: Vec<UnitAttributes>,
+pub struct GamesectorUnits {
+   pub unit_array: Vec<UnitAttributes>,
 }
 
 #[derive(Bundle)]
 pub struct GamesectorBundle {
-    gamesector_basics: GamesectorBasics,
-    gamesector_units: GamesectorUnits,
+    pub gamesector_basics: GamesectorBasics,
+    pub gamesector_units: GamesectorUnits,
 }

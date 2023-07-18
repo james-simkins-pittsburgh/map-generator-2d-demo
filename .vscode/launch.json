@@ -1,0 +1,42 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'hivebotica'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=hivebotica",
+                    "--package=hivebotica"
+                ],
+                "filter": {
+                    "name": "hivebotica",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'hivebotica'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=hivebotica",
+                    "--package=hivebotica"
+                ],
+                "filter": {
+                    "name": "hivebotica",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

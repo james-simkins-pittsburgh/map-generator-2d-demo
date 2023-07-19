@@ -25,15 +25,20 @@ pub fn testing_mode_tile_map(
                             TileType::Elevated
                         {
                             tile_graphics_path = "rock1.png";
+                        } else if
+                            graphics_sector_memory.tile_array[index_one][index_two].0 ==
+                            TileType::Vegetated
+                        {
+                            tile_graphics_path = "grass1.png";
                         } else {
                             tile_graphics_path = "void1.png";
                         }
 
                         commands.spawn(SpriteBundle {
-                            texture: asset_server.load("plains1.png"),
+                            texture: asset_server.load(tile_graphics_path),
                             transform: Transform::from_xyz(
-                                ((index_one as f32 - 50.0) * 96.0) as f32,
-                                ((index_two as f32 - 50.0) * 96.0) as f32,
+                                (((index_one as f32) - 50.0) * 96.0) as f32,
+                                (((index_two as f32) - 50.0) * 96.0) as f32,
                                 0.0
                             ),
                             ..default()

@@ -49,7 +49,7 @@ fn testing_mode_startup(
 
             sector_coordinates: (0,0),
             sector_biome: simulation::SectorBiome::Plains,
-            tile_array: [[(simulation::TileType::Elevated, 0); crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
+            tile_array: [[(simulation::TileType::Vegetated, 0); crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
             direction_from_camera_x: graphics::DirectionFromCamera::LessOrEqual,
             direction_from_camera_y: graphics::DirectionFromCamera::LessOrEqual
 

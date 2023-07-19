@@ -14,8 +14,9 @@ pub fn testing_mode_simtographics_copier(
 
                     gamesector_graphics_basics.sector_biome = gamesector_basics.sector_biome.clone();
                     gamesector_graphics_basics.sector_coordinates = gamesector_basics.sector_coordinates.clone();
-                    gamesector_graphics_basics.tile_array = gamesector_graphics_basics.tile_array.clone();
+                    gamesector_graphics_basics.tile_array = gamesector_basics.tile_array.clone();
 
+                    
                     if make_tiles_now.ready_now.0 {
                     make_tiles_now.ready_now.1 = true;
                     }

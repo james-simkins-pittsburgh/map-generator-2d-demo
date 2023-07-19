@@ -20,7 +20,7 @@ pub fn generate_sector(
     mut sector_to_be_generated: ResMut<super::SectorToBeGenerated>,
     gameworld_seed: Res<crate::GameworldSeed>,
     mut commands: Commands,
-    mut make_tiles_now: ResMut<crate::graphics::testing_mode_tile_map::MakeTilesNow>,
+    mut make_tiles_now: ResMut<crate::graphics::testing_mode_tile_map::MakeTilesNow>
 ) {
     // If there are events recorded in generate sector then the rest of the function runs.
 
@@ -38,13 +38,13 @@ pub fn generate_sector(
                 &gameworld_seed.gameworld_seed_num
             );
 
-            let new_sector_units= generate_units(
-                // Units are generated or loaded based on the initialization type. 
+            let new_sector_units = generate_units(
+                // Units are generated or loaded based on the initialization type.
                 // Sector coordinates are provided in case the sector already exists and units must be loaded.
 
                 new_sector_list.0.clone(),
                 new_sector_list.1.clone(),
-                &new_sector_list.2,
+                &new_sector_list.2
             );
 
             // This creates a new gamesector entity in the ECS and pushes the data from the tuple to it.
@@ -59,22 +59,17 @@ pub fn generate_sector(
                     // This stores the sector's coordinates in the gameworld.
                     sector_coordinates: new_sector_basics.2,
                 },
-                gamesector_units: GamesectorUnits { unit_array: new_sector_units},
+                gamesector_units: GamesectorUnits { unit_array: new_sector_units },
             });
 
+            make_tiles_now.ready_now.0 = true;
             
-        make_tiles_now.ready_now.0 = true;
-        // This clears the event so sectors aren't generated more than once.
-
         }
 
+        // This clears the event so sectors aren't generated more than once.
         generate_new_sector_event.clear();
-        // This clears the coordinates of the sector to be generated.
         sector_to_be_generated.sector_to_be_generated_list.clear();
-
     }
-
-
 }
 
 // This function does the actual procedural generation of the gameworld.
@@ -84,7 +79,7 @@ fn generate_map(
     y_coordinate: i32,
     gameworld_seed_num: &u64
 ) -> ([[(TileType, u8); SECTOR_SIZE as usize]; SECTOR_SIZE as usize], SectorBiome, (i32, i32)) {
-    // This initially sets the array to open.
+    // This initially sets the array to vegetated.
     let gamesector_environment_array = [
         [(TileType::Open, 0); SECTOR_SIZE as usize];
         SECTOR_SIZE as usize
@@ -100,13 +95,12 @@ fn generate_map(
     (gamesector_environment_array, sector_biome, (x_coordinate, y_coordinate))
 }
 
-fn generate_units (
+fn generate_units(
     _x_coordinate: i32,
     _y_coordinate: i32,
-    _initiatization_type: &InitializationType) -> Vec<UnitAttributes> {
-    
-    let unit_list: Vec<UnitAttributes>  = Vec::new();
+    _initiatization_type: &InitializationType
+) -> Vec<UnitAttributes> {
+    let unit_list: Vec<UnitAttributes> = Vec::new();
 
     unit_list
-
-    }
+}

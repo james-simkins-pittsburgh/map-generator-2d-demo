@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
-use rand_chacha::rand_core::SeedableRng;
-use rand_chacha;
+use rand::prelude::*;
+use rand_chacha::ChaCha8Rng;
 
 // These use declaration are just to make the code more readable.
 
@@ -79,7 +79,7 @@ fn generate_map(
     gameworld_seed_num: &u64
 ) -> ([[(TileType, u8); SECTOR_SIZE as usize]; SECTOR_SIZE as usize], SectorBiome, (i32, i32)) {
     // This initially sets the array to open.
-    let gamesector_environment_array = [
+    let mut gamesector_environment_array: [[(TileType, u8); 101]; 101] = [
         [(TileType::Open, 0); SECTOR_SIZE as usize];
         SECTOR_SIZE as usize
     ];
@@ -110,12 +110,54 @@ fn generate_map(
         412 + 3943 * x_coordinate_to_u64 + 4211 * y_coordinate_to_u64
     );
 
-    // Now we seed the random number generator.
+    // This code seeds the random number generator.
 
-    let seeded_prng = rand_chacha::ChaCha8Rng::seed_from_u64(sector_seed_num);
+    let mut seeded_prng = rand_chacha::ChaCha8Rng::seed_from_u64(sector_seed_num);
 
+
+    generate_patches(40, 20, TileType::Vegetated, &mut gamesector_environment_array, &mut seeded_prng);
+
+    generate_patches(12, 200, TileType::Elevated, &mut gamesector_environment_array, &mut seeded_prng);
 
     (gamesector_environment_array, sector_biome, (x_coordinate, y_coordinate))
+
+}
+
+fn generate_patches<R: Rng>(
+    number_of_patches: i32,
+    size_of_patches: i32,
+    tile_type: TileType,
+    gamesector_environment_array: &mut[[(TileType, u8); 101]; 101],
+    seeded_prng: &mut R
+) {
+    let half_sector_size_minus_five: i32 = ((SECTOR_SIZE - 1) / 2 - 5) as i32;
+    let mut x = 0;
+    let mut y = 0;
+    let mut r = 0;
+
+    for _p in 0..number_of_patches {
+      
+        x = seeded_prng.gen_range(-half_sector_size_minus_five..half_sector_size_minus_five + 1);
+        y = seeded_prng.gen_range(-half_sector_size_minus_five..half_sector_size_minus_five + 1);
+
+        for  _s in 0.. size_of_patches {
+
+            r = seeded_prng.gen_range(0..4);
+
+            match r {
+
+            0 => if x < half_sector_size_minus_five {x=x+1;}
+            1 => if x > -half_sector_size_minus_five {x=x-1;}
+            2 => if y < half_sector_size_minus_five {y=y+1;}
+            3 => if y > -half_sector_size_minus_five {y=y-1;}
+            _ => {}
+
+            }
+        
+            gamesector_environment_array [(x + ((SECTOR_SIZE as i32 -1)/2))as usize][(y + ((SECTOR_SIZE as i32-1)/2)) as usize] = (tile_type, 0);
+
+        }
+    }
 }
 
 fn generate_units(

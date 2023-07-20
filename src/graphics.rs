@@ -1,16 +1,5 @@
 use bevy::prelude::*;
-use bevy::app::PluginGroupBuilder;
-
-pub(super) mod camera;
 pub(super) mod testing_mode_tile_map;
-
-pub struct HiveboticaGraphicsPluginGroup;
-
-impl PluginGroup for HiveboticaGraphicsPluginGroup {
-    fn build(self) -> PluginGroupBuilder {
-        PluginGroupBuilder::start::<Self>().add(camera::HiveboticaCameraPlugin)
-    }
-}
 
 pub enum DirectionFromCamera {
     LessOrEqual,

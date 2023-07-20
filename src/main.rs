@@ -7,13 +7,21 @@ pub mod menu;
 pub mod network;
 pub mod simulation;
 
-// Sector size must be an odd number larger than 100 and smaller than 32,768.
+// Sector size must be an odd number smaller than 32,768.
 const SECTOR_SIZE: u16 = 101;
+
+// If sector size is adjuested smaller than 101 then pan speed and zoom speed has to be changed at the same sime.
+// Otherwise new graphical sectors might not be loaded before they become visible.
+const PAN_TOP_SPEED: f32 = 48.0;
+const ZOOM_OUT_MAX: f32 = 8.0;
+
+// Zom speed is just a matter of preference
+const ZOOM_SPEED: f32 = 0.02;
 
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
-        .add_plugins(graphics::HiveboticaGraphicsPluginGroup)
+        .add_plugins(gui::HiveboticaGUIPluginGroup)
         .add_plugins(simulation::HiveboticaSimulationPluginGroup)
         // Everything below this in this expression is test code
         .add_systems(Startup, testing_mode_startup)

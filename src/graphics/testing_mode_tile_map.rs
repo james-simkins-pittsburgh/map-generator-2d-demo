@@ -7,7 +7,6 @@ pub fn testing_mode_tile_map(
     graphics_memory_sector_query: Query<&crate::graphics::GamesectorGraphicsBasicsMemory>,
     asset_server: Res<AssetServer>
 ) {
-    // Comment to anchor breakpoint
     if make_tiles_now.ready_now.0 && make_tiles_now.ready_now.1 {
         for graphics_sector_memory in graphics_memory_sector_query.iter() {
             if graphics_sector_memory.sector_coordinates == (0, 0) {

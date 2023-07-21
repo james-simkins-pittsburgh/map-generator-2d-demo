@@ -1,4 +1,8 @@
+#![windows_subsystem = "windows"]
+
 use bevy::prelude::*;
+use rand::prelude::*;
+use rand_chacha::ChaCha8Rng;
 
 pub mod ai;
 pub mod graphics;
@@ -16,7 +20,7 @@ const PAN_TOP_SPEED: f32 = 48.0;
 const ZOOM_OUT_MAX: f32 = 8.0;
 
 // Zom speed is just a matter of preference
-const ZOOM_SPEED: f32 = 0.02;
+const ZOOM_SPEED: f32 = 0.1;
 
 fn main() {
     App::new()
@@ -25,7 +29,7 @@ fn main() {
         .add_plugins(simulation::HiveboticaSimulationPluginGroup)
         // Everything below this in this expression is test code
         .add_systems(Startup, testing_mode_startup)
-        .add_systems(Update, simulation::testing_mode_simtographics_copier::testing_mode_simtographics_copier)
+        .add_systems(Update, simulation::testing_mode_simtographics_copier::testing_mode_simtographics_processor_copier)
         .add_systems(Update, graphics::testing_mode_tile_map::testing_mode_tile_map)
         .add_event::<GenerateNewSector>()
         .init_resource::<graphics::testing_mode_tile_map::MakeTilesNow>()
@@ -48,7 +52,8 @@ fn testing_mode_startup(
     
 ) {
     make_tiles_now.ready_now = (false, false);
-    gameworld_seed.gameworld_seed_num = 0 as u64;
+    let mut seedless_rng = ChaCha8Rng::from_entropy();
+    gameworld_seed.gameworld_seed_num = seedless_rng.gen_range(0..u32::MAX) as u64;
     sector_to_be_generated.sector_to_be_generated_list.push((0, 0, simulation::gameworld_manager::InitializationType::Player));
     writer.send(GenerateNewSector);
     commands.spawn(graphics::GamesectorGraphicsMemoryBundle {
@@ -57,7 +62,8 @@ fn testing_mode_startup(
 
             sector_coordinates: (0,0),
             sector_biome: simulation::SectorBiome::Plains,
-            tile_array: [[(simulation::TileType::Vegetated, 0); crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
+            tile_array: [[(simulation::TileType::Open); crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
+            tile_array_variety: [[0 as u8; crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
             direction_from_camera_x: graphics::DirectionFromCamera::LessOrEqual,
             direction_from_camera_y: graphics::DirectionFromCamera::LessOrEqual
 

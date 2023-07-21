@@ -42,7 +42,7 @@ pub enum SectorBiome {
 pub struct GamesectorBasics {
     pub sector_coordinates: (i32, i32),
     pub sector_biome: SectorBiome,
-    pub tile_array: [[(TileType, u8); SECTOR_SIZE as usize]; SECTOR_SIZE as usize],
+    pub tile_array: [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize],
 }
 
 pub enum UnitClass {

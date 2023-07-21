@@ -77,10 +77,10 @@ fn generate_map(
     x_coordinate: i32,
     y_coordinate: i32,
     gameworld_seed_num: &u64
-) -> ([[(TileType, u8); SECTOR_SIZE as usize]; SECTOR_SIZE as usize], SectorBiome, (i32, i32)) {
+) -> ([[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize], SectorBiome, (i32, i32)) {
     // This initially sets the array to open.
-    let mut gamesector_environment_array: [[(TileType, u8); 101]; 101] = [
-        [(TileType::Open, 0); SECTOR_SIZE as usize];
+    let mut gamesector_environment_array: [[TileType; 101]; 101] = [
+        [TileType::Open; SECTOR_SIZE as usize];
         SECTOR_SIZE as usize
     ];
 
@@ -127,7 +127,7 @@ fn generate_patches<R: Rng>(
     number_of_patches: i32,
     size_of_patches: i32,
     tile_type: TileType,
-    gamesector_environment_array: &mut[[(TileType, u8); 101]; 101],
+    gamesector_environment_array: &mut[[TileType; 101]; 101],
     seeded_prng: &mut R
 ) {
     let half_sector_size_minus_five: i32 = ((SECTOR_SIZE - 1) / 2 - 5) as i32;
@@ -149,12 +149,11 @@ fn generate_patches<R: Rng>(
             0 => if x < half_sector_size_minus_five {x=x+1;}
             1 => if x > -half_sector_size_minus_five {x=x-1;}
             2 => if y < half_sector_size_minus_five {y=y+1;}
-            3 => if y > -half_sector_size_minus_five {y=y-1;}
-            _ => {}
+            _ => if y > -half_sector_size_minus_five {y=y-1;}
 
             }
         
-            gamesector_environment_array [(x + ((SECTOR_SIZE as i32 -1)/2))as usize][(y + ((SECTOR_SIZE as i32-1)/2)) as usize] = (tile_type, 0);
+            gamesector_environment_array [(x + ((SECTOR_SIZE as i32 -1)/2))as usize][(y + ((SECTOR_SIZE as i32-1)/2)) as usize] = tile_type;
 
         }
     }

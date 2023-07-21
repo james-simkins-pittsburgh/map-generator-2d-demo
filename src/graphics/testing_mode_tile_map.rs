@@ -14,23 +14,67 @@ pub fn testing_mode_tile_map(
 
                 for index_one in 0..crate::SECTOR_SIZE as usize {
                     for index_two in 0..crate::SECTOR_SIZE as usize {
-                        if
-                            graphics_sector_memory.tile_array[index_one][index_two].0 ==
-                            TileType::Open
-                        {
-                            tile_graphics_path = "plains1.png";
-                        } else if
-                            graphics_sector_memory.tile_array[index_one][index_two].0 ==
-                            TileType::Elevated
-                        {
-                            tile_graphics_path = "rock1.png";
-                        } else if
-                            graphics_sector_memory.tile_array[index_one][index_two].0 ==
-                            TileType::Vegetated
-                        {
-                            tile_graphics_path = "grass1.png";
-                        } else {
-                            tile_graphics_path = "void1.png";
+                        match graphics_sector_memory.tile_array[index_one][index_two] {
+                            TileType::Open => {
+                                match
+                                    graphics_sector_memory.tile_array_variety[index_one][index_two]
+                                {
+                                    0 => {
+                                        tile_graphics_path = "plains0.png";
+                                    }
+                                    1 => {
+                                        tile_graphics_path = "plains1.png";
+                                    }
+                                    2 => {
+                                        tile_graphics_path = "plains2.png";
+                                    }
+                                    _ => {
+                                        tile_graphics_path = "plains3.png";
+                                    }
+                                }
+                            }
+
+                            TileType::Elevated => {
+                                match
+                                    graphics_sector_memory.tile_array_variety[index_one][index_two]
+                                {
+                                    0 => {
+                                        tile_graphics_path = "rock0.png";
+                                    }
+                                    1 => {
+                                        tile_graphics_path = "rock1.png";
+                                    }
+                                    2 => {
+                                        tile_graphics_path = "rock2.png";
+                                    }
+                                    _ => {
+                                        tile_graphics_path = "rock3.png";
+                                    }
+                                }
+                            }
+
+                            TileType::Vegetated => {
+                                match
+                                    graphics_sector_memory.tile_array_variety[index_one][index_two]
+                                {
+                                    0 => {
+                                        tile_graphics_path = "tallgrass0.png";
+                                    }
+                                    1 => {
+                                        tile_graphics_path = "tallgrass1.png";
+                                    }
+                                    2 => {
+                                        tile_graphics_path = "tallgrass2.png";
+                                    }
+                                    _ => {
+                                        tile_graphics_path = "tallgrass3.png";
+                                    }
+                                }
+                            }
+
+                            _ => {
+                                tile_graphics_path = "void0.png";
+                            }
                         }
 
                         commands.spawn(SpriteBundle {

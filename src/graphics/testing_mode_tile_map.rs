@@ -73,7 +73,7 @@ pub fn testing_mode_tile_map(
                             }
 
                             _ => {
-                                tile_graphics_path = "void0.png";
+                                tile_graphics_path = "plains0.png";
                             }
                         }
 

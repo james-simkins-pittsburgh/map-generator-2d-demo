@@ -115,9 +115,9 @@ fn generate_map(
     let mut seeded_prng = rand_chacha::ChaCha8Rng::seed_from_u64(sector_seed_num);
 
 
-    generate_patches(40, 20, TileType::Vegetated, &mut gamesector_environment_array, &mut seeded_prng);
+    generate_patches(60, 25, TileType::Vegetated, &mut gamesector_environment_array, &mut seeded_prng);
 
-    generate_patches(12, 200, TileType::Elevated, &mut gamesector_environment_array, &mut seeded_prng);
+    generate_patches(12, 250, TileType::Elevated, &mut gamesector_environment_array, &mut seeded_prng);
 
     (gamesector_environment_array, sector_biome, (x_coordinate, y_coordinate))
 

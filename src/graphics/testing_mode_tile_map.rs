@@ -59,16 +59,16 @@ pub fn testing_mode_tile_map(
                                     graphics_sector_memory.tile_array_variety[index_one][index_two]
                                 {
                                     0 => {
-                                        tile_graphics_path = "tallgrass0.png";
+                                        tile_graphics_path = "shrubs0.png";
                                     }
                                     1 => {
-                                        tile_graphics_path = "tallgrass1.png";
+                                        tile_graphics_path = "shrubs1.png";
                                     }
                                     2 => {
-                                        tile_graphics_path = "tallgrass2.png";
+                                        tile_graphics_path = "shrubs2.png";
                                     }
                                     _ => {
-                                        tile_graphics_path = "tallgrass3.png";
+                                        tile_graphics_path = "shrubs3.png";
                                     }
                                 }
                             }

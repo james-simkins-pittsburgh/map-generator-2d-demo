@@ -30,12 +30,20 @@ pub enum TileType {
 
 #[derive(Copy, Clone)]
 pub enum SectorBiome {
-    Base,
-    Plains,
+    Arid,
     Desert,
     Frozen,
     Mountains,
-    Ruins,
+}
+
+
+#[derive(Copy, Clone)]
+pub enum SectorBaseType {
+
+    Industrialist,
+    Guardian,
+    Wild,
+    
 }
 
 #[derive(Component)]
@@ -43,6 +51,7 @@ pub struct GamesectorBasics {
     pub sector_coordinates: (i32, i32),
     pub sector_biome: SectorBiome,
     pub tile_array: [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize],
+    pub sector_base_type: SectorBaseType,
 }
 
 pub enum UnitClass {
@@ -69,7 +78,7 @@ pub enum UnitType {
     SiliconMine,
     AluminumMine,
     ArchaeologySite,
-    SolorPanel,
+    SolarPanel,
     BarbedWire,
     Mine,
     Hedgehog,
@@ -112,7 +121,7 @@ pub enum UnitType {
     FlakRound,
     ArtilleryRound,
     ArtilleryRocket,
-    AirtoAirMissle,
+    AirtoAirMissile,
     AirtoGroundMissileLight,
     AirtoGroundMissileHeavy,
     AirtoGroundMissileCluster,

@@ -10,7 +10,8 @@ pub fn testing_mode_tile_map(
     if make_tiles_now.ready_now.0 && make_tiles_now.ready_now.1 {
         for graphics_sector_memory in graphics_memory_sector_query.iter() {
             if graphics_sector_memory.sector_coordinates == (0, 0) {
-                let mut tile_graphics_path = "void1.png";
+                #[allow(unused_assignments)]
+                let mut tile_graphics_path = "plains0.png";
 
                 for index_one in 0..crate::SECTOR_SIZE as usize {
                     for index_two in 0..crate::SECTOR_SIZE as usize {

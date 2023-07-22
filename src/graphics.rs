@@ -10,6 +10,7 @@ pub enum DirectionFromCamera {
 pub struct GamesectorGraphicsBasicsMemory {
     pub sector_coordinates: (i32, i32),
     pub sector_biome: crate::simulation::SectorBiome,
+    pub sector_base_type: crate::simulation::SectorBaseType,
     pub tile_array: [
         [crate::simulation::TileType; crate::SECTOR_SIZE as usize];
         crate::SECTOR_SIZE as usize

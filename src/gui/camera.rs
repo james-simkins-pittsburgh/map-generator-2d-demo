@@ -32,7 +32,6 @@ fn set_initial_camera(
 }
 
 fn camera_pan_and_zoom(
-    keys: Res<Input<KeyCode>>,
     mut scroll_event_reader: EventReader<MouseWheel>,
     mut main_camera_query: Query<(&mut Transform, &mut OrthographicProjection, &mut MainCamera)>,
     window_query: Query<&Window, With<PrimaryWindow>>

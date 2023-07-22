@@ -1,19 +1,18 @@
 use bevy::prelude::*;
-
 use rand::prelude::*;
-use rand_chacha::ChaCha8Rng;
 
 // These use declaration are just to make the code more readable.
 
 use crate::SECTOR_SIZE;
 use crate::simulation::TileType;
 use crate::simulation::SectorBiome;
+use crate::simulation::SectorBaseType;
 use crate::simulation::GamesectorBasics;
 use crate::simulation::GamesectorUnits;
 use crate::simulation::UnitAttributes;
 use super::InitializationType;
 
-// This function generates a new sector and populates it with a procedurally generated environmenal map and the other components it needs.
+// This function generates a new sector and populates it with a procedurally generated environmental map and the other components it needs.
 
 pub fn generate_sector(
     mut generate_new_sector_event: EventReader<crate::GenerateNewSector>,
@@ -31,7 +30,7 @@ pub fn generate_sector(
             // This returns into a tuple the data for a new gamesector.
 
             let new_sector_basics = generate_map(
-                //  A gamesector is generated from its coordinates and a gamewold worldseed. Everything else is procedural.
+                //  A gamesector is generated from its coordinates and a gameworld worldseed. Everything else is procedural.
 
                 new_sector_list.0.clone(),
                 new_sector_list.1.clone(),
@@ -58,10 +57,16 @@ pub fn generate_sector(
 
                     // This stores the sector's coordinates in the gameworld.
                     sector_coordinates: new_sector_basics.2,
+                    
+                    // This stores the sector's base type in the gameworld.
+                    sector_base_type: SectorBaseType::Wild,
                 },
+
+                // This copies over the units for the new sector.
                 gamesector_units: GamesectorUnits { unit_array: new_sector_units },
             });
 
+            // This is test code saying the graphics can make its world now.
             make_tiles_now.ready_now.0 = true;
         }
 
@@ -85,9 +90,9 @@ fn generate_map(
     ];
 
     // This is just placeholder code.
-    let sector_biome = SectorBiome::Base;
+    let sector_biome = SectorBiome::Arid;
 
-    // This block of code deteministically gets a sector seed from the gameworld seed.
+    // This block of code deterministically gets a sector seed from the gameworld seed.
     // First we need to convert our coordinates to u64.
 
     let x_coordinate_to_u64: u64 = if x_coordinate < 0 {
@@ -114,14 +119,19 @@ fn generate_map(
 
     let mut seeded_prng = rand_chacha::ChaCha8Rng::seed_from_u64(sector_seed_num);
 
+    // This draws the patches of tall grass.
 
     generate_patches(60, 25, TileType::Vegetated, &mut gamesector_environment_array, &mut seeded_prng);
+
+    // This draws the rocky areas.
 
     generate_patches(12, 250, TileType::Elevated, &mut gamesector_environment_array, &mut seeded_prng);
 
     (gamesector_environment_array, sector_biome, (x_coordinate, y_coordinate))
 
 }
+
+    // This draws the patches of vegetated and elevated themselves\.
 
 fn generate_patches<R: Rng>(
     number_of_patches: i32,
@@ -162,7 +172,7 @@ fn generate_patches<R: Rng>(
 fn generate_units(
     _x_coordinate: i32,
     _y_coordinate: i32,
-    _initiatization_type: &InitializationType
+    _initialization_type: &InitializationType
 ) -> Vec<UnitAttributes> {
     let unit_list: Vec<UnitAttributes> = Vec::new();
 

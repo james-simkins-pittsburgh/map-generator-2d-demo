@@ -1,3 +1,4 @@
+// This hides the command prompt
 #![windows_subsystem = "windows"]
 
 use bevy::prelude::*;
@@ -14,12 +15,12 @@ pub mod simulation;
 // Sector size must be an odd number smaller than 32,768.
 const SECTOR_SIZE: u16 = 101;
 
-// If sector size is adjuested smaller than 101 then pan speed and zoom speed has to be changed at the same sime.
+// If sector size is adjusted smaller than 101 then pan speed and zoom speed has to be changed at the same time.
 // Otherwise new graphical sectors might not be loaded before they become visible.
 const PAN_TOP_SPEED: f32 = 48.0;
 const ZOOM_OUT_MAX: f32 = 8.0;
 
-// Zom speed is just a matter of preference
+// Zoom speed is just a matter of preference
 const ZOOM_SPEED: f32 = 0.1;
 
 fn main() {
@@ -61,7 +62,8 @@ fn testing_mode_startup(
         gamesector_graphics_basic_memory: graphics::GamesectorGraphicsBasicsMemory {
 
             sector_coordinates: (0,0),
-            sector_biome: simulation::SectorBiome::Plains,
+            sector_biome: simulation::SectorBiome::Arid,
+            sector_base_type: simulation::SectorBaseType::Wild,
             tile_array: [[(simulation::TileType::Open); crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
             tile_array_variety: [[0 as u8; crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
             direction_from_camera_x: graphics::DirectionFromCamera::LessOrEqual,

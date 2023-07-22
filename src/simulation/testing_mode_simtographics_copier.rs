@@ -1,8 +1,9 @@
 // This module contains test code so I can test the tilemap stuff.
 
+// What it does is copy the sector information from the simulation to the graphics memory.
+
 use ::bevy::prelude::*;
 use rand::prelude::*;
-use rand_chacha::ChaCha8Rng;
 
 
 pub fn testing_mode_simtographics_processor_copier(
@@ -17,6 +18,8 @@ pub fn testing_mode_simtographics_processor_copier(
                 if gamesector_graphics_basics.sector_coordinates == (0, 0) {
                     gamesector_graphics_basics.sector_biome =
                         gamesector_basics.sector_biome.clone();
+                    gamesector_graphics_basics.sector_base_type =
+                        gamesector_basics.sector_base_type.clone();
                     gamesector_graphics_basics.sector_coordinates =
                         gamesector_basics.sector_coordinates.clone();
                     gamesector_graphics_basics.tile_array = gamesector_basics.tile_array.clone();

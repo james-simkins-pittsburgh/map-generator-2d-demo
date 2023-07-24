@@ -30,9 +30,12 @@ fn main() {
         .add_plugins(simulation::HiveboticaSimulationPluginGroup)
         // Everything below this in this expression is test code
         .add_systems(Startup, testing_mode_startup)
+        .add_systems(Startup, graphics::testing_mode_tile_map::tile_texture_loader)
         .add_systems(Update, simulation::testing_mode_simtographics_copier::testing_mode_simtographics_processor_copier)
         .add_systems(Update, graphics::testing_mode_tile_map::testing_mode_tile_map)
         .add_event::<GenerateNewSector>()
+        .insert_resource(Msaa::Off)
+        .init_resource::<graphics::testing_mode_tile_map::EnvironmentalTextureHandle>()
         .init_resource::<graphics::testing_mode_tile_map::MakeTilesNow>()
         .init_resource::<GameworldSeed>()
         .run();

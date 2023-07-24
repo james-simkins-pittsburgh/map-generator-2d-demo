@@ -90,7 +90,7 @@ fn generate_map(
     ];
 
     // This is just placeholder code.
-    let sector_biome = SectorBiome::Arid;
+    let sector_biome = SectorBiome::Plains;
 
     // This block of code deterministically gets a sector seed from the gameworld seed.
     // First we need to convert our coordinates to u64.
@@ -122,8 +122,8 @@ fn generate_map(
     // This draws the patches of tall grass.
 
     generate_patches(
-        60,
-        25,
+        50,
+        15,
         TileType::Vegetated,
         &mut gamesector_environment_array,
         &mut seeded_prng
@@ -132,8 +132,8 @@ fn generate_map(
     // This draws the rocky areas.
 
     generate_patches(
-        12,
-        250,
+        10,
+        100,
         TileType::Elevated,
         &mut gamesector_environment_array,
         &mut seeded_prng
@@ -142,62 +142,105 @@ fn generate_map(
     (gamesector_environment_array, sector_biome, (x_coordinate, y_coordinate))
 }
 
-// This draws the patches of vegetated and elevated themselves\.
+// This draws the patches of vegetated and elevated themselves.
 
 fn generate_patches<R: Rng>(
     number_of_patches: i32,
     size_of_patches: i32,
     tile_type: TileType,
-    gamesector_environment_array: &mut [[TileType; 101]; 101],
+    gamesector_environment_array: &mut [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize],
     seeded_prng: &mut R
 ) {
-    let half_sector_size_minus_five: i32 = ((SECTOR_SIZE - 1) / 2 - 5) as i32;
-    let mut x = 0;
-    let mut y = 0;
-    let mut r = 0;
-    let mut d: i32 = 0;
+    let half_sector_size_minus_ten: i32 = ((SECTOR_SIZE - 1) / 2 - 10) as i32;
+    let mut x;
+    let mut y;
+    let mut r;
+    let mut a1;
+    let mut a2;
+    let mut d1;
+    let mut d2;
 
     for _p in 0..number_of_patches {
-        // Picks a random start point no closer than 5 from the edge.
+        // Picks a random start point no closer than 10 from the edge.
 
-        x = seeded_prng.gen_range(-half_sector_size_minus_five..half_sector_size_minus_five + 1);
-        y = seeded_prng.gen_range(-half_sector_size_minus_five..half_sector_size_minus_five + 1);
+        x = seeded_prng.gen_range(-half_sector_size_minus_ten..half_sector_size_minus_ten + 1);
+        y = seeded_prng.gen_range(-half_sector_size_minus_ten..half_sector_size_minus_ten + 1);
 
-        // Randomly picks the preferred direction. 0 is x/-x, 1 is y/-y
-        d = seeded_prng.gen_range(0..2);
+        // Randomly picks the preferred axis. 0 is x/-x, 1 is y/-y
+        a1 = seeded_prng.gen_range(0..2);
+        a2 = seeded_prng.gen_range(0..2);
+
+        // Randomly picks the preferred direction
+
+        if seeded_prng.gen_range(0..2) == 1 {
+            d1 = 1;
+        } else {
+            d1 = -1;
+        }
+
+        if seeded_prng.gen_range(0..2) == 1 {
+            d2 = 1;
+        } else {
+            d2 = -1;
+        }
+
 
         // Draws the patch from the starting point moving at random. Prefers x or y movement depending on d.
         for _s in 0..size_of_patches {
-            r = seeded_prng.gen_range(0..6);
+            r = seeded_prng.gen_range(0..10);
 
             match r {
-                0 => if x < half_sector_size_minus_five {
+                0..=1 => if x < half_sector_size_minus_ten {
                     x = x + 1;
                 }
-                1 => if x > -half_sector_size_minus_five {
+                2..=3 => if x > -half_sector_size_minus_ten {
                     x = x - 1;
                 }
-                2 => if y < half_sector_size_minus_five {
+                4..=5 => if y < half_sector_size_minus_ten {
                     y = y + 1;
                 }
-                3 => if y > -half_sector_size_minus_five {
+                6..=7 => if y > -half_sector_size_minus_ten {
                     y = y - 1;
                 }
-                4 => if d == 0 {
-                    if x < half_sector_size_minus_five {
-                        x = x + 1;
+                8 => if d1 > 0 {
+                    if a1 == 0 {
+                        if x < half_sector_size_minus_ten {
+                            x = x + d1;
+                        }
                     } else {
-                        if y < half_sector_size_minus_five {
-                            y = y + 1;
+                        if y < half_sector_size_minus_ten {
+                            y = y + d1;
+                        }
+                    }
+                } else {
+                    if a1 == 0 {
+                        if x > -half_sector_size_minus_ten {
+                            x = x + d1;
+                        }
+                    } else {
+                        if y > -half_sector_size_minus_ten {
+                            y = y + d1;
                         }
                     }
                 }
-                _ => if d == 0 {
-                    if x > -half_sector_size_minus_five {
-                        x = x - 1;
+                _ => if d2 > 0 {
+                    if a2 == 0 {
+                        if x < half_sector_size_minus_ten {
+                            x = x + d2;
+                        }
                     } else {
-                        if y > -half_sector_size_minus_five {
-                            y = y - 1;
+                        if y < half_sector_size_minus_ten {
+                            y = y + d2;
+                        }
+                    }
+                } else {
+                    if a2 == 0 {
+                        if x > -half_sector_size_minus_ten {
+                            x = x + d2;
+                        }
+                    } else {
+                        if y > -half_sector_size_minus_ten {
+                            y = y + d2;
                         }
                     }
                 }
@@ -209,14 +252,51 @@ fn generate_patches<R: Rng>(
         }
     }
 
+    // This code goes over the generated patches and expands them outward by one.
+
+    let mut adjacent_count;
+
+    let mut tile_change_tracker = [[false; SECTOR_SIZE as usize]; SECTOR_SIZE as usize];
+
+    for x_counter in 10..(SECTOR_SIZE - 10) as usize {
+        for y_counter in 10..(SECTOR_SIZE - 10) as usize {
+            if !(gamesector_environment_array[x_counter][y_counter] == tile_type) {
+                adjacent_count = 0;
+
+                if gamesector_environment_array[x_counter + 1][y_counter] == tile_type {
+                    adjacent_count += 1;
+                }
+                if gamesector_environment_array[x_counter - 1][y_counter] == tile_type {
+                    adjacent_count += 1;
+                }
+                if gamesector_environment_array[x_counter][y_counter + 1] == tile_type {
+                    adjacent_count += 1;
+                }
+
+                if gamesector_environment_array[x_counter][y_counter - 1] == tile_type {
+                    adjacent_count += 1;
+                }
+
+                if adjacent_count > 0 {
+                    tile_change_tracker[x_counter][y_counter] = true;
+                }
+            }
+        }
+    }
+
+    for x_counter in 10..(SECTOR_SIZE - 10) as usize {
+        for y_counter in 10..(SECTOR_SIZE - 10) as usize {
+            if tile_change_tracker[x_counter][y_counter] == true {
+                gamesector_environment_array[x_counter][y_counter] = tile_type;
+            }
+        }
+    }
+
     // This code goes over the generated patches three times and adds to any patch that has the tile type on 3 sides.
 
-    let mut adjacent_count = 0;
-
     for _pass in 1..4 {
-        for x_counter in 5..(SECTOR_SIZE-5) as usize {
-            for y_counter in 5..(SECTOR_SIZE-5) as usize {
-
+        for x_counter in 10..(SECTOR_SIZE - 10) as usize {
+            for y_counter in 10..(SECTOR_SIZE - 10) as usize {
                 if !(gamesector_environment_array[x_counter][y_counter] == tile_type) {
                     adjacent_count = 0;
 

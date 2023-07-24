@@ -64,7 +64,7 @@ fn testing_mode_startup(
         gamesector_graphics_basic_memory: graphics::GamesectorGraphicsBasicsMemory {
 
             sector_coordinates: (0,0),
-            sector_biome: simulation::SectorBiome::Arid,
+            sector_biome: simulation::SectorBiome::Plains,
             sector_base_type: simulation::SectorBaseType::Wild,
             tile_array: [[(simulation::TileType::Open); crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
             tile_array_variety: [[0 as u8; crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],

@@ -3,32 +3,34 @@ use crate::simulation::TileType;
 
 #[derive(Resource, Default)]
 pub struct EnvironmentalTextureHandle {
-    handle: Handle<Image>
+    handle: Handle<Image>,
 }
 
 pub fn tile_texture_loader(
     asset_server: Res<AssetServer>,
     mut env_texture_handle: ResMut<EnvironmentalTextureHandle>
 ) {
-    
     env_texture_handle.handle = asset_server.load("environment.png");
-
 }
 
 pub fn testing_mode_tile_map(
     mut make_tiles_now: ResMut<MakeTilesNow>,
     mut commands: Commands,
     graphics_memory_sector_query: Query<&crate::graphics::GamesectorGraphicsBasicsMemory>,
-    asset_server: Res<AssetServer>,
     mut texture_atlases: ResMut<Assets<TextureAtlas>>,
-    env_texture_handle: Res<EnvironmentalTextureHandle>,
+    env_texture_handle: Res<EnvironmentalTextureHandle>
 ) {
     if make_tiles_now.ready_now.0 && make_tiles_now.ready_now.1 {
-
-        let env_texture_atlas = TextureAtlas::from_grid(env_texture_handle.handle.clone(), Vec2::new(96.0, 96.0), 5, 5,Some (Vec2::new(6.0,6.0)), Some(Vec2::new(3.0,3.0)));
+        let env_texture_atlas = TextureAtlas::from_grid(
+            env_texture_handle.handle.clone(),
+            Vec2::new(96.0, 96.0),
+            5,
+            5,
+            Some(Vec2::new(6.0, 6.0)),
+            Some(Vec2::new(3.0, 3.0))
+        );
 
         let env_texture_atlas_handle = texture_atlases.add(env_texture_atlas);
-        
 
         for graphics_sector_memory in graphics_memory_sector_query.iter() {
             if graphics_sector_memory.sector_coordinates == (0, 0) {

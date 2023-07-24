@@ -17,9 +17,9 @@ impl Plugin for HiveboticaGameworldManagerPlugin {
 pub enum InitializationType {
 
     Empty,
-    Existing,
+    _Existing,
     Player,
-    Guardian,
+    _Guardian,
 
 }
 

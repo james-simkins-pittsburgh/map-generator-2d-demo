@@ -30,10 +30,10 @@ pub enum TileType {
 
 #[derive(Copy, Clone)]
 pub enum SectorBiome {
-    Arid,
+    Plains,
     Desert,
-    Frozen,
-    Mountains,
+    Tundra,
+    Alpine,
 }
 
 

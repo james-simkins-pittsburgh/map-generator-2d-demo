@@ -25,7 +25,7 @@ pub fn testing_mode_tile_map(
 ) {
     if make_tiles_now.ready_now.0 && make_tiles_now.ready_now.1 {
 
-        let env_texture_atlas = TextureAtlas::from_grid(env_texture_handle.handle.clone(), Vec2::new(96.0, 96.0), 5, 5,Some (Vec2::new(4.0,4.0)), Some(Vec2::new(2.0,2.0)));
+        let env_texture_atlas = TextureAtlas::from_grid(env_texture_handle.handle.clone(), Vec2::new(96.0, 96.0), 5, 5,Some (Vec2::new(6.0,6.0)), Some(Vec2::new(3.0,3.0)));
 
         let env_texture_atlas_handle = texture_atlases.add(env_texture_atlas);
         

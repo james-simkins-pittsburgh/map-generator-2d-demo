@@ -83,41 +83,17 @@ fn generate_map(
     y_coordinate: i32,
     gameworld_seed_num: &u64
 ) -> ([[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize], SectorBiome, (i32, i32)) {
+   
     // This initially sets the array to open.
+   
     let mut gamesector_environment_array: [[TileType; 101]; 101] = [
         [TileType::Open; SECTOR_SIZE as usize];
         SECTOR_SIZE as usize
     ];
 
-    // This is just placeholder code.
-    let sector_biome = SectorBiome::Plains;
-
-    // This block of code deterministically gets a sector seed from the gameworld seed.
-    // First we need to convert our coordinates to u64.
-
-    let x_coordinate_to_u64: u64 = if x_coordinate < 0 {
-        u64::MAX - (x_coordinate.abs() as u64)
-    } else {
-        x_coordinate as u64
-    };
-
-    let y_coordinate_to_u64: u64 = if y_coordinate < 0 {
-        u64::MAX - (y_coordinate.abs() as u64)
-    } else {
-        y_coordinate as u64
-    };
-
-    // Now we add a big number based on the coordinated to the gameworld seed number.
-    // If this makes it larger than u64 that's fine since we just wrapping_add it.
-    // 412 is for Pittsburgh pride! The other numbers are just large primes.
-
-    let sector_seed_num: u64 = gameworld_seed_num.wrapping_add(
-        412 + 3943 * x_coordinate_to_u64 + 4211 * y_coordinate_to_u64
-    );
-
     // This code seeds the random number generator.
 
-    let mut seeded_prng = rand_chacha::ChaCha8Rng::seed_from_u64(sector_seed_num);
+    let mut seeded_prng = rand_chacha::ChaCha8Rng::seed_from_u64(crate::utility::generate_sector_seed_num_from_gameworld_seed_num(gameworld_seed_num, x_coordinate, y_coordinate));
 
     // This draws the patches of tall grass.
 
@@ -139,10 +115,13 @@ fn generate_map(
         &mut seeded_prng
     );
 
+    // This returns the generated environment array, sector_biome, and coordinates.
+
     (gamesector_environment_array, sector_biome, (x_coordinate, y_coordinate))
+
 }
 
-// This draws the patches of vegetated and elevated themselves.
+// This function draws the patches of vegetation and elevation.
 
 fn generate_patches<R: Rng>(
     number_of_patches: i32,
@@ -151,26 +130,40 @@ fn generate_patches<R: Rng>(
     gamesector_environment_array: &mut [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize],
     seeded_prng: &mut R
 ) {
+    // This is used to bound the drawing area.
+    
     let half_sector_size_minus_ten: i32 = ((SECTOR_SIZE - 1) / 2 - 10) as i32;
+    
+    // These are the coordinates being drawn at.
+    
     let mut x;
     let mut y;
+
+    // This will hold the random integer.
     let mut r;
+
+    // The random two axes to be moved more on.
     let mut a1;
     let mut a2;
+
+    // Positive or negative direction on that axis.
     let mut d1;
     let mut d2;
 
+    // Loops the number of patches.
+
     for _p in 0..number_of_patches {
+
         // Picks a random start point no closer than 10 from the edge.
 
         x = seeded_prng.gen_range(-half_sector_size_minus_ten..half_sector_size_minus_ten + 1);
         y = seeded_prng.gen_range(-half_sector_size_minus_ten..half_sector_size_minus_ten + 1);
 
-        // Randomly picks the preferred axis. 0 is x/-x, 1 is y/-y
+        // Randomly picks the preferred axis. 0 is x/-x, 1 is y/-y.
         a1 = seeded_prng.gen_range(0..2);
         a2 = seeded_prng.gen_range(0..2);
 
-        // Randomly picks the preferred direction
+        // Randomly picks the preferred direction on each preferred axis +/-.
 
         if seeded_prng.gen_range(0..2) == 1 {
             d1 = 1;
@@ -184,8 +177,10 @@ fn generate_patches<R: Rng>(
             d2 = -1;
         }
 
+        // Moves the drawing point one space at random.
+        // Prefers movement in two directions based on a1, d1, a2, and d2.
+        // Loops the size of each pass.
 
-        // Draws the patch from the starting point moving at random. Prefers x or y movement depending on d.
         for _s in 0..size_of_patches {
             r = seeded_prng.gen_range(0..10);
 
@@ -245,6 +240,8 @@ fn generate_patches<R: Rng>(
                     }
                 }
             }
+
+            // Writes the tile type of the patch to the new spot.
 
             gamesector_environment_array[(x + ((SECTOR_SIZE as i32) - 1) / 2) as usize][
                 (y + ((SECTOR_SIZE as i32) - 1) / 2) as usize

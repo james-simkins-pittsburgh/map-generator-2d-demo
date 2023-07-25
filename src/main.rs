@@ -11,6 +11,7 @@ pub mod gui;
 pub mod menu;
 pub mod network;
 pub mod simulation;
+pub mod utility;
 
 // Sector size must be an odd number smaller than 32,768.
 const SECTOR_SIZE: u16 = 101;

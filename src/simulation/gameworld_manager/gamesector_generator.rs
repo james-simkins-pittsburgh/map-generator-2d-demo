@@ -107,12 +107,15 @@ fn generate_map(
 
     // This determines sector biome.
 
-    let mut sector_biome = SectorBiome::Plains;
+    let mut sector_biome: SectorBiome = SectorBiome::Plains;
 
-    if (x_coordinate.rem_euclid(4) == 3) || (x_coordinate.rem_euclid(2) == 0 && (y_coordinate.rem_euclid(6)<2 || y_coordinate.rem_euclid(6)==5)) || ((x_coordinate.rem_euclid(4) == 1 && x_coordinate.rem_euclid(6) == 0))  {
-
+    if
+        x_coordinate.rem_euclid(4) == 3 ||
+        (x_coordinate.rem_euclid(2) == 0 &&
+            (y_coordinate.rem_euclid(6) < 2 || y_coordinate.rem_euclid(6) == 5)) ||
+        (x_coordinate.rem_euclid(4) == 1 && x_coordinate.rem_euclid(6) == 0)
+    {
         sector_biome = SectorBiome::Alpine;
-
     } else {
         match seeded_prng.gen_range(0..3) {
             0 => {
@@ -131,17 +134,16 @@ fn generate_map(
 
     let mut sector_base_type = SectorBaseType::Wild;
 
-    if x_coordinate.rem_euclid(2) == 0 && (x_coordinate.rem_euclid(6) == 2 || x_coordinate.rem_euclid(6) == 4) {
-    
-    sector_base_type = SectorBaseType::Industrialist;
-
+    if
+        x_coordinate.rem_euclid(2) == 0 &&
+        (x_coordinate.rem_euclid(6) == 2 || x_coordinate.rem_euclid(6) == 4)
+    {
+        sector_base_type = SectorBaseType::Industrialist;
     }
 
-    if x_coordinate.rem_euclid(4) == 1 && (x_coordinate.rem_euclid(2) == 1) {
-    
+    if x_coordinate.rem_euclid(4) == 1 && x_coordinate.rem_euclid(2) == 1 {
         sector_base_type = SectorBaseType::Guardian;
-    
-        }
+    }
 
     // This draws the patches of tall grass.
 
@@ -155,13 +157,38 @@ fn generate_map(
 
     // This draws the rocky areas.
 
-    generate_patches(
-        10,
-        100,
-        TileType::Elevated,
-        &mut gamesector_environment_array,
-        &mut seeded_prng
-    );
+    if sector_biome == SectorBiome::Alpine {
+        generate_patches(
+            20,
+            150,
+            TileType::Elevated,
+            &mut gamesector_environment_array,
+            &mut seeded_prng
+        );
+    } else {
+        generate_patches(
+            10,
+            100,
+            TileType::Elevated,
+            &mut gamesector_environment_array,
+            &mut seeded_prng
+        );
+    }
+
+    // This clear a path from the edges through the center vertically and horizontally.
+
+    if !(sector_biome == SectorBiome::Alpine) {
+        clear_paths(&mut gamesector_environment_array);
+    }
+
+    // This clear an area in the center.
+
+    if sector_base_type == SectorBaseType::Industrialist {
+        clear_center(&mut gamesector_environment_array, 20);
+    } else if sector_base_type == SectorBaseType::Guardian {
+        clear_center(&mut gamesector_environment_array, 30);
+        generate_ruins(&mut gamesector_environment_array);
+    }
 
     // This returns the generated environment array, sector_biome, sector_base_type, and coordinates.
 
@@ -360,6 +387,43 @@ fn generate_patches<R: Rng>(
         }
     }
 }
+
+fn clear_paths(
+    gamesector_environment_array: &mut [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize]
+) {
+    for y in -5..6 {
+        for x in -(((SECTOR_SIZE as i32) - 1) / 2 - 9) + 10..((SECTOR_SIZE as i32) - 1) / 2 - 9 {
+            gamesector_environment_array[(x + ((SECTOR_SIZE as i32) - 1) / 2) as usize][
+                (y + ((SECTOR_SIZE as i32) - 1) / 2) as usize
+            ] = TileType::Open;
+        }
+    }
+
+    for x in -5..6 {
+        for y in -(((SECTOR_SIZE as i32) - 1) / 2 - 9) + 10..((SECTOR_SIZE as i32) - 1) / 2 - 9 {
+            gamesector_environment_array[(x + ((SECTOR_SIZE as i32) - 1) / 2) as usize][
+                (y + ((SECTOR_SIZE as i32) - 1) / 2) as usize
+            ] = TileType::Open;
+        }
+    }
+}
+
+fn clear_center(
+    gamesector_environment_array: &mut [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize],
+    clear_size: i32
+) {
+    for y in -clear_size..clear_size + 1 {
+        for x in -clear_size..clear_size + 1 {
+            gamesector_environment_array[(x + ((SECTOR_SIZE as i32) - 1) / 2) as usize][
+                (y + ((SECTOR_SIZE as i32) - 1) / 2) as usize
+            ] = TileType::Open;
+        }
+    }
+}
+
+fn generate_ruins(
+    gamesector_environment_array: &mut [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize]
+) {}
 
 fn generate_units(
     _x_coordinate: i32,

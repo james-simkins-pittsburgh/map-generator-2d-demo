@@ -28,7 +28,7 @@ pub enum TileType {
 }
 
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq)]
 pub enum SectorBiome {
     Plains,
     Desert,
@@ -37,7 +37,7 @@ pub enum SectorBiome {
 }
 
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq)]
 pub enum SectorBaseType {
 
     Industrialist,

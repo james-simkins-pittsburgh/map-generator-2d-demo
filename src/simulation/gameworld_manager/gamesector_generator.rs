@@ -55,11 +55,11 @@ pub fn generate_sector(
                     // This stores the sector's biome in the tile map component.
                     sector_biome: new_sector_basics.1,
 
-                    // This stores the sector's coordinates in the gameworld.
-                    sector_coordinates: new_sector_basics.2,
-
                     // This stores the sector's base type in the gameworld.
-                    sector_base_type: SectorBaseType::Wild,
+                    sector_base_type: new_sector_basics.2,
+
+                    // This stores the sector's coordinates in the gameworld.
+                    sector_coordinates: new_sector_basics.3,
                 },
 
                 // This copies over the units for the new sector.
@@ -82,10 +82,14 @@ fn generate_map(
     x_coordinate: i32,
     y_coordinate: i32,
     gameworld_seed_num: &u64
-) -> ([[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize], SectorBiome, (i32, i32)) {
-   
+) -> (
+    [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize],
+    SectorBiome,
+    SectorBaseType,
+    (i32, i32),
+) {
     // This initially sets the array to open.
-   
+
     let mut gamesector_environment_array: [[TileType; 101]; 101] = [
         [TileType::Open; SECTOR_SIZE as usize];
         SECTOR_SIZE as usize
@@ -93,7 +97,51 @@ fn generate_map(
 
     // This code seeds the random number generator.
 
-    let mut seeded_prng = rand_chacha::ChaCha8Rng::seed_from_u64(crate::utility::generate_sector_seed_num_from_gameworld_seed_num(gameworld_seed_num, x_coordinate, y_coordinate));
+    let mut seeded_prng = rand_chacha::ChaCha8Rng::seed_from_u64(
+        crate::utility::generate_sector_seed_num_from_gameworld_seed_num(
+            gameworld_seed_num.clone(),
+            x_coordinate,
+            y_coordinate
+        )
+    );
+
+    // This determines sector biome.
+
+    let mut sector_biome = SectorBiome::Plains;
+
+    if (x_coordinate.rem_euclid(4) == 3) || (x_coordinate.rem_euclid(2) == 0 && (y_coordinate.rem_euclid(6)<2 || y_coordinate.rem_euclid(6)==5)) || ((x_coordinate.rem_euclid(4) == 1 && x_coordinate.rem_euclid(6) == 0))  {
+
+        sector_biome = SectorBiome::Alpine;
+
+    } else {
+        match seeded_prng.gen_range(0..3) {
+            0 => {
+                sector_biome = SectorBiome::Plains;
+            }
+            1 => {
+                sector_biome = SectorBiome::Desert;
+            }
+            _ => {
+                sector_biome = SectorBiome::Tundra;
+            }
+        }
+    }
+
+    // This determines sector base type.
+
+    let mut sector_base_type = SectorBaseType::Wild;
+
+    if x_coordinate.rem_euclid(2) == 0 && (x_coordinate.rem_euclid(6) == 2 || x_coordinate.rem_euclid(6) == 4) {
+    
+    sector_base_type = SectorBaseType::Industrialist;
+
+    }
+
+    if x_coordinate.rem_euclid(4) == 1 && (x_coordinate.rem_euclid(2) == 1) {
+    
+        sector_base_type = SectorBaseType::Guardian;
+    
+        }
 
     // This draws the patches of tall grass.
 
@@ -115,10 +163,9 @@ fn generate_map(
         &mut seeded_prng
     );
 
-    // This returns the generated environment array, sector_biome, and coordinates.
+    // This returns the generated environment array, sector_biome, sector_base_type, and coordinates.
 
-    (gamesector_environment_array, sector_biome, (x_coordinate, y_coordinate))
-
+    (gamesector_environment_array, sector_biome, sector_base_type, (x_coordinate, y_coordinate))
 }
 
 // This function draws the patches of vegetation and elevation.
@@ -131,16 +178,13 @@ fn generate_patches<R: Rng>(
     seeded_prng: &mut R
 ) {
     // This is used to bound the drawing area.
-    
+
     let half_sector_size_minus_ten: i32 = ((SECTOR_SIZE - 1) / 2 - 10) as i32;
-    
+
     // These are the coordinates being drawn at.
-    
+
     let mut x;
     let mut y;
-
-    // This will hold the random integer.
-    let mut r;
 
     // The random two axes to be moved more on.
     let mut a1;
@@ -153,7 +197,6 @@ fn generate_patches<R: Rng>(
     // Loops the number of patches.
 
     for _p in 0..number_of_patches {
-
         // Picks a random start point no closer than 10 from the edge.
 
         x = seeded_prng.gen_range(-half_sector_size_minus_ten..half_sector_size_minus_ten + 1);
@@ -182,9 +225,7 @@ fn generate_patches<R: Rng>(
         // Loops the size of each pass.
 
         for _s in 0..size_of_patches {
-            r = seeded_prng.gen_range(0..10);
-
-            match r {
+            match seeded_prng.gen_range(0..10) {
                 0..=1 => if x < half_sector_size_minus_ten {
                     x = x + 1;
                 }

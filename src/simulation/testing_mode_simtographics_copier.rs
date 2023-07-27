@@ -5,7 +5,6 @@
 use ::bevy::prelude::*;
 use rand::prelude::*;
 
-
 pub fn testing_mode_simtographics_processor_copier(
     sim_sector_query: Query<&crate::simulation::GamesectorBasics>,
     mut graphics_memory_query: Query<&mut crate::graphics::GamesectorGraphicsBasicsMemory>,
@@ -24,6 +23,7 @@ pub fn testing_mode_simtographics_processor_copier(
                         gamesector_basics.sector_coordinates.clone();
                     gamesector_graphics_basics.tile_array = gamesector_basics.tile_array.clone();
                     variety_generator(
+                        &gamesector_basics,
                         &mut gamesector_graphics_basics.tile_array_variety,
                         &gamesector_basics.sector_coordinates,
                         &gameworld_seed.gameworld_seed_num
@@ -39,33 +39,64 @@ pub fn testing_mode_simtographics_processor_copier(
 }
 
 pub fn variety_generator(
-    tile_array_variety: &mut [[u8; crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
+    gamesector_basics: &crate::simulation::GamesectorBasics,
+    tile_array_variety: &mut [
+        [(u8, u8, u8); crate::SECTOR_SIZE as usize];
+        crate::SECTOR_SIZE as usize
+    ],
     sector_coordinates: &(i32, i32),
     gameworld_seed: &u64
 ) {
-    let x_coordinate_to_u64: u64 = if sector_coordinates.0 < 0 {
-        u64::MAX - (sector_coordinates.0.abs() as u64)
-    } else {
-        sector_coordinates.0 as u64
-    };
-
-    let y_coordinate_to_u64: u64 = if sector_coordinates.1 < 0 {
-        u64::MAX - (sector_coordinates.1.abs() as u64)
-    } else {
-        sector_coordinates.1 as u64
-    };
-
-    let sector_seed_num: u64 = gameworld_seed.wrapping_add(
-        412 + 3943 * x_coordinate_to_u64 + 4211 * y_coordinate_to_u64
+    let mut seeded_prng = rand_chacha::ChaCha8Rng::seed_from_u64(
+        crate::utility::generate_sector_seed_num_from_gameworld_seed_num(
+            gameworld_seed.clone(),
+            sector_coordinates.0,
+            sector_coordinates.1
+        )
     );
-
-    let mut seeded_prng = rand_chacha::ChaCha8Rng::seed_from_u64(sector_seed_num);
 
     for x in 0..crate::SECTOR_SIZE {
         for y in 0..crate::SECTOR_SIZE {
+            tile_array_variety[x as usize][y as usize].0 = seeded_prng.gen_range(0..4);
+            tile_array_variety[x as usize][y as usize].1 = seeded_prng.gen_range(0..4);
+        }
+    }
 
-            tile_array_variety [x as usize][y as usize] = seeded_prng.gen_range (0..4);
+    if gamesector_basics.sector_biome == crate::simulation::SectorBiome::Alpine {
+        for x in 10..crate::SECTOR_SIZE-10 {
+            for y in 10..crate::SECTOR_SIZE-10 {
+                if
+                    gamesector_basics.tile_array[x as usize][y as usize] ==
+                    crate::simulation::TileType::Elevated
+                {
+                    tile_array_variety[x as usize][y as usize].2 = 1;
+                }
+            }
+        }
+    }
 
+    for x in 10..(crate::SECTOR_SIZE-10) {
+        for y in 10..(crate::SECTOR_SIZE-10) {
+            if
+                tile_array_variety[(x + 1) as usize][y as usize].2 > 0 &&
+                tile_array_variety[(x - 1) as usize][y as usize].2 > 0 &&
+                tile_array_variety[x as usize][(y + 1) as usize].2 > 0 &&
+                tile_array_variety[x as usize][(y - 1) as usize].2 > 0 
+            {
+                tile_array_variety[x as usize][y as usize].2 = 2;
+            }
+        }
+    }
+    for x in 10..(crate::SECTOR_SIZE-10) {
+        for y in 10..(crate::SECTOR_SIZE-10) {
+            if
+                tile_array_variety[(x + 1) as usize][y as usize].2 > 1 &&
+                tile_array_variety[(x - 1) as usize][y as usize].2 > 1 &&
+                tile_array_variety[x as usize][(y + 1) as usize].2 > 1 &&
+                tile_array_variety[(y - 1) as usize][y as usize].2 > 1
+            {
+                tile_array_variety[x as usize][y as usize].2 = 3;
+            }
         }
     }
 }

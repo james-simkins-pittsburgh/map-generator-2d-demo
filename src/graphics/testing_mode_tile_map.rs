@@ -32,6 +32,7 @@ pub fn testing_mode_tile_map(
         );
 
         let env_texture_atlas_handle = texture_atlases.add(env_texture_atlas);
+        let mut sprite_transform: Transform;
 
         for graphics_sector_memory in graphics_memory_sector_query.iter() {
             if graphics_sector_memory.sector_coordinates == (0, 0) {
@@ -46,7 +47,7 @@ pub fn testing_mode_tile_map(
                                     TileType::Open => {
                                         match
                                             graphics_sector_memory.tile_array_variety[index_one]
-                                                [index_two]
+                                                [index_two].0
                                         {
                                             0 => {
                                                 tile_graphics_index = 4;
@@ -66,27 +67,52 @@ pub fn testing_mode_tile_map(
                                     TileType::Elevated => {
                                         match
                                             graphics_sector_memory.tile_array_variety[index_one]
-                                                [index_two]
+                                                [index_two].2
                                         {
-                                            0 => {
-                                                tile_graphics_index = 20;
-                                            }
-                                            1 => {
-                                                tile_graphics_index = 21;
-                                            }
-                                            2 => {
-                                                tile_graphics_index = 22;
-                                            }
-                                            _ => {
-                                                tile_graphics_index = 23;
-                                            }
+                                            3 =>
+                                                match
+                                                    graphics_sector_memory.tile_array_variety
+                                                        [index_one][index_two].0
+                                                {
+                                                    0 => {
+                                                        tile_graphics_index = 20;
+                                                    }
+                                                    1 => {
+                                                        tile_graphics_index = 21;
+                                                    }
+                                                    2 => {
+                                                        tile_graphics_index = 22;
+                                                    }
+                                                    _ => {
+                                                        tile_graphics_index = 23;
+                                                    }
+                                                }
+
+                                            _ =>
+                                                match
+                                                    graphics_sector_memory.tile_array_variety
+                                                        [index_one][index_two].0
+                                                {
+                                                    0 => {
+                                                        tile_graphics_index = 12;
+                                                    }
+                                                    1 => {
+                                                        tile_graphics_index = 13;
+                                                    }
+                                                    2 => {
+                                                        tile_graphics_index = 14;
+                                                    }
+                                                    _ => {
+                                                        tile_graphics_index = 15;
+                                                    }
+                                                }
                                         }
                                     }
 
                                     TileType::Vegetated => {
                                         match
                                             graphics_sector_memory.tile_array_variety[index_one]
-                                                [index_two]
+                                                [index_two].0
                                         {
                                             0 => {
                                                 tile_graphics_index = 0;
@@ -113,7 +139,7 @@ pub fn testing_mode_tile_map(
                                     TileType::Open => {
                                         match
                                             graphics_sector_memory.tile_array_variety[index_one]
-                                                [index_two]
+                                                [index_two].0
                                         {
                                             0 => {
                                                 tile_graphics_index = 8;
@@ -133,7 +159,7 @@ pub fn testing_mode_tile_map(
                                     TileType::Elevated => {
                                         match
                                             graphics_sector_memory.tile_array_variety[index_one]
-                                                [index_two]
+                                                [index_two].0
                                         {
                                             0 => {
                                                 tile_graphics_index = 12;
@@ -153,7 +179,7 @@ pub fn testing_mode_tile_map(
                                     TileType::Vegetated => {
                                         match
                                             graphics_sector_memory.tile_array_variety[index_one]
-                                                [index_two]
+                                                [index_two].0
                                         {
                                             0 => {
                                                 tile_graphics_index = 16;
@@ -176,15 +202,24 @@ pub fn testing_mode_tile_map(
                                 }
                         }
 
+                        sprite_transform = Transform::from_xyz(
+                            (((index_one as f32) - 50.0) * 96.0) as f32,
+                            (((index_two as f32) - 50.0) * 96.0) as f32,
+                            0.0
+                        );
+
+                        sprite_transform.rotate_z(
+                            1.5708 *
+                                (
+                                    graphics_sector_memory.tile_array_variety[index_one]
+                                        [index_two].1 as f32
+                                )
+                        );
+
                         commands.spawn(SpriteSheetBundle {
                             sprite: TextureAtlasSprite::new(tile_graphics_index),
                             texture_atlas: env_texture_atlas_handle.clone(),
-
-                            transform: Transform::from_xyz(
-                                (((index_one as f32) - 50.0) * 96.0) as f32,
-                                (((index_two as f32) - 50.0) * 96.0) as f32,
-                                0.0
-                            ),
+                            transform: sprite_transform,
                             ..default()
                         });
                     }

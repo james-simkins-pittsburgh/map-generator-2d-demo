@@ -16,7 +16,7 @@ pub struct GamesectorGraphicsBasicsMemory {
         crate::SECTOR_SIZE as usize
     ],
     pub tile_array_variety: [
-       [u8; crate::SECTOR_SIZE as usize];
+       [(u8,u8,u8); crate::SECTOR_SIZE as usize];
         crate::SECTOR_SIZE as usize
     ],
     pub direction_from_camera_x: DirectionFromCamera,

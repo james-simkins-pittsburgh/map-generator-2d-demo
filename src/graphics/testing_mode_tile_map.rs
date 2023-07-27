@@ -67,45 +67,20 @@ pub fn testing_mode_tile_map(
                                     TileType::Elevated => {
                                         match
                                             graphics_sector_memory.tile_array_variety[index_one]
-                                                [index_two].2
+                                                [index_two].0
                                         {
-                                            3 =>
-                                                match
-                                                    graphics_sector_memory.tile_array_variety
-                                                        [index_one][index_two].0
-                                                {
-                                                    0 => {
-                                                        tile_graphics_index = 20;
-                                                    }
-                                                    1 => {
-                                                        tile_graphics_index = 21;
-                                                    }
-                                                    2 => {
-                                                        tile_graphics_index = 22;
-                                                    }
-                                                    _ => {
-                                                        tile_graphics_index = 23;
-                                                    }
-                                                }
-
-                                            _ =>
-                                                match
-                                                    graphics_sector_memory.tile_array_variety
-                                                        [index_one][index_two].0
-                                                {
-                                                    0 => {
-                                                        tile_graphics_index = 12;
-                                                    }
-                                                    1 => {
-                                                        tile_graphics_index = 13;
-                                                    }
-                                                    2 => {
-                                                        tile_graphics_index = 14;
-                                                    }
-                                                    _ => {
-                                                        tile_graphics_index = 15;
-                                                    }
-                                                }
+                                            0 => {
+                                                tile_graphics_index = 12;
+                                            }
+                                            1 => {
+                                                tile_graphics_index = 13;
+                                            }
+                                            2 => {
+                                                tile_graphics_index = 14;
+                                            }
+                                            _ => {
+                                                tile_graphics_index = 15;
+                                            }
                                         }
                                     }
 

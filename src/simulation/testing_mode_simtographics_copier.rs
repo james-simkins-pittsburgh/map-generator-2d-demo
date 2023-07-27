@@ -41,7 +41,7 @@ pub fn testing_mode_simtographics_processor_copier(
 pub fn variety_generator(
     gamesector_basics: &crate::simulation::GamesectorBasics,
     tile_array_variety: &mut [
-        [(u8, u8, u8); crate::SECTOR_SIZE as usize];
+        [(u8, u8); crate::SECTOR_SIZE as usize];
         crate::SECTOR_SIZE as usize
     ],
     sector_coordinates: &(i32, i32),
@@ -62,41 +62,4 @@ pub fn variety_generator(
         }
     }
 
-    if gamesector_basics.sector_biome == crate::simulation::SectorBiome::Alpine {
-        for x in 10..crate::SECTOR_SIZE-10 {
-            for y in 10..crate::SECTOR_SIZE-10 {
-                if
-                    gamesector_basics.tile_array[x as usize][y as usize] ==
-                    crate::simulation::TileType::Elevated
-                {
-                    tile_array_variety[x as usize][y as usize].2 = 1;
-                }
-            }
-        }
-    }
-
-    for x in 10..(crate::SECTOR_SIZE-10) {
-        for y in 10..(crate::SECTOR_SIZE-10) {
-            if
-                tile_array_variety[(x + 1) as usize][y as usize].2 > 0 &&
-                tile_array_variety[(x - 1) as usize][y as usize].2 > 0 &&
-                tile_array_variety[x as usize][(y + 1) as usize].2 > 0 &&
-                tile_array_variety[x as usize][(y - 1) as usize].2 > 0 
-            {
-                tile_array_variety[x as usize][y as usize].2 = 2;
-            }
-        }
-    }
-    for x in 10..(crate::SECTOR_SIZE-10) {
-        for y in 10..(crate::SECTOR_SIZE-10) {
-            if
-                tile_array_variety[(x + 1) as usize][y as usize].2 > 1 &&
-                tile_array_variety[(x - 1) as usize][y as usize].2 > 1 &&
-                tile_array_variety[x as usize][(y + 1) as usize].2 > 1 &&
-                tile_array_variety[(y - 1) as usize][y as usize].2 > 1
-            {
-                tile_array_variety[x as usize][y as usize].2 = 3;
-            }
-        }
-    }
 }

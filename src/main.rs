@@ -68,7 +68,7 @@ fn testing_mode_startup(
             sector_biome: simulation::SectorBiome::Plains,
             sector_base_type: simulation::SectorBaseType::Wild,
             tile_array: [[(simulation::TileType::Open); crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
-            tile_array_variety: [[(0,0,0); crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
+            tile_array_variety: [[(0,0); crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
             direction_from_camera_x: graphics::DirectionFromCamera::LessOrEqual,
             direction_from_camera_y: graphics::DirectionFromCamera::LessOrEqual
 

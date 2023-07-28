@@ -12,26 +12,25 @@ pub fn testing_mode_simtographics_processor_copier(
     gameworld_seed: Res<crate::GameworldSeed>
 ) {
     for gamesector_basics in sim_sector_query.iter() {
-        if gamesector_basics.sector_coordinates == (0, 0) {
-            for mut gamesector_graphics_basics in graphics_memory_query.iter_mut() {
-                if gamesector_graphics_basics.sector_coordinates == (0, 0) {
-                    gamesector_graphics_basics.sector_biome =
-                        gamesector_basics.sector_biome.clone();
-                    gamesector_graphics_basics.sector_base_type =
-                        gamesector_basics.sector_base_type.clone();
-                    gamesector_graphics_basics.sector_coordinates =
-                        gamesector_basics.sector_coordinates.clone();
-                    gamesector_graphics_basics.tile_array = gamesector_basics.tile_array.clone();
-                    variety_generator(
-                        &gamesector_basics,
-                        &mut gamesector_graphics_basics.tile_array_variety,
-                        &gamesector_basics.sector_coordinates,
-                        &gameworld_seed.gameworld_seed_num
-                    );
+        for mut gamesector_graphics_basics in graphics_memory_query.iter_mut() {
+            if
+                gamesector_graphics_basics.sector_coordinates ==
+                gamesector_basics.sector_coordinates
+            {
+                gamesector_graphics_basics.sector_biome = gamesector_basics.sector_biome.clone();
+                gamesector_graphics_basics.sector_base_type =
+                    gamesector_basics.sector_base_type.clone();
+                gamesector_graphics_basics.sector_coordinates =
+                    gamesector_basics.sector_coordinates.clone();
+                gamesector_graphics_basics.tile_array = gamesector_basics.tile_array.clone();
+                variety_generator(
+                    &mut gamesector_graphics_basics.tile_array_variety,
+                    &gamesector_basics.sector_coordinates,
+                    &gameworld_seed.gameworld_seed_num
+                );
 
-                    if make_tiles_now.ready_now.0 {
-                        make_tiles_now.ready_now.1 = true;
-                    }
+                if make_tiles_now.ready_now.0 {
+                    make_tiles_now.ready_now.1 = true;
                 }
             }
         }
@@ -39,11 +38,7 @@ pub fn testing_mode_simtographics_processor_copier(
 }
 
 pub fn variety_generator(
-    gamesector_basics: &crate::simulation::GamesectorBasics,
-    tile_array_variety: &mut [
-        [(u8, u8); crate::SECTOR_SIZE as usize];
-        crate::SECTOR_SIZE as usize
-    ],
+    tile_array_variety: &mut [[(u8, u8); crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
     sector_coordinates: &(i32, i32),
     gameworld_seed: &u64
 ) {
@@ -61,5 +56,4 @@ pub fn variety_generator(
             tile_array_variety[x as usize][y as usize].1 = seeded_prng.gen_range(0..4);
         }
     }
-
 }

@@ -32,7 +32,10 @@ fn main() {
         // Everything below this in this expression is test code
         .add_systems(Startup, testing_mode_startup)
         .add_systems(Startup, graphics::testing_mode_tile_map::tile_texture_loader)
-        .add_systems(Update, simulation::testing_mode_simtographics_copier::testing_mode_simtographics_processor_copier)
+        .add_systems(
+            Update,
+            simulation::testing_mode_simtographics_copier::testing_mode_simtographics_processor_copier
+        )
         .add_systems(Update, graphics::testing_mode_tile_map::testing_mode_tile_map)
         .add_event::<GenerateNewSector>()
         .init_resource::<graphics::testing_mode_tile_map::EnvironmentalTextureHandle>()
@@ -51,29 +54,48 @@ fn testing_mode_startup(
     mut sector_to_be_generated: ResMut<simulation::gameworld_manager::SectorToBeGenerated>,
     mut writer: EventWriter<GenerateNewSector>,
     mut commands: Commands,
-    mut make_tiles_now: ResMut<graphics::testing_mode_tile_map::MakeTilesNow>,
-
-    
+    mut make_tiles_now: ResMut<graphics::testing_mode_tile_map::MakeTilesNow>
 ) {
     make_tiles_now.ready_now = (false, false);
     let mut seedless_rng = ChaCha8Rng::from_entropy();
     gameworld_seed.gameworld_seed_num = seedless_rng.gen_range(0..u32::MAX) as u64;
-    sector_to_be_generated.sector_to_be_generated_list.push((0, 0, simulation::gameworld_manager::InitializationType::Player));
-    writer.send(GenerateNewSector);
-    commands.spawn(graphics::GamesectorGraphicsMemoryBundle {
 
-        gamesector_graphics_basic_memory: graphics::GamesectorGraphicsBasicsMemory {
-
-            sector_coordinates: (0,0),
-            sector_biome: simulation::SectorBiome::Plains,
-            sector_base_type: simulation::SectorBaseType::Wild,
-            tile_array: [[(simulation::TileType::Open); crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
-            tile_array_variety: [[(0,0); crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
-            direction_from_camera_x: graphics::DirectionFromCamera::LessOrEqual,
-            direction_from_camera_y: graphics::DirectionFromCamera::LessOrEqual
-
+    for x in -6..7 {
+        for y in -6..7 {
+            sector_to_be_generated.sector_to_be_generated_list.push((
+                x,
+                y,
+                simulation::gameworld_manager::InitializationType::Player,
+            ));
         }
-    });
+    }
+
+    writer.send(GenerateNewSector);
+
+    for x in -6..7 {
+        for y in -6..7 {
+
+            commands.spawn(graphics::GamesectorGraphicsMemoryBundle {
+                gamesector_graphics_basic_memory: graphics::GamesectorGraphicsBasicsMemory {
+                    sector_coordinates: (x, y),
+                    sector_biome: simulation::SectorBiome::Plains,
+                    sector_base_type: simulation::SectorBaseType::Wild,
+                    tile_array: [
+                        [simulation::TileType::Open; crate::SECTOR_SIZE as usize];
+                        crate::SECTOR_SIZE as usize
+                    ],
+                    tile_array_variety: [
+                        [(0, 0); crate::SECTOR_SIZE as usize];
+                        crate::SECTOR_SIZE as usize
+                    ],
+                    direction_from_camera_x: graphics::DirectionFromCamera::LessOrEqual,
+                    direction_from_camera_y: graphics::DirectionFromCamera::LessOrEqual,
+                },
+            });
+    
+        }
+    }
+
 }
 
 #[derive(Resource, Default)]

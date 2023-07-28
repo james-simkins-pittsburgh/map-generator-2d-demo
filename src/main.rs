@@ -1,7 +1,9 @@
 // This hides the command prompt
+#![windows_subsystem = "windows"]
 
 use bevy::prelude::*;
 use rand::prelude::*;
+use bevy_embedded_assets::EmbeddedAssetPlugin;
 use rand_chacha::ChaCha8Rng;
 
 pub mod ai;
@@ -25,7 +27,8 @@ const ZOOM_SPEED: f32 = 0.1;
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
+        .add_plugins(DefaultPlugins.build()
+        .add_before::<bevy::asset::AssetPlugin, _>(EmbeddedAssetPlugin),) 
         .add_plugins(gui::HiveboticaGUIPluginGroup)
         .add_plugins(simulation::HiveboticaSimulationPluginGroup)
         // Everything below this in this expression is test code

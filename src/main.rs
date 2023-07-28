@@ -1,5 +1,4 @@
 // This hides the command prompt
-#![windows_subsystem = "windows"]
 
 use bevy::prelude::*;
 use rand::prelude::*;
@@ -16,7 +15,7 @@ pub mod utility;
 // Sector size must be an odd number smaller than 32,768.
 const SECTOR_SIZE: u16 = 101;
 
-// If sector size is adjusted smaller than 101 then pan speed and zoom speed has to be changed at the same time.
+// If sector size is adjusted smaller than 101 then pan speed and zoom out max has to be changed at the same time.
 // Otherwise new graphical sectors might not be loaded before they become visible.
 const PAN_TOP_SPEED: f32 = 48.0;
 const ZOOM_OUT_MAX: f32 = 8.0;

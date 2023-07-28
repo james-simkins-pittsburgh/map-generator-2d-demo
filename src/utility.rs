@@ -21,6 +21,6 @@ pub fn generate_sector_seed_num_from_gameworld_seed_num (gameworld_seed_num: u64
     // If this makes it larger than u64 that's fine since we just wrapping_add it.
     // 412 is for Pittsburgh pride! The other numbers are just large primes.
 
-    gameworld_seed_num.wrapping_add(412 + 3943 * x_coordinate_to_u64 + 4211 * y_coordinate_to_u64)
+    gameworld_seed_num.wrapping_add(412_u64.wrapping_add((3943_u64.wrapping_mul(x_coordinate_to_u64)).wrapping_add(4211_u64.wrapping_mul(y_coordinate_to_u64))))       
 
 } 

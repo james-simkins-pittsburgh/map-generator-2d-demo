@@ -66,13 +66,17 @@ pub fn generate_sector(
                 gamesector_units: GamesectorUnits { unit_array: new_sector_units },
             });
 
-            // This is test code saying the graphics can make its world now.
-            make_tiles_now.ready_now.0 = true;
+        
         }
+        
+        // This is test code saying the graphics can make its world now.
+        make_tiles_now.ready_now.0 = true;
 
         // This clears the event so sectors aren't generated more than once.
         generate_new_sector_event.clear();
         sector_to_be_generated.sector_to_be_generated_list.clear();
+
+        
     }
 }
 

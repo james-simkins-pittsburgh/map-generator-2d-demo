@@ -43,9 +43,9 @@ pub fn testing_mode_tile_map(
                 for index_two in 0..crate::SECTOR_SIZE as usize {
                     match graphics_sector_memory.sector_biome {
                         SectorBiome::Plains => {tile_graphics_index = 0;},
-                        SectorBiome::Desert => {tile_graphics_index = 11;},
-                        SectorBiome::Tundra => {tile_graphics_index = 23;},
-                        SectorBiome::Alpine => {tile_graphics_index = 35;},
+                        SectorBiome::Desert => {tile_graphics_index = 12;},
+                        SectorBiome::Tundra => {tile_graphics_index = 24;},
+                        SectorBiome::Alpine => {tile_graphics_index = 36;},
                     }
 
                     match graphics_sector_memory.tile_array [index_one] [index_two] {

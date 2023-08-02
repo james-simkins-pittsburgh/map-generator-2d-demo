@@ -42,144 +42,34 @@ pub fn testing_mode_tile_map(
             for index_one in 0..crate::SECTOR_SIZE as usize {
                 for index_two in 0..crate::SECTOR_SIZE as usize {
                     match graphics_sector_memory.sector_biome {
-                        SectorBiome::Alpine =>
-                            match graphics_sector_memory.tile_array[index_one][index_two] {
-                                TileType::Open => {
-                                    match
-                                        graphics_sector_memory.tile_array_variety[index_one]
-                                            [index_two].0
-                                    {
-                                        0 => {
-                                            tile_graphics_index = 4;
-                                        }
-                                        1 => {
-                                            tile_graphics_index = 5;
-                                        }
-                                        2 => {
-                                            tile_graphics_index = 6;
-                                        }
-                                        _ => {
-                                            tile_graphics_index = 7;
-                                        }
-                                    }
-                                }
-
-                                TileType::Elevated => {
-                                    match
-                                        graphics_sector_memory.tile_array_variety[index_one]
-                                            [index_two].0
-                                    {
-                                        0 => {
-                                            tile_graphics_index = 12;
-                                        }
-                                        1 => {
-                                            tile_graphics_index = 13;
-                                        }
-                                        2 => {
-                                            tile_graphics_index = 14;
-                                        }
-                                        _ => {
-                                            tile_graphics_index = 15;
-                                        }
-                                    }
-                                }
-
-                                TileType::Vegetated => {
-                                    match
-                                        graphics_sector_memory.tile_array_variety[index_one]
-                                            [index_two].0
-                                    {
-                                        0 => {
-                                            tile_graphics_index = 0;
-                                        }
-                                        1 => {
-                                            tile_graphics_index = 1;
-                                        }
-                                        2 => {
-                                            tile_graphics_index = 2;
-                                        }
-                                        _ => {
-                                            tile_graphics_index = 3;
-                                        }
-                                    }
-                                }
-
-                                _ => {
-                                    tile_graphics_index = 0;
-                                }
-                            }
-
-                        _ =>
-                            match graphics_sector_memory.tile_array[index_one][index_two] {
-                                TileType::Open => {
-                                    match
-                                        graphics_sector_memory.tile_array_variety[index_one]
-                                            [index_two].0
-                                    {
-                                        0 => {
-                                            tile_graphics_index = 8;
-                                        }
-                                        1 => {
-                                            tile_graphics_index = 9;
-                                        }
-                                        2 => {
-                                            tile_graphics_index = 10;
-                                        }
-                                        _ => {
-                                            tile_graphics_index = 11;
-                                        }
-                                    }
-                                }
-
-                                TileType::Elevated => {
-                                    match
-                                        graphics_sector_memory.tile_array_variety[index_one]
-                                            [index_two].0
-                                    {
-                                        0 => {
-                                            tile_graphics_index = 12;
-                                        }
-                                        1 => {
-                                            tile_graphics_index = 13;
-                                        }
-                                        2 => {
-                                            tile_graphics_index = 14;
-                                        }
-                                        _ => {
-                                            tile_graphics_index = 15;
-                                        }
-                                    }
-                                }
-
-                                TileType::Vegetated => {
-                                    match
-                                        graphics_sector_memory.tile_array_variety[index_one]
-                                            [index_two].0
-                                    {
-                                        0 => {
-                                            tile_graphics_index = 16;
-                                        }
-                                        1 => {
-                                            tile_graphics_index = 17;
-                                        }
-                                        2 => {
-                                            tile_graphics_index = 18;
-                                        }
-                                        _ => {
-                                            tile_graphics_index = 19;
-                                        }
-                                    }
-                                }
-
-                                _ => {
-                                    tile_graphics_index = 0;
-                                }
-                            }
+                        SectorBiome::Plains => {tile_graphics_index = 0;},
+                        SectorBiome::Desert => {tile_graphics_index = 11;},
+                        SectorBiome::Tundra => {tile_graphics_index = 23;},
+                        SectorBiome::Alpine => {tile_graphics_index = 35;},
                     }
 
+                    match graphics_sector_memory.tile_array [index_one] [index_two] {
+                        
+                        TileType::Vegetated => {tile_graphics_index += 4;},
+                        TileType::Elevated => {tile_graphics_index += 8;},
+                        _ => {},
+
+                    }
+
+                    
+                    match graphics_sector_memory.tile_array_variety [index_one] [index_two].0 {
+                        
+                        1 => {tile_graphics_index += 1;},
+                        2 => {tile_graphics_index += 2;},
+                        3 => {tile_graphics_index += 3;},
+                        _ => {},
+
+                    }
+
+        
                     sprite_transform = Transform::from_xyz(
-                        ((((index_one as f32) - 50.0) * 96.0) as f32) + (3.0*96.0*(SECTOR_SIZE as f32) * (graphics_sector_memory.sector_coordinates.0 as f32)),
-                        ((((index_two as f32) - 50.0) * 96.0) as f32) + (3.0*96.0*(SECTOR_SIZE as f32) * (graphics_sector_memory.sector_coordinates.1 as f32)),
+                        ((((index_one as f32) - 50.0) * 96.0) as f32) + (1.5*96.0*(SECTOR_SIZE as f32) * (graphics_sector_memory.sector_coordinates.0 as f32)),
+                        ((((index_two as f32) - 50.0) * 96.0) as f32) + (1.5*96.0*(SECTOR_SIZE as f32) * (graphics_sector_memory.sector_coordinates.1 as f32)),
                         0.0
                     );
 

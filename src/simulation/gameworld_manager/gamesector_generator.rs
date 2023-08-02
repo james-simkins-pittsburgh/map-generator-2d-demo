@@ -140,12 +140,12 @@ fn generate_map(
 
     if
         x_coordinate.rem_euclid(2) == 0 &&
-        (x_coordinate.rem_euclid(6) == 2 || x_coordinate.rem_euclid(6) == 4)
+        (y_coordinate.rem_euclid(6) == 2 || y_coordinate.rem_euclid(6) == 4)
     {
         sector_base_type = SectorBaseType::Industrialist;
     }
 
-    if x_coordinate.rem_euclid(4) == 1 && x_coordinate.rem_euclid(2) == 1 {
+    if x_coordinate.rem_euclid(4) == 1 && y_coordinate.rem_euclid(2) == 1 {
         sector_base_type = SectorBaseType::Guardian;
     }
 
@@ -426,7 +426,7 @@ fn clear_center(
 }
 
 fn generate_ruins(
-    gamesector_environment_array: &mut [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize]
+    _gamesector_environment_array: &mut [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize]
 ) {}
 
 fn generate_units(

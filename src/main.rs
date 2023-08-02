@@ -62,8 +62,8 @@ fn testing_mode_startup(
     let mut seedless_rng = ChaCha8Rng::from_entropy();
     gameworld_seed.gameworld_seed_num = seedless_rng.gen_range(0..u32::MAX) as u64;
 
-    for x in -6..7 {
-        for y in -6..7 {
+    for x in 0..4 {
+        for y in 0..6 {
             sector_to_be_generated.sector_to_be_generated_list.push((
                 x,
                 y,
@@ -74,8 +74,8 @@ fn testing_mode_startup(
 
     writer.send(GenerateNewSector);
 
-    for x in -6..7 {
-        for y in -6..7 {
+    for x in 0..4 {
+        for y in 0..6 {
 
             commands.spawn(graphics::GamesectorGraphicsMemoryBundle {
                 gamesector_graphics_basic_memory: graphics::GamesectorGraphicsBasicsMemory {

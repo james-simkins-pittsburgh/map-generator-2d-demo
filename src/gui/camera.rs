@@ -38,6 +38,8 @@ fn camera_pan_and_zoom(
 ) {
     let mut main_camera = main_camera_query.single_mut();
 
+    // This pans the camera if the cursor position is on the edge of the screen.
+
     if let Some(position) = window_query.single().cursor_position() {
         if position.y > window_query.single().height() - 50.0 {
             main_camera.0.translation.y =
@@ -63,6 +65,8 @@ fn camera_pan_and_zoom(
                 (crate::PAN_TOP_SPEED * (main_camera.1.scale / 8.0 + 1.0)) / 2.0;
         }
     }
+
+    // This zooms in or out if the mouse wheel is turned.
 
     for event in scroll_event_reader.iter() {
         match event.unit {

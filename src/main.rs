@@ -43,6 +43,8 @@ fn main() {
         .init_resource::<graphics::testing_mode_tile_map::EnvironmentalTextureHandle>()
         .init_resource::<graphics::testing_mode_tile_map::MakeTilesNow>()
         .init_resource::<GameworldSeed>()
+        .init_resource::<gui::GUITextureHandle>()
+        
         .run();
 }
 

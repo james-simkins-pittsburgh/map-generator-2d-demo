@@ -8,7 +8,7 @@ pub struct HiveboticaGUIPluginGroup;
 
 impl PluginGroup for HiveboticaGUIPluginGroup {
     fn build(self) -> PluginGroupBuilder {
-        PluginGroupBuilder::start::<Self>().add(HiveboticaGUIStartupPlugin).add(camera::HiveboticaCameraPlugin).add(warp_buttons::HiveboticaWarpButtonPlugin)
+        PluginGroupBuilder::start::<Self>().add(camera::HiveboticaCameraPlugin).add(HiveboticaGUIStartupPlugin). add(warp_buttons::HiveboticaWarpButtonPlugin)
     }
 }
 

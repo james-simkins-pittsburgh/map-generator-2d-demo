@@ -18,7 +18,7 @@ pub fn display_warp_buttons(
     mut commands: Commands,
     mut texture_atlases: ResMut<Assets<TextureAtlas>>
 ) {
-    if make_tiles_now.ready_now.0 && make_tiles_now.ready_now.1 {
+    if make_tiles_now.ready_now.0 && make_tiles_now.ready_now.1{
         let gui_texture_atlas = TextureAtlas::from_grid(
             gui_texture_handle.handle.clone(),
             Vec2::new(384.0, 384.0),

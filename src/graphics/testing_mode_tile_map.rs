@@ -8,6 +8,12 @@ pub struct EnvironmentalTextureHandle {
     handle: Handle<Image>,
 }
 
+#[derive(Resource, Default)]
+pub struct MakeTilesNow {
+    pub ready_now: (bool, bool),
+}
+
+
 pub fn tile_texture_loader(
     asset_server: Res<AssetServer>,
     mut env_texture_handle: ResMut<EnvironmentalTextureHandle>
@@ -94,9 +100,4 @@ pub fn testing_mode_tile_map(
         make_tiles_now.ready_now.0 = false;
         make_tiles_now.ready_now.1 = false;
     }
-}
-
-#[derive(Resource, Default)]
-pub struct MakeTilesNow {
-    pub ready_now: (bool, bool),
 }

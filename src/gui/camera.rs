@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 use bevy::input::mouse::MouseWheel;
 use bevy::input::mouse::MouseScrollUnit;
+use bevy::render::camera::ScalingMode;
 use bevy::window::PrimaryWindow;
 pub struct HiveboticaCameraPlugin;
 
@@ -24,10 +25,11 @@ pub fn camera_setup(mut commands: Commands) {
 }
 
 fn set_initial_camera(
-    mut main_camera_query: Query<(&mut OrthographicProjection, &mut MainCamera)>
+    mut main_camera_query: Query<(&mut OrthographicProjection, With <MainCamera>)>
 ) {
     for mut main_camera in main_camera_query.iter_mut() {
         main_camera.0.scale = 8.0;
+        main_camera.0.scaling_mode = ScalingMode::AutoMax {max_width: 1920.0, max_height: 1080.0};
     }
 }
 

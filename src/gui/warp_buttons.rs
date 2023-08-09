@@ -244,47 +244,70 @@ fn check_for_cursor_over_button(cursor_x: f32, cursor_y: f32, button_number: u8)
     match triangle_direction {
         0 => {
             if
-                cursor_y > triangle_bc_y &&
-                cursor_y < triangle_bc_y + (cursor_x - (triangle_bc_x - 192.0)) * 1.0 &&
-                cursor_y < (triangle_bc_y + 192.0) + (triangle_bc_x + 192.0 - cursor_x) * -1.0
+                crate::utility::point_in_triangle(
+                    cursor_x,
+                    cursor_y,
+                    triangle_bc_x - 192.0,
+                    triangle_bc_y,
+                    triangle_bc_x + 192.0,
+                    triangle_bc_y,
+                    triangle_bc_x,
+                    triangle_bc_y + 192.0
+                )
             {
                 return true;
             }
         }
         1 => {
             if
-                cursor_x > triangle_bc_x &&
-                cursor_y < triangle_bc_y + 192.0 + (triangle_bc_x + 192.0 - cursor_x) * -1.0 &&
-                cursor_y > triangle_bc_y - 192.0 + (triangle_bc_x + 192.0 - cursor_x) * 1.0
+                crate::utility::point_in_triangle(
+                    cursor_x,
+                    cursor_y,
+                    triangle_bc_x,
+                    triangle_bc_y + 192.0,
+                    triangle_bc_x,
+                    triangle_bc_y - 192.0,
+                    triangle_bc_x + 192.0,
+                    triangle_bc_y
+                )
             {
                 return true;
             }
         }
 
         2 => {
-
             if
-            cursor_y < triangle_bc_y &&
-            cursor_y > triangle_bc_y + (cursor_x - (triangle_bc_x - 192.0)) * -1.0 &&
-            cursor_y > (triangle_bc_y - 192.0) + (triangle_bc_x + 192.0 - cursor_x) * 1.0
-        {
-            return true;
-        }
-
+                crate::utility::point_in_triangle(
+                    cursor_x,
+                    cursor_y,
+                    triangle_bc_x - 192.0,
+                    triangle_bc_y,
+                    triangle_bc_x + 192.0,
+                    triangle_bc_y,
+                    triangle_bc_x,
+                    triangle_bc_y - 192.0
+                )
+            {
+                return true;
+            }
         }
         _ => {
-
             if
-            cursor_x < triangle_bc_x &&
-            cursor_y < triangle_bc_y + (triangle_bc_x - cursor_x) * 1.0 &&
-            cursor_y > triangle_bc_y + (triangle_bc_x - cursor_x) * - 1.0
-        {
-            return true;
-        }
-
+                crate::utility::point_in_triangle(
+                    cursor_x,
+                    cursor_y,
+                    triangle_bc_x,
+                    triangle_bc_y + 192.0,
+                    triangle_bc_x,
+                    triangle_bc_y - 192.0,
+                    triangle_bc_x - 192.0,
+                    triangle_bc_y
+                )
+            {
+                return true;
+            }
         }
     }
 
     false
-    
 }

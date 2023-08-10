@@ -10,6 +10,7 @@ pub struct HiveboticaWarpButtonPlugin;
 impl Plugin for HiveboticaWarpButtonPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Update, spawn_warp_buttons);
+        // app.add_systems(Update, (check_warp_buttons, update_warp_buttons).chain()); 
         app.init_resource::<WarpInfo>();
     }
 }
@@ -35,6 +36,11 @@ impl Default for WarpSign {
     fn default() -> Self {
         WarpSign::Negative
     }
+}
+
+#[derive(Component)]
+pub struct WarpButton {
+    button_number: u8,
 }
 
 pub fn spawn_warp_buttons(
@@ -118,12 +124,16 @@ pub fn spawn_warp_buttons(
                 }
             }
 
-            commands.spawn(SpriteSheetBundle {
-                sprite: TextureAtlasSprite::new(0),
-                texture_atlas: gui_texture_atlas_handle.clone(),
-                transform: sprite_transform,
-                ..default()
-            });
+            commands.spawn((
+                SpriteSheetBundle {
+                    sprite: TextureAtlasSprite::new(0),
+                    texture_atlas: gui_texture_atlas_handle.clone(),
+                    transform: sprite_transform,
+                    ..default()
+                },
+
+                WarpButton { button_number: n },
+            ));
         }
     }
 }
@@ -149,10 +159,13 @@ pub fn check_warp_buttons(
             let y = cursor_world_position.y;
 
             for button_number in 0..8 {
+                warp_information.cursor_over[button_number as usize] = false;
+                warp_information.button_pressed[button_number as usize] = false;
+
                 if check_for_cursor_over_button(x, y, button_number) {
                     warp_information.cursor_over[button_number as usize] = true;
 
-                    if mouse_buttons.pressed(MouseButton::Right) {
+                    if mouse_buttons.pressed(MouseButton::Left) {
                         warp_information.button_pressed[button_number as usize] = true;
                     }
                 }
@@ -310,4 +323,30 @@ fn check_for_cursor_over_button(cursor_x: f32, cursor_y: f32, button_number: u8)
     }
 
     false
+}
+
+pub fn update_warp_buttons(
+    mut warp_button_query: Query<(&mut WarpButton, &mut Transform)>,
+    warp_info: Res<WarpInfo>,
+) {
+
+    for mut warp_button in warp_button_query.iter_mut() {
+
+        if warp_info.cursor_over [warp_button.0.button_number as usize] {
+
+            warp_button.1.scale.x = 1.05;
+            warp_button.1.scale.y = 1.05;
+
+        } else {
+
+            warp_button.1.scale.x = 1.0;
+            warp_button.1.scale.y = 1.0;
+
+        }
+
+
+    }
+
+
+
 }

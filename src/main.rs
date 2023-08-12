@@ -27,8 +27,9 @@ const ZOOM_SPEED: f32 = 0.1;
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins.build()
-        .add_before::<bevy::asset::AssetPlugin, _>(EmbeddedAssetPlugin),) 
+        .add_plugins(
+            DefaultPlugins.build().add_before::<bevy::asset::AssetPlugin, _>(EmbeddedAssetPlugin)
+        )
         .add_plugins(gui::HiveboticaGUIPluginGroup)
         .add_plugins(simulation::HiveboticaSimulationPluginGroup)
         // Everything below this in this expression is test code
@@ -44,7 +45,7 @@ fn main() {
         .init_resource::<graphics::testing_mode_tile_map::MakeTilesNow>()
         .init_resource::<GameworldSeed>()
         .init_resource::<gui::GUITextureHandle>()
-        
+
         .run();
 }
 
@@ -61,6 +62,7 @@ fn testing_mode_startup(
     mut make_tiles_now: ResMut<graphics::testing_mode_tile_map::MakeTilesNow>
 ) {
     make_tiles_now.ready_now = (false, false);
+
     let mut seedless_rng = ChaCha8Rng::from_entropy();
     gameworld_seed.gameworld_seed_num = seedless_rng.gen_range(0..u32::MAX) as u64;
 
@@ -78,7 +80,6 @@ fn testing_mode_startup(
 
     for x in 0..4 {
         for y in 0..6 {
-
             commands.spawn(graphics::GamesectorGraphicsMemoryBundle {
                 gamesector_graphics_basic_memory: graphics::GamesectorGraphicsBasicsMemory {
                     sector_coordinates: (x, y),
@@ -96,10 +97,8 @@ fn testing_mode_startup(
                     direction_from_camera_y: graphics::DirectionFromCamera::LessOrEqual,
                 },
             });
-    
         }
     }
-
 }
 
 #[derive(Resource, Default)]

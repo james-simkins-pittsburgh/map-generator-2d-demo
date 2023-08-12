@@ -10,7 +10,7 @@ pub struct HiveboticaWarpButtonPlugin;
 impl Plugin for HiveboticaWarpButtonPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Update, spawn_warp_buttons);
-        // app.add_systems(Update, (check_warp_buttons, update_warp_buttons).chain()); 
+        app.add_systems(Update, (check_warp_buttons, update_warp_buttons).chain());
         app.init_resource::<WarpInfo>();
     }
 }
@@ -111,14 +111,14 @@ pub fn spawn_warp_buttons(
 
                 6 => {
                     sprite_transform.translation.x = -5184.0;
-                    sprite_transform.translation.y = 2400.0;
+                    sprite_transform.translation.y = -2400.0;
                     sprite_transform.translation.z = 0.0;
                     sprite_transform.rotate_z(-(PI / 2.0) * 3.0);
                 }
 
                 _ => {
                     sprite_transform.translation.x = -5184.0;
-                    sprite_transform.translation.y = -2400.0;
+                    sprite_transform.translation.y = 2400.0;
                     sprite_transform.translation.z = 0.0;
                     sprite_transform.rotate_z(-(PI / 2.0) * 3.0);
                 }
@@ -159,15 +159,18 @@ pub fn check_warp_buttons(
             let y = cursor_world_position.y;
 
             for button_number in 0..8 {
-                warp_information.cursor_over[button_number as usize] = false;
-                warp_information.button_pressed[button_number as usize] = false;
 
                 if check_for_cursor_over_button(x, y, button_number) {
                     warp_information.cursor_over[button_number as usize] = true;
 
                     if mouse_buttons.pressed(MouseButton::Left) {
                         warp_information.button_pressed[button_number as usize] = true;
+                    } else {
+                        warp_information.button_pressed[button_number as usize] = false;
                     }
+                } else {
+                    warp_information.cursor_over[button_number as usize] = false;
+                    warp_information.button_pressed[button_number as usize] = false;
                 }
             }
         }
@@ -212,7 +215,7 @@ fn check_for_cursor_over_button(cursor_x: f32, cursor_y: f32, button_number: u8)
             triangle_direction = 1;
         }
 
-        5 => {
+        4 => {
             square_bl_x = 2400.0 - 96.0;
             square_bl_y = -5184.0;
             triangle_bc_x = 2400.0;
@@ -220,7 +223,7 @@ fn check_for_cursor_over_button(cursor_x: f32, cursor_y: f32, button_number: u8)
             triangle_direction = 2;
         }
 
-        6 => {
+        5 => {
             square_bl_x = -2400.0 - 96.0;
             square_bl_y = 5184.0;
             triangle_bc_x = -2400.0;
@@ -228,7 +231,7 @@ fn check_for_cursor_over_button(cursor_x: f32, cursor_y: f32, button_number: u8)
             triangle_direction = 2;
         }
 
-        7 => {
+        6 => {
             square_bl_x = -5184.0;
             square_bl_y = -2400.0 - 96.0;
             triangle_bc_x = -5184.0;
@@ -237,7 +240,7 @@ fn check_for_cursor_over_button(cursor_x: f32, cursor_y: f32, button_number: u8)
         }
 
         _ => {
-            square_bl_x = 5184.0;
+            square_bl_x = -5184.0;
             square_bl_y = 2400.0 - 96.0;
             triangle_bc_x = -5184.0;
             triangle_bc_y = 2400.0;
@@ -327,26 +330,15 @@ fn check_for_cursor_over_button(cursor_x: f32, cursor_y: f32, button_number: u8)
 
 pub fn update_warp_buttons(
     mut warp_button_query: Query<(&mut WarpButton, &mut Transform)>,
-    warp_info: Res<WarpInfo>,
+    warp_info: Res<WarpInfo>
 ) {
-
-    for mut warp_button in warp_button_query.iter_mut() {
-
-        if warp_info.cursor_over [warp_button.0.button_number as usize] {
-
-            warp_button.1.scale.x = 1.05;
-            warp_button.1.scale.y = 1.05;
-
+    for (warp_button, mut transform) in warp_button_query.iter_mut() {
+        if warp_info.cursor_over[warp_button.button_number as usize] {
+            transform.scale.x = 1.2;
+            transform.scale.y = 1.2;
         } else {
-
-            warp_button.1.scale.x = 1.0;
-            warp_button.1.scale.y = 1.0;
-
+            transform.scale.x = 1.0;
+            transform.scale.y = 1.0;
         }
-
-
     }
-
-
-
 }

@@ -43,24 +43,28 @@ fn main() {
         .init_resource::<graphics::testing_mode_tile_map::EnvironmentalTextureHandle>()
         .init_resource::<graphics::testing_mode_tile_map::MakeTilesNow>()
         .init_resource::<GameworldSeed>()
+        .init_resource::<GameControl>()
         .init_resource::<gui::GUITextureHandle>()
         
         .run();
 }
 
-// This is test code to start the game before I add the menu. It will eventually be deleted.
+// This is test code to start the game before I add the menu. 
+// It will eventually be deleted when a proper menu and loading system are written.
 
 #[derive(Event, Default)]
 pub struct GenerateNewSector;
 
 fn testing_mode_startup(
     mut gameworld_seed: ResMut<GameworldSeed>,
+    mut game_control: ResMut<GameControl>,
     mut sector_to_be_generated: ResMut<simulation::gameworld_manager::SectorToBeGenerated>,
     mut writer: EventWriter<GenerateNewSector>,
     mut commands: Commands,
     mut make_tiles_now: ResMut<graphics::testing_mode_tile_map::MakeTilesNow>
 ) {
     make_tiles_now.ready_now = (false, false);
+    game_control.warp_buttons_created = false;
     let mut seedless_rng = ChaCha8Rng::from_entropy();
     gameworld_seed.gameworld_seed_num = seedless_rng.gen_range(0..u32::MAX) as u64;
 
@@ -106,3 +110,10 @@ fn testing_mode_startup(
 pub struct GameworldSeed {
     pub gameworld_seed_num: u64,
 }
+
+#[derive(Resource, Default)]
+pub struct GameControl {
+    pub warp_buttons_created: bool, 
+}
+
+

@@ -3,8 +3,7 @@ use std::f32::consts::PI;
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 use super::GUITextureHandle;
-use crate::graphics::testing_mode_tile_map::MakeTilesNow;
-
+use crate::GameControl;
 pub struct HiveboticaWarpButtonPlugin;
 
 impl Plugin for HiveboticaWarpButtonPlugin {
@@ -18,11 +17,9 @@ impl Plugin for HiveboticaWarpButtonPlugin {
 #[derive(Resource, Default)]
 pub struct WarpInfo {
     pub warping_now: bool,
-    pub current_warp_direction: (WarpSign, WarpSign),
+    pub warp_direction: (WarpSign, WarpSign),
     pub warp_timer: u8,
-    pub warped_once: bool,
-    pub first_warp_direction: (WarpSign, WarpSign),
-    pub warped_twice: bool,
+    pub warp_speed: f32,
     pub cursor_over: [bool; 8],
     pub button_pressed: [bool; 8],
 }
@@ -44,12 +41,15 @@ pub struct WarpButton {
 }
 
 pub fn spawn_warp_buttons(
-    make_tiles_now: Res<MakeTilesNow>,
+    mut game_control: ResMut<GameControl>,
     gui_texture_handle: Res<GUITextureHandle>,
     mut commands: Commands,
     mut texture_atlases: ResMut<Assets<TextureAtlas>>
 ) {
-    if make_tiles_now.ready_now.0 && make_tiles_now.ready_now.1 {
+    if game_control.warp_buttons_created == false {
+
+        game_control.warp_buttons_created = true;
+
         let gui_texture_atlas = TextureAtlas::from_grid(
             gui_texture_handle.handle.clone(),
             Vec2::new(384.0, 384.0),
@@ -65,6 +65,8 @@ pub fn spawn_warp_buttons(
 
         for n in 0..8 {
             sprite_transform = Transform::from_xyz(0.0, 0.0, 0.0);
+            sprite_transform.scale.x = 0.85;
+            sprite_transform.scale.y = 0.85;
 
             match n {
                 0 => {
@@ -136,6 +138,7 @@ pub fn spawn_warp_buttons(
             ));
         }
     }
+
 }
 
 pub fn check_warp_buttons(
@@ -334,11 +337,11 @@ pub fn update_warp_buttons(
 ) {
     for (warp_button, mut transform) in warp_button_query.iter_mut() {
         if warp_info.cursor_over[warp_button.button_number as usize] {
-            transform.scale.x = 1.2;
-            transform.scale.y = 1.2;
-        } else {
             transform.scale.x = 1.0;
             transform.scale.y = 1.0;
+        } else {
+            transform.scale.x = 0.85;
+            transform.scale.y = 0.85;
         }
     }
 }

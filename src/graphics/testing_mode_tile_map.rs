@@ -9,8 +9,12 @@ pub struct EnvironmentalTextureHandle {
 }
 
 #[derive(Resource, Default)]
-pub struct MakeTilesNow {
-    pub ready_now: (bool, bool),
+pub struct TileControlForSectorSwitch {
+    
+    pub gamesector_generated: bool,
+    pub gamesector_copied: bool,
+    pub gamesector_drawn: bool, 
+
 }
 
 
@@ -22,13 +26,13 @@ pub fn tile_texture_loader(
 }
 
 pub fn testing_mode_tile_map(
-    mut make_tiles_now: ResMut<MakeTilesNow>,
+    mut tile_control: ResMut<TileControlForSectorSwitch>,
     mut commands: Commands,
     graphics_memory_sector_query: Query<&crate::graphics::GamesectorGraphicsBasicsMemory>,
     mut texture_atlases: ResMut<Assets<TextureAtlas>>,
     env_texture_handle: Res<EnvironmentalTextureHandle>
 ) {
-    if make_tiles_now.ready_now.0 && make_tiles_now.ready_now.1 {
+    if tile_control.gamesector_generated && tile_control.gamesector_copied && !tile_control.gamesector_drawn {
         let env_texture_atlas = TextureAtlas::from_grid(
             env_texture_handle.handle.clone(),
             Vec2::new(96.0, 96.0),
@@ -97,7 +101,6 @@ pub fn testing_mode_tile_map(
             }
         }
 
-        make_tiles_now.ready_now.0 = false;
-        make_tiles_now.ready_now.1 = false;
+        tile_control.gamesector_drawn = true;
     }
 }

@@ -19,7 +19,7 @@ pub fn generate_sector(
     mut sector_to_be_generated: ResMut<super::SectorToBeGenerated>,
     gameworld_seed: Res<crate::GameworldSeed>,
     mut commands: Commands,
-    mut make_tiles_now: ResMut<crate::graphics::testing_mode_tile_map::MakeTilesNow>
+    mut tile_control: ResMut<crate::graphics::testing_mode_tile_map::TileControlForSectorSwitch>
 ) {
     // If there are events recorded in generate sector then the rest of the function runs.
 
@@ -70,7 +70,7 @@ pub fn generate_sector(
         }
         
         // This is test code saying the graphics can make its world now.
-        make_tiles_now.ready_now.0 = true;
+        tile_control.gamesector_generated = true;
 
         // This clears the event so sectors aren't generated more than once.
         generate_new_sector_event.clear();

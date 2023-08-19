@@ -27,8 +27,9 @@ const ZOOM_SPEED: f32 = 0.1;
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins.build()
-        .add_before::<bevy::asset::AssetPlugin, _>(EmbeddedAssetPlugin),) 
+        .add_plugins(
+            DefaultPlugins.build().add_before::<bevy::asset::AssetPlugin, _>(EmbeddedAssetPlugin)
+        )
         .add_plugins(gui::HiveboticaGUIPluginGroup)
         .add_plugins(simulation::HiveboticaSimulationPluginGroup)
         // Everything below this in this expression is test code
@@ -41,15 +42,15 @@ fn main() {
         .add_systems(Update, graphics::testing_mode_tile_map::testing_mode_tile_map)
         .add_event::<GenerateNewSector>()
         .init_resource::<graphics::testing_mode_tile_map::EnvironmentalTextureHandle>()
-        .init_resource::<graphics::testing_mode_tile_map::MakeTilesNow>()
+        .init_resource::<graphics::testing_mode_tile_map::TileControlForSectorSwitch>()
         .init_resource::<GameworldSeed>()
         .init_resource::<GameControl>()
         .init_resource::<gui::GUITextureHandle>()
-        
+
         .run();
 }
 
-// This is test code to start the game before I add the menu. 
+// This is test code to start the game before I add the menu.
 // It will eventually be deleted when a proper menu and loading system are written.
 
 #[derive(Event, Default)]
@@ -61,49 +62,41 @@ fn testing_mode_startup(
     mut sector_to_be_generated: ResMut<simulation::gameworld_manager::SectorToBeGenerated>,
     mut writer: EventWriter<GenerateNewSector>,
     mut commands: Commands,
-    mut make_tiles_now: ResMut<graphics::testing_mode_tile_map::MakeTilesNow>
+    mut tile_control: ResMut<graphics::testing_mode_tile_map::TileControlForSectorSwitch>
 ) {
-    make_tiles_now.ready_now = (false, false);
+    
+    tile_control.gamesector_generated= false;
+    tile_control.gamesector_copied = false;
+    tile_control.gamesector_drawn = false;
+
     game_control.warp_buttons_created = false;
     let mut seedless_rng = ChaCha8Rng::from_entropy();
     gameworld_seed.gameworld_seed_num = seedless_rng.gen_range(0..u32::MAX) as u64;
 
-    for x in 0..4 {
-        for y in 0..6 {
-            sector_to_be_generated.sector_to_be_generated_list.push((
-                x,
-                y,
-                simulation::gameworld_manager::InitializationType::Player,
-            ));
-        }
-    }
+    sector_to_be_generated.sector_to_be_generated_list.push((
+        0,
+        0,
+        simulation::gameworld_manager::InitializationType::Player,
+    ));
 
     writer.send(GenerateNewSector);
 
-    for x in 0..4 {
-        for y in 0..6 {
-
-            commands.spawn(graphics::GamesectorGraphicsMemoryBundle {
-                gamesector_graphics_basic_memory: graphics::GamesectorGraphicsBasicsMemory {
-                    sector_coordinates: (x, y),
-                    sector_biome: simulation::SectorBiome::Plains,
-                    sector_base_type: simulation::SectorBaseType::Wild,
-                    tile_array: [
-                        [simulation::TileType::Open; crate::SECTOR_SIZE as usize];
-                        crate::SECTOR_SIZE as usize
-                    ],
-                    tile_array_variety: [
-                        [(0, 0); crate::SECTOR_SIZE as usize];
-                        crate::SECTOR_SIZE as usize
-                    ],
-                    direction_from_camera_x: graphics::DirectionFromCamera::LessOrEqual,
-                    direction_from_camera_y: graphics::DirectionFromCamera::LessOrEqual,
-                },
-            });
-    
-        }
-    }
-
+    commands.spawn(graphics::GamesectorGraphicsMemoryBundle {
+        gamesector_graphics_basic_memory: graphics::GamesectorGraphicsBasicsMemory {
+            sector_coordinates: (0, 0),
+            sector_biome: simulation::SectorBiome::Plains,
+            sector_base_type: simulation::SectorBaseType::Wild,
+            tile_array: [
+                [simulation::TileType::Open; crate::SECTOR_SIZE as usize];
+                crate::SECTOR_SIZE as usize
+            ],
+            tile_array_variety: [
+                [(0, 0); crate::SECTOR_SIZE as usize];
+                crate::SECTOR_SIZE as usize
+            ],
+            orientation_to_camera: graphics::DirectionFromCamera::Center,
+        },
+    });
 }
 
 #[derive(Resource, Default)]
@@ -113,7 +106,5 @@ pub struct GameworldSeed {
 
 #[derive(Resource, Default)]
 pub struct GameControl {
-    pub warp_buttons_created: bool, 
+    pub warp_buttons_created: bool,
 }
-
-

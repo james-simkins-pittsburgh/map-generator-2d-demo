@@ -1,9 +1,15 @@
 use bevy::prelude::*;
 pub(super) mod testing_mode_tile_map;
 
+
+
+#[derive(Copy, Clone, PartialEq)]
 pub enum DirectionFromCamera {
-    LessOrEqual,
-    GreaterThan,
+    Center,
+    Left,
+    Right,
+    Above,
+    Below,
 }
 
 #[derive(Component)]
@@ -19,8 +25,7 @@ pub struct GamesectorGraphicsBasicsMemory {
        [(u8,u8); crate::SECTOR_SIZE as usize];
         crate::SECTOR_SIZE as usize
     ],
-    pub direction_from_camera_x: DirectionFromCamera,
-    pub direction_from_camera_y: DirectionFromCamera,
+    pub orientation_to_camera: DirectionFromCamera,
 }
 
 #[derive(Bundle)]

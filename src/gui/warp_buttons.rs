@@ -25,7 +25,7 @@ pub struct WarpInfo {
 }
 
 pub enum WarpSign {
-    Positive,
+    _Positive,
     Negative,
 }
 

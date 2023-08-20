@@ -111,7 +111,7 @@ fn generate_map(
 
     // This determines sector biome.
 
-    let mut sector_biome: SectorBiome = SectorBiome::Plains;
+    let sector_biome: SectorBiome;
 
     if
         x_coordinate.rem_euclid(4) == 3 ||

@@ -2,6 +2,8 @@ use bevy::prelude::*;
 
 // This module holds the logic for gamesector generation.
 pub(super) mod gamesector_generator;
+pub(super) mod testing_mode_new_sector;
+
 
 pub struct HiveboticaGameworldManagerPlugin;
 
@@ -9,8 +11,8 @@ impl Plugin for HiveboticaGameworldManagerPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             Update,
-            gamesector_generator::generate_sector,
-        ).init_resource::<SectorToBeGenerated>();
+            (testing_mode_new_sector::add_sector_if_needed, gamesector_generator::generate_sector).chain())
+        .init_resource::<SectorToBeGenerated>();
     }
 }
 

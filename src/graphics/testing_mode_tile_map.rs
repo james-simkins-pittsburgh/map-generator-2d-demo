@@ -77,7 +77,6 @@ pub fn testing_mode_update_tile_map(
         tile_control.gamesector_copied &&
         !tile_control.gamesector_drawn
     {
-        let mut sprite_transform: Transform;
         let mut tile_graphics_index: u16;
 
         for graphics_sector_memory in graphics_memory_sector_query.iter() {

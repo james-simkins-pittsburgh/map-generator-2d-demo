@@ -60,8 +60,12 @@ pub fn camera_pan_and_zoom(
     window_query: Query<&Window, With<PrimaryWindow>>,
     mut camera_sector_coordinates: ResMut<CameraSectorCoordinates>,
     mut writer: EventWriter<SwitchVisibleSector>,
+    mut warp_information: ResMut<crate::gui::warp_buttons::WarpInfo>
 ) {
     for mut main_camera in main_camera_query.iter_mut() {
+
+        // This is where I left off.
+
         // This pans the camera if the cursor position is on the edge of the screen.
 
         if let Some(position) = window_query.single().cursor_position() {

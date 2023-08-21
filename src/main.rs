@@ -21,6 +21,7 @@ const SECTOR_SIZE: u16 = 101;
 // Otherwise new graphical sectors might not be loaded before they become visible.
 const PAN_TOP_SPEED: f32 = 48.0;
 const ZOOM_OUT_MAX: f32 = 8.0;
+const WARP_LENGTH: u8 = 20;
 
 // Zoom speed is just a matter of preference
 const ZOOM_SPEED: f32 = 0.1;

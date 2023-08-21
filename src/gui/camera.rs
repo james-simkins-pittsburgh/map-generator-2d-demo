@@ -4,7 +4,10 @@ use bevy::input::mouse::MouseScrollUnit;
 use bevy::render::camera::ScalingMode;
 use bevy::window::PrimaryWindow;
 
+use crate::WARP_LENGTH;
 use crate::SECTOR_SIZE;
+use crate::gui::warp_buttons::WarpSign;
+
 pub struct HiveboticaCameraPlugin;
 
 impl Plugin for HiveboticaCameraPlugin {
@@ -17,10 +20,8 @@ impl Plugin for HiveboticaCameraPlugin {
     }
 }
 
-
 #[derive(Event, Default)]
 pub struct SwitchVisibleSector;
-
 
 // This is a marker component for the main camera.
 
@@ -63,8 +64,51 @@ pub fn camera_pan_and_zoom(
     mut warp_information: ResMut<crate::gui::warp_buttons::WarpInfo>
 ) {
     for mut main_camera in main_camera_query.iter_mut() {
+        if warp_information.warping_now {
+            if warp_information.warp_timer < WARP_LENGTH {
+                warp_information.warp_timer += 1;
 
-        // This is where I left off.
+                if warp_information.warp_direction.0 == WarpSign::Positive {
+                    main_camera.0.translation.x += (((SECTOR_SIZE as f32) * 96.0 * 5.25)/(WARP_LENGTH as f32)).round();
+                } else if warp_information.warp_direction.0 == WarpSign::Negative {
+                    main_camera.0.translation.x -= ((SECTOR_SIZE as f32) * 96.0 * 5.25)/((WARP_LENGTH as f32)).round();
+                } else if warp_information.warp_direction.1 == WarpSign::Positive {
+                    main_camera.0.translation.y += ((SECTOR_SIZE as f32) * 96.0 * 5.25)/((WARP_LENGTH as f32)).round();
+                } else if warp_information.warp_direction.1 == WarpSign::Negative {
+                    main_camera.0.translation.y -= ((SECTOR_SIZE as f32) * 96.0 * 5.25)/((WARP_LENGTH as f32)).round();
+                }
+            } else {
+                warp_information.warping_now = false;
+                warp_information.warp_timer = 0;
+                warp_information.warp_direction = (WarpSign::Neutral, WarpSign::Neutral);
+            }
+        } else {
+            if warp_information.button_pressed[0] || warp_information.button_pressed[1] {
+
+                warp_information.warping_now = true;
+                warp_information.warp_timer = 0;
+                warp_information.warp_direction = (WarpSign::Neutral, WarpSign::Positive);
+
+            } else if warp_information.button_pressed[2] || warp_information.button_pressed[3] {
+
+                warp_information.warping_now = true;
+                warp_information.warp_timer = 0;
+                warp_information.warp_direction = (WarpSign::Positive, WarpSign::Neutral);
+
+            } else if warp_information.button_pressed[4] || warp_information.button_pressed[5] {
+
+                warp_information.warping_now = true;
+                warp_information.warp_timer = 0;
+                warp_information.warp_direction = (WarpSign::Neutral, WarpSign::Negative);
+
+            } else if warp_information.button_pressed[6] || warp_information.button_pressed[7] {
+
+                warp_information.warping_now = true;
+                warp_information.warp_timer = 0;
+                warp_information.warp_direction = (WarpSign::Negative, WarpSign::Neutral);
+
+            }
+        }
 
         // This pans the camera if the cursor position is on the edge of the screen.
 
@@ -104,7 +148,7 @@ pub fn camera_pan_and_zoom(
         if main_camera.0.translation.x < -((SECTOR_SIZE * 96 * 3) as f32) {
             main_camera.0.translation.x =
                 ((SECTOR_SIZE * 96 * 3) as f32) -
-                (((SECTOR_SIZE * 96 * 3) as f32) - main_camera.0.translation.x);
+                (-((SECTOR_SIZE * 96 * 3) as f32) - main_camera.0.translation.x);
 
             camera_sector_coordinates.sector_x -= 1;
             writer.send(SwitchVisibleSector);
@@ -122,7 +166,7 @@ pub fn camera_pan_and_zoom(
         if main_camera.0.translation.y < -((SECTOR_SIZE * 96 * 3) as f32) {
             main_camera.0.translation.y =
                 ((SECTOR_SIZE * 96 * 3) as f32) -
-                (((SECTOR_SIZE * 96 * 3) as f32) - main_camera.0.translation.y);
+                (-((SECTOR_SIZE * 96 * 3) as f32) - main_camera.0.translation.y);
 
             camera_sector_coordinates.sector_y -= 1;
             writer.send(SwitchVisibleSector);

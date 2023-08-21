@@ -19,19 +19,20 @@ pub struct WarpInfo {
     pub warping_now: bool,
     pub warp_direction: (WarpSign, WarpSign),
     pub warp_timer: u8,
-    pub warp_speed: f32,
     pub cursor_over: [bool; 8],
     pub button_pressed: [bool; 8],
 }
 
+#[derive(Copy, Clone, PartialEq)]
 pub enum WarpSign {
-    _Positive,
+    Positive,
     Negative,
+    Neutral,
 }
 
 impl Default for WarpSign {
     fn default() -> Self {
-        WarpSign::Negative
+        WarpSign::Neutral
     }
 }
 

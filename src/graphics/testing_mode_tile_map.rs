@@ -88,16 +88,16 @@ pub fn testing_mode_update_tile_map(
 
                     match graphics_sector_memory.sector_biome {
                         SectorBiome::Plains => {
-                            tile_graphics_index = 0;
+                            tile_graphics_index = 1;
                         }
                         SectorBiome::Desert => {
-                            tile_graphics_index = 12;
+                            tile_graphics_index = 13;
                         }
                         SectorBiome::Tundra => {
-                            tile_graphics_index = 24;
+                            tile_graphics_index = 25;
                         }
                         SectorBiome::Alpine => {
-                            tile_graphics_index = 36;
+                            tile_graphics_index = 37;
                         }
                     }
 

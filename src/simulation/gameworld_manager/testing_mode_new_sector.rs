@@ -5,7 +5,7 @@ pub fn add_sector_if_needed(
     camera_sector_coordinates: Res<crate::gui::camera::CameraSectorCoordinates>,
     mut gns_writer: EventWriter<crate::GenerateNewSector>,
     mut sector_to_be_generated: ResMut<crate::simulation::gameworld_manager::SectorToBeGenerated>,
-    mut tile_control: ResMut<crate::graphics::testing_mode_tile_map::TileControlForSectorSwitch>,
+    mut tile_control: ResMut<crate::graphics::tile_map::TileControlForSectorSwitch>,
     sim_sector_query: Query<&crate::simulation::GamesectorBasics>,
 ) {
     if !svs_reader.is_empty() {

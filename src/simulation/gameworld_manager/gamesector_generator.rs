@@ -19,7 +19,7 @@ pub fn generate_sector(
     mut sector_to_be_generated: ResMut<super::SectorToBeGenerated>,
     gameworld_seed: Res<crate::GameworldSeed>,
     mut commands: Commands,
-    mut tile_control: ResMut<crate::graphics::testing_mode_tile_map::TileControlForSectorSwitch>
+    mut tile_control: ResMut<crate::graphics::tile_map::TileControlForSectorSwitch>
 ) {
     // If there are events recorded in generate sector then the rest of the function runs.
 

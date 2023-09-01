@@ -8,7 +8,7 @@ use rand::prelude::*;
 pub fn testing_mode_simtographics_processor_copier(
     sim_sector_query: Query<&crate::simulation::GamesectorBasics>,
     mut graphics_memory_query: Query<&mut crate::graphics::GamesectorGraphicsBasicsMemory>,
-    mut tile_control: ResMut<crate::graphics::testing_mode_tile_map::TileControlForSectorSwitch>,
+    mut tile_control: ResMut<crate::graphics::tile_map::TileControlForSectorSwitch>,
     gameworld_seed: Res<crate::GameworldSeed>,
     camera_sector_coordinates: Res<crate::gui::camera::CameraSectorCoordinates>
 ) {

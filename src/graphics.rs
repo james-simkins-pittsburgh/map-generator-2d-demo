@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-pub(super) mod testing_mode_tile_map;
+pub(super) mod tile_map;
 
 
 

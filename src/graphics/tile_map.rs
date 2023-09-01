@@ -28,7 +28,7 @@ pub fn tile_texture_loader(
     env_texture_handle.handle = asset_server.load("environment.png");
 }
 
-pub fn testing_mode_spawn_tile_map(
+pub fn spawn_tile_map(
     mut texture_atlases: ResMut<Assets<TextureAtlas>>,
     env_texture_handle: Res<EnvironmentalTextureHandle>,
     mut commands: Commands
@@ -67,7 +67,7 @@ pub fn testing_mode_spawn_tile_map(
     }
 }
 
-pub fn testing_mode_update_tile_map(
+pub fn update_tile_map(
     mut tile_control: ResMut<TileControlForSectorSwitch>,
     graphics_memory_sector_query: Query<&crate::graphics::GamesectorGraphicsBasicsMemory>,
     mut tile_query: Query <(&mut TileIndex, &mut TextureAtlasSprite, &mut Transform)>

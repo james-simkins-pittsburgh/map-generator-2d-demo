@@ -117,7 +117,7 @@ fn generate_map(
         x_coordinate.rem_euclid(4) == 3 ||
         (x_coordinate.rem_euclid(2) == 0 &&
             (y_coordinate.rem_euclid(6) < 2 || y_coordinate.rem_euclid(6) == 5)) ||
-        (x_coordinate.rem_euclid(4) == 1 && x_coordinate.rem_euclid(6) == 0)
+        (x_coordinate.rem_euclid(4) == 1 && y_coordinate.rem_euclid(6) == 0)
     {
         sector_biome = SectorBiome::Alpine;
     } else {

@@ -21,10 +21,14 @@ pub enum TileType {
     Vegetated,
     Elevated,
     Ruin1x1,
-    Ruin1x2,
-    Ruin1x3,
-    Ruin2x2,
-    Ruin2x3,
+    RuinTopLeft,
+    RuinTopRight,
+    RuinBottomLeft,
+    RuinBottomRight,
+    RuinRightSide,
+    RuinLeftSide,
+    RuinTopSide,
+    RuinBottomSide
 }
 
 

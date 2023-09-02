@@ -12,6 +12,8 @@ use crate::simulation::GamesectorUnits;
 use crate::simulation::UnitAttributes;
 use super::InitializationType;
 
+pub (super) mod generate_ruins;
+
 // This function generates a new sector and populates it with a procedurally generated environmental map and the other components it needs.
 
 pub fn generate_sector(
@@ -191,7 +193,7 @@ fn generate_map(
         clear_center(&mut gamesector_environment_array, 20);
     } else if sector_base_type == SectorBaseType::Guardian {
         clear_center(&mut gamesector_environment_array, 30);
-        generate_ruins(&mut gamesector_environment_array);
+        generate_ruins::generate_ruins(&mut gamesector_environment_array,  &mut seeded_prng);
     }
 
     // This returns the generated environment array, sector_biome, sector_base_type, and coordinates.
@@ -424,10 +426,6 @@ fn clear_center(
         }
     }
 }
-
-fn generate_ruins(
-    _gamesector_environment_array: &mut [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize]
-) {}
 
 fn generate_units(
     _x_coordinate: i32,

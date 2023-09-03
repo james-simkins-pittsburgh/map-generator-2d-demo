@@ -3,36 +3,87 @@ use rand::prelude::*;
 use crate::SECTOR_SIZE;
 use crate::simulation::TileType;
 
-pub fn generate_ruins<R: Rng>(gamesector_environment_array: &mut[[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize], seeded_prng: &mut R) {
+pub fn generate_ruins<R: Rng>(
+    gamesector_environment_array: &mut [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize],
+    seeded_prng: &mut R
+) {
+    let mut column_x: i32;
+    let mut row_y: i32;
+    let mut x_start: i32;
+    let mut y_start: i32;
 
-let mut row: i32;
-let mut height: i32;
-let mut x_start: i32;
-let mut y_start: i32;
+    for _n in 0..30 {
+        column_x = seeded_prng.gen_range(0..6);
+        row_y= seeded_prng.gen_range(0..53);
 
-    for _n in 0..10 {
+        match column_x {
+            0..=2 => {
+                x_start = -30 + column_x * 4;
+            }
 
-    row = seeded_prng.gen_range(0..6);
-    height = seeded_prng.gen_range(0..53);
+            _ => {
+                x_start = 21 + column_x * 4;
+            }
+        }
 
-    match row {
+        match row_y {
+            0..=13 => {
+                y_start = -30 + row_y;
+            }
+            14..=36 => {
+                y_start = -30 + row_y + 4;
+            }
+            _ => {
+                y_start = -30 + row_y + 8;
+            }
+        }
 
-    0..=2 => {x_start = -30 + row * 4;}
-
-    _ => {x_start = 21 + row * 4;}
-    
+        draw_ruin_if_open(x_start, y_start, 3, 2,  gamesector_environment_array);
     }
 
-    match height {
+    
+    for _n in 0..30 {
+        row_y = seeded_prng.gen_range(0..6);
+        column_x= seeded_prng.gen_range(0..53);
 
-        0..=15 => {y_start = -30 + height;}
-        16..=37 => {y_start = -30 + height + 4;}
-        _ => {y_start = -30 + height + 8;}
+        match row_y {
+            0..=2 => {
+                y_start = -30 + row_y * 4;
+            }
 
+            _ => {
+                y_start = 21 + row_y * 4;
+            }
         }
-     
-// This is where I left off
+
+        match column_x {
+            0..=13 => {
+                x_start = -30 + column_x;
+            }
+            14..=36 => {
+                x_start = -30 + column_x + 4;
+            }
+            _ => {
+                x_start = -30 + column_x + 8;
+            }
+        }
+
+        draw_ruin_if_open(x_start, y_start, 3, 2,  gamesector_environment_array);
+    }
+
+
+
+
+
+
+
 
 }
 
-}
+fn draw_ruin_if_open(
+    x: i32,
+    y: i32,
+    ruin_y_length: i32,
+    ruin_x_width: i32,
+    gamesector_environment_array: &mut [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize]
+) {}

@@ -1,8 +1,6 @@
 use bevy::prelude::*;
 pub(super) mod tile_map;
 
-
-
 #[derive(Copy, Clone, PartialEq)]
 pub enum DirectionFromCamera {
     Center,

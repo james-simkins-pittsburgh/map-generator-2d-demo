@@ -14,7 +14,7 @@ pub fn generate_ruins<R: Rng>(
 
     for _n in 0..30 {
         column_x = seeded_prng.gen_range(0..6);
-        row_y= seeded_prng.gen_range(0..53);
+        row_y = seeded_prng.gen_range(0..53);
 
         match column_x {
             0..=2 => {
@@ -38,13 +38,12 @@ pub fn generate_ruins<R: Rng>(
             }
         }
 
-        draw_ruin_if_open(x_start, y_start, 3, 2,  gamesector_environment_array);
+        draw_ruin_if_open(x_start, y_start, 3, 2, gamesector_environment_array);
     }
 
-    
     for _n in 0..30 {
         row_y = seeded_prng.gen_range(0..6);
-        column_x= seeded_prng.gen_range(0..53);
+        column_x = seeded_prng.gen_range(0..53);
 
         match row_y {
             0..=2 => {
@@ -68,16 +67,8 @@ pub fn generate_ruins<R: Rng>(
             }
         }
 
-        draw_ruin_if_open(x_start, y_start, 3, 2,  gamesector_environment_array);
+        draw_ruin_if_open(x_start, y_start, 2, 3, gamesector_environment_array);
     }
-
-
-
-
-
-
-
-
 }
 
 fn draw_ruin_if_open(

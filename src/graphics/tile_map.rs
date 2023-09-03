@@ -3,6 +3,8 @@ use crate::SECTOR_SIZE;
 use crate::simulation::TileType;
 use crate::simulation::SectorBiome;
 
+pub(super) mod ruins;
+
 #[derive(Resource, Default)]
 pub struct EnvironmentalTextureHandle {
     handle: Handle<Image>,
@@ -61,10 +63,13 @@ pub fn spawn_tile_map(
                     transform: sprite_transform,
                     ..default()
                 },
-                TileIndex { x: x_index, y: y_index },
+                TileIndex { x: x_index, y: y_index},
             ));
         }
     }
+
+    ruins::spawn_ruins(env_texture_atlas_handle.clone(), &mut commands);
+
 }
 
 pub fn update_tile_map(

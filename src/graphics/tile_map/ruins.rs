@@ -4,6 +4,10 @@ use crate::simulation::TileType;
 use bevy::render::view::visibility::Visibility::Hidden;
 use bevy::render::view::visibility::Visibility::Inherited;
 
+#[derive(Component)]
+pub struct RuinTile {
+}
+
 pub fn spawn_ruins(env_texture_handle: Handle<TextureAtlas>, commands: &mut Commands) {
     let mut x_location: i32;
     let mut y_location: i32;
@@ -50,10 +54,10 @@ pub fn spawn_ruins(env_texture_handle: Handle<TextureAtlas>, commands: &mut Comm
             }
 
             match row_y {
-                0..=13 => {
+                0..=15 => {
                     y_location = -30 + row_y;
                 }
-                14..=36 => {
+                16..=36 => {
                     y_location = -30 + row_y + 4;
                 }
                 _ => {
@@ -63,7 +67,8 @@ pub fn spawn_ruins(env_texture_handle: Handle<TextureAtlas>, commands: &mut Comm
 
             if
                 (((SECTOR_SIZE - 1) / 2) as i32) + x_location >= 0 &&
-                (((SECTOR_SIZE - 1) / 2) as i32) + y_location >= 0
+                (((SECTOR_SIZE - 1) / 2) as i32) + y_location >= 0 &&
+                y_location.abs() <= x_location.abs()
             {
                 spawn_ruins_helper(
                     env_texture_handle.clone(),
@@ -75,7 +80,75 @@ pub fn spawn_ruins(env_texture_handle: Handle<TextureAtlas>, commands: &mut Comm
         }
     }
 
-    // This is where I left off. Still need to spawn horizontal ruins without intersections. 
+    for row_y in 0..12 {
+        for column_x in 0..53 {
+            match row_y {
+                0 => {
+                    y_location = -30;
+                }
+                1 => {
+                    y_location = -29;
+                }
+                2 => {
+                    y_location = -25;
+                }
+                3 => {
+                    y_location = -24;
+                }
+                4 => {
+                    y_location = -21;
+                }
+                5 => {
+                    y_location = -20;
+                }
+                6 => {
+                    y_location = 20;
+                }
+                7 => {
+                    y_location = 21;
+                }
+                8 => {
+                    y_location = 24;
+                }
+                9 => {
+                    y_location = 25;
+                }
+                10 => {
+                    y_location = 29;
+                }
+                _ => {
+                    y_location = 30;
+                }
+            }
+
+            match column_x {
+                0..=15 => {
+                    x_location = -30 + column_x;
+                }
+                16..=36 => {
+                    x_location = -30 + column_x + 4;
+                }
+                _ => {
+                    x_location = -30 + column_x + 8;
+                }
+            }
+
+            if
+                (((SECTOR_SIZE - 1) / 2) as i32) + x_location >= 0 &&
+                (((SECTOR_SIZE - 1) / 2) as i32) + y_location >= 0 &&
+                x_location.abs() < y_location.abs()
+            {
+                spawn_ruins_helper(
+                    env_texture_handle.clone(),
+                    commands,
+                    ((((SECTOR_SIZE - 1) / 2) as i32) + x_location) as u16,
+                    ((((SECTOR_SIZE - 1) / 2) as i32) + y_location) as u16
+                );
+            }
+        }
+    }
+
+
     
 }
 
@@ -100,5 +173,6 @@ fn spawn_ruins_helper(
             ..default()
         },
         super::TileIndex { x: x_index, y: y_index },
+        RuinTile{}
     ));
 }

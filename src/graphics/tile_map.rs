@@ -23,6 +23,11 @@ pub struct TileIndex {
     pub y: u16,
 }
 
+#[derive(Component)]
+pub struct EnvironmentalTile {
+}
+
+
 pub fn tile_texture_loader(
     asset_server: Res<AssetServer>,
     mut env_texture_handle: ResMut<EnvironmentalTextureHandle>
@@ -64,6 +69,7 @@ pub fn spawn_tile_map(
                     ..default()
                 },
                 TileIndex { x: x_index, y: y_index},
+                EnvironmentalTile{}
             ));
         }
     }
@@ -75,7 +81,7 @@ pub fn spawn_tile_map(
 pub fn update_tile_map(
     mut tile_control: ResMut<TileControlForSectorSwitch>,
     graphics_memory_sector_query: Query<&crate::graphics::GamesectorGraphicsBasicsMemory>,
-    mut tile_query: Query <(&mut TileIndex, &mut TextureAtlasSprite, &mut Transform)>
+    mut tile_query: Query <(&mut TileIndex, &mut TextureAtlasSprite, &mut Transform), With<EnvironmentalTile>>,
 ) {
     if
         tile_control.gamesector_generated &&

@@ -51,8 +51,8 @@ pub fn spawn_tile_map(
     for x_index in 0..SECTOR_SIZE {
         for y_index in 0..SECTOR_SIZE {
             sprite_transform = Transform::from_xyz(
-                (((x_index as f32) - 50.0) * 96.0) as f32,
-                (((y_index as f32) - 50.0) * 96.0) as f32,
+                (((x_index as f32) - ((SECTOR_SIZE-1)/2) as f32) * 96.0) as f32,
+                (((y_index as f32) - ((SECTOR_SIZE-1)/2) as f32) * 96.0) as f32,
                 0.0
             );
 

@@ -5,8 +5,7 @@ use bevy::render::view::visibility::Visibility::Hidden;
 use bevy::render::view::visibility::Visibility::Inherited;
 
 #[derive(Component)]
-pub struct RuinTile {
-}
+pub struct RuinTile {}
 
 pub fn spawn_ruins(env_texture_handle: Handle<TextureAtlas>, commands: &mut Commands) {
     let mut x_location: i32;
@@ -147,9 +146,6 @@ pub fn spawn_ruins(env_texture_handle: Handle<TextureAtlas>, commands: &mut Comm
             }
         }
     }
-
-
-    
 }
 
 fn spawn_ruins_helper(
@@ -173,6 +169,81 @@ fn spawn_ruins_helper(
             ..default()
         },
         super::TileIndex { x: x_index, y: y_index },
-        RuinTile{}
+        RuinTile {},
     ));
+}
+
+pub fn update_ruins(
+    graphics_sector_memory: &crate::graphics::GamesectorGraphicsBasicsMemory,
+    ruin_query: &mut Query<
+        (&mut super::TileIndex, &mut TextureAtlasSprite, &mut Transform, &mut Visibility),
+        With<RuinTile>
+    >
+) {
+    let mut tile_graphics_index: u16;
+
+    for mut ruin_properties in ruin_query.iter_mut() {
+        tile_graphics_index = 49;
+
+        match
+            graphics_sector_memory.tile_array_variety[ruin_properties.0.x as usize]
+                [ruin_properties.0.y as usize].0
+        {
+            1 => {
+                tile_graphics_index += 1;
+            }
+            2 => {
+                tile_graphics_index += 2;
+            }
+            3 => {
+                tile_graphics_index += 3;
+            }
+            _ => {}
+        }
+
+        match
+            graphics_sector_memory.tile_array[ruin_properties.0.x as usize]
+                [ruin_properties.0.y as usize]
+        {
+            TileType::Ruin1x1 => {}
+
+            TileType::RuinBottomLeft => {
+                tile_graphics_index += 4;
+            }
+            TileType::RuinBottomRight => {
+                tile_graphics_index += 4;
+            }
+            TileType::RuinTopLeft => {
+                tile_graphics_index += 4;
+            }
+            TileType::RuinTopRight => {
+                tile_graphics_index += 4;
+            }
+
+            TileType::RuinBottomSide => {
+                tile_graphics_index += 8;
+            }
+            TileType::RuinTopSide => {
+                tile_graphics_index += 8;
+            }
+            TileType::RuinLeftSide => {
+                tile_graphics_index += 8;
+            }
+            TileType::RuinRightSide => {
+                tile_graphics_index += 8;
+            }
+
+            _ => {
+                tile_graphics_index = 0;
+            }
+        }
+
+        ruin_properties.1.index = tile_graphics_index as usize;
+
+        if tile_graphics_index == 0 {
+            *ruin_properties.3 = Hidden;
+        } else {
+            *ruin_properties.3 = Inherited;
+        }
+    }
 }

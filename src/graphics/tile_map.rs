@@ -82,6 +82,7 @@ pub fn update_tile_map(
     mut tile_control: ResMut<TileControlForSectorSwitch>,
     graphics_memory_sector_query: Query<&crate::graphics::GamesectorGraphicsBasicsMemory>,
     mut tile_query: Query <(&mut TileIndex, &mut TextureAtlasSprite, &mut Transform), With<EnvironmentalTile>>,
+    mut ruin_query: Query <(&mut TileIndex, &mut TextureAtlasSprite, &mut Transform, &mut Visibility), With<ruins::RuinTile>>,
 ) {
     if
         tile_control.gamesector_generated &&
@@ -149,8 +150,12 @@ pub fn update_tile_map(
                     );
 
                 }
+                
+                ruins::update_ruins(&graphics_sector_memory, &mut ruin_query);
+
             }
 
+            // Should this be moved up?
             tile_control.gamesector_drawn = true;
         }
     }

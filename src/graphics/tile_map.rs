@@ -74,7 +74,7 @@ pub fn spawn_tile_map(
         }
     }
 
-    ruins::spawn_ruins(env_texture_atlas_handle.clone(), &mut commands);
+    // ruins::spawn_ruins(env_texture_atlas_handle.clone(), &mut commands);
 
 }
 

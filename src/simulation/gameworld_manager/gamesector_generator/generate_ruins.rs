@@ -72,9 +72,92 @@ pub fn generate_ruins<R: Rng>(
 }
 
 fn draw_ruin_if_open(
-    x: i32,
-    y: i32,
+    x_start: i32,
+    y_start: i32,
     ruin_y_length: i32,
     ruin_x_width: i32,
     gamesector_environment_array: &mut [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize]
-) {}
+) {
+    // This part checks if the space is clear.
+
+    let mut space_clear: bool = true;
+
+    for delta_x in 0..=ruin_x_width {
+        for delta_y in 0..=ruin_y_length {
+            if gamesector_environment_array [((x_start + delta_x) as usize) as usize][((y_start + delta_y) as usize) as usize] != TileType::Open {
+                space_clear = false;
+            }
+        }
+    }
+
+    if space_clear == true {
+        for delta_x in 0..ruin_x_width {
+            for delta_y in 0..ruin_y_length {
+                if ruin_x_width == 1 && ruin_y_length == 1 {
+                    gamesector_environment_array[((x_start + delta_x) as usize) as usize][((y_start + delta_y) as usize) as usize] =
+                        TileType::Ruin1x1;
+                }
+
+                if ruin_x_width == 2 && ruin_y_length == 2 {
+                    if delta_x == 0 && delta_y == 0 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinBottomLeft;
+                    } else if delta_x == 1 && delta_y == 0 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinBottomRight;
+                    } else if delta_x == 0 && delta_y == 1 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinTopLeft;
+                    } else if delta_x == 1 && delta_y == 1 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinTopRight;
+                    }
+                }
+
+                if ruin_x_width == 3 && ruin_y_length == 2 {
+                    if delta_x == 0 && delta_y == 0 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinBottomLeft;
+                    } else if delta_x == 1 && delta_y == 0 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinBottomSide;
+                    } else if delta_x == 2 && delta_y == 0 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinBottomRight;
+                    } else if delta_x == 0 && delta_y == 1 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinTopLeft;
+                    } else if delta_x == 1 && delta_y == 1 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinTopSide;
+                    } else if delta_x == 2 && delta_y == 1 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinTopRight;
+                    }
+                }
+
+                if ruin_x_width == 2 && ruin_y_length == 3 {
+                    if delta_x == 0 && delta_y == 0 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinBottomLeft;
+                    } else if delta_x == 1 && delta_y == 0 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinBottomRight;
+                    } else if delta_x == 0 && delta_y == 1 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinLeftSide;
+                    } else if delta_x == 1 && delta_y == 1 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinRightSide;
+                    } else if delta_x == 0 && delta_y == 2 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinTopLeft;
+                    } else if delta_x == 1 && delta_y == 2 {
+                        gamesector_environment_array[(x_start + delta_x) as usize][(y_start + delta_y) as usize] =
+                            TileType::RuinTopRight;
+                    }
+                }
+            }
+        }
+    }
+}

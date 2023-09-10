@@ -24,9 +24,7 @@ pub struct TileIndex {
 }
 
 #[derive(Component)]
-pub struct EnvironmentalTile {
-}
-
+pub struct EnvironmentalTile {}
 
 pub fn tile_texture_loader(
     asset_server: Res<AssetServer>,
@@ -56,8 +54,8 @@ pub fn spawn_tile_map(
     for x_index in 0..SECTOR_SIZE {
         for y_index in 0..SECTOR_SIZE {
             sprite_transform = Transform::from_xyz(
-                (((x_index as f32) - ((SECTOR_SIZE-1)/2) as f32) * 96.0) as f32,
-                (((y_index as f32) - ((SECTOR_SIZE-1)/2) as f32) * 96.0) as f32,
+                (((x_index as f32) - (((SECTOR_SIZE - 1) / 2) as f32)) * 96.0) as f32,
+                (((y_index as f32) - (((SECTOR_SIZE - 1) / 2) as f32)) * 96.0) as f32,
                 0.0
             );
 
@@ -68,21 +66,23 @@ pub fn spawn_tile_map(
                     transform: sprite_transform,
                     ..default()
                 },
-                TileIndex { x: x_index, y: y_index},
-                EnvironmentalTile{}
+                TileIndex { x: x_index, y: y_index },
+                EnvironmentalTile {},
             ));
         }
     }
 
     // ruins::spawn_ruins(env_texture_atlas_handle.clone(), &mut commands);
-
 }
 
 pub fn update_tile_map(
     mut tile_control: ResMut<TileControlForSectorSwitch>,
     graphics_memory_sector_query: Query<&crate::graphics::GamesectorGraphicsBasicsMemory>,
-    mut tile_query: Query <(&mut TileIndex, &mut TextureAtlasSprite, &mut Transform), With<EnvironmentalTile>>,
-    mut ruin_query: Query <(&mut TileIndex, &mut TextureAtlasSprite, &mut Transform, &mut Visibility), With<ruins::RuinTile>>,
+    mut tile_query: Query<
+        (&mut TileIndex, &mut TextureAtlasSprite, &mut Transform, &EnvironmentalTile),
+        Without<ruins::RuinTile>
+    >,
+    mut ruin_query: Query <(&mut TileIndex, &mut TextureAtlasSprite, &mut Transform, &mut Visibility, &ruins::RuinTile), Without<EnvironmentalTile>>,
 ) {
     if
         tile_control.gamesector_generated &&
@@ -97,7 +97,6 @@ pub fn update_tile_map(
                 crate::graphics::DirectionFromCamera::Center
             {
                 for mut tile_properties in tile_query.iter_mut() {
-
                     match graphics_sector_memory.sector_biome {
                         SectorBiome::Plains => {
                             tile_graphics_index = 1;
@@ -113,7 +112,10 @@ pub fn update_tile_map(
                         }
                     }
 
-                    match graphics_sector_memory.tile_array[tile_properties.0.x as usize][tile_properties.0.y as usize] {
+                    match
+                        graphics_sector_memory.tile_array[tile_properties.0.x as usize]
+                            [tile_properties.0.y as usize]
+                    {
                         TileType::Vegetated => {
                             tile_graphics_index += 4;
                         }
@@ -123,8 +125,10 @@ pub fn update_tile_map(
                         _ => {}
                     }
 
-                    match graphics_sector_memory.tile_array_variety[tile_properties.0.x as usize][tile_properties.0.y as usize].0 {
-
+                    match
+                        graphics_sector_memory.tile_array_variety[tile_properties.0.x as usize]
+                            [tile_properties.0.y as usize].0
+                    {
                         1 => {
                             tile_graphics_index += 1;
                         }
@@ -135,24 +139,21 @@ pub fn update_tile_map(
                             tile_graphics_index += 3;
                         }
                         _ => {}
-
                     }
 
                     tile_properties.1.index = tile_graphics_index as usize;
-                    
-                    
+
                     tile_properties.2.rotate_z(
                         1.5708 *
                             (
-                                graphics_sector_memory.tile_array_variety[tile_properties.0.x as usize]
+                                graphics_sector_memory.tile_array_variety
+                                    [tile_properties.0.x as usize]
                                     [tile_properties.0.y as usize].1 as f32
                             )
                     );
-
                 }
-                
-                ruins::update_ruins(&graphics_sector_memory, &mut ruin_query);
 
+                // ruins::update_ruins(&graphics_sector_memory, &mut ruin_query);
             }
 
             // Should this be moved up?

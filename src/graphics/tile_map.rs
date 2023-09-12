@@ -72,7 +72,7 @@ pub fn spawn_tile_map(
         }
     }
 
-    // ruins::spawn_ruins(env_texture_atlas_handle.clone(), &mut commands);
+    ruins::spawn_ruins(env_texture_atlas_handle.clone(), &mut commands);
 }
 
 pub fn update_tile_map(
@@ -153,7 +153,7 @@ pub fn update_tile_map(
                     );
                 }
 
-                // ruins::update_ruins(&graphics_sector_memory, &mut ruin_query);
+                ruins::update_ruins(&graphics_sector_memory, &mut ruin_query);
             }
 
             // Should this be moved up?

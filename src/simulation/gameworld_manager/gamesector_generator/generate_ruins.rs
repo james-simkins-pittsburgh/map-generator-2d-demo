@@ -38,7 +38,7 @@ pub fn generate_ruins<R: Rng>(
             }
         }
 
-        draw_ruin_if_open(x_start, y_start, 3, 2, gamesector_environment_array);
+        draw_ruin_if_open(x_start + ((SECTOR_SIZE-1)/2) as i32, y_start + ((SECTOR_SIZE-1)/2) as i32, 3, 2, gamesector_environment_array);
     }
 
     for _n in 0..30 {
@@ -67,7 +67,7 @@ pub fn generate_ruins<R: Rng>(
             }
         }
 
-        draw_ruin_if_open(x_start, y_start, 2, 3, gamesector_environment_array);
+        draw_ruin_if_open(x_start + ((SECTOR_SIZE-1)/2) as i32, y_start + ((SECTOR_SIZE-1)/2) as i32, 2, 3, gamesector_environment_array);
     }
 }
 

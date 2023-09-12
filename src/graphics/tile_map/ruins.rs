@@ -175,10 +175,8 @@ fn spawn_ruins_helper(
 
 pub fn update_ruins(
     graphics_sector_memory: &crate::graphics::GamesectorGraphicsBasicsMemory,
-    ruin_query: &mut Query<
-        (&mut super::TileIndex, &mut TextureAtlasSprite, &mut Transform, &mut Visibility),
-        With<RuinTile>
-    >
+    ruin_query: &mut Query <(&mut super::TileIndex, &mut TextureAtlasSprite, &mut Transform, &mut Visibility, &RuinTile), Without<super::EnvironmentalTile>>
+    
 ) {
     let mut tile_graphics_index: u16;
 

@@ -193,7 +193,7 @@ fn generate_map(
         clear_center(&mut gamesector_environment_array, 20);
     } else if sector_base_type == SectorBaseType::Guardian {
         clear_center(&mut gamesector_environment_array, 30);
-        // generate_ruins::generate_ruins(&mut gamesector_environment_array,  &mut seeded_prng);
+        generate_ruins::generate_ruins(&mut gamesector_environment_array,  &mut seeded_prng);
     }
 
     // This returns the generated environment array, sector_biome, sector_base_type, and coordinates.

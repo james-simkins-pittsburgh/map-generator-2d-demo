@@ -22,7 +22,7 @@ pub fn generate_ruins<R: Rng>(
             }
 
             _ => {
-                x_start = 21 + column_x * 4;
+                x_start = 21 + (column_x - 3) * 4;
             }
         }
 
@@ -51,7 +51,7 @@ pub fn generate_ruins<R: Rng>(
             }
 
             _ => {
-                y_start = 21 + row_y * 4;
+                y_start = 21 + (row_y - 3) * 4;
             }
         }
 

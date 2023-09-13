@@ -21,28 +21,28 @@ pub fn spawn_ruins(env_texture_handle: Handle<TextureAtlas>, commands: &mut Comm
                     x_location = -29;
                 }
                 2 => {
-                    x_location = -25;
+                    x_location = -26;
                 }
                 3 => {
-                    x_location = -24;
+                    x_location = -25;
                 }
                 4 => {
-                    x_location = -21;
+                    x_location = -22;
                 }
                 5 => {
-                    x_location = -20;
+                    x_location = -21;
                 }
                 6 => {
-                    x_location = 20;
-                }
-                7 => {
                     x_location = 21;
                 }
+                7 => {
+                    x_location = 22;
+                }
                 8 => {
-                    x_location = 24;
+                    x_location = 25;
                 }
                 9 => {
-                    x_location = 25;
+                    x_location = 26;
                 }
                 10 => {
                     x_location = 29;
@@ -89,28 +89,28 @@ pub fn spawn_ruins(env_texture_handle: Handle<TextureAtlas>, commands: &mut Comm
                     y_location = -29;
                 }
                 2 => {
-                    y_location = -25;
+                    y_location = -26;
                 }
                 3 => {
-                    y_location = -24;
+                    y_location = -25;
                 }
                 4 => {
-                    y_location = -21;
+                    y_location = -22;
                 }
                 5 => {
-                    y_location = -20;
+                    y_location = -21;
                 }
                 6 => {
-                    y_location = 20;
-                }
-                7 => {
                     y_location = 21;
                 }
+                7 => {
+                    y_location = 22;
+                }
                 8 => {
-                    y_location = 24;
+                    y_location = 25;
                 }
                 9 => {
-                    y_location = 25;
+                    y_location = 26;
                 }
                 10 => {
                     y_location = 29;

@@ -1,3 +1,6 @@
+use std::f32::consts::PI;
+
+use bevy::math::quat;
 use bevy::prelude::*;
 use crate::SECTOR_SIZE;
 use crate::simulation::TileType;
@@ -179,6 +182,7 @@ pub fn update_ruins(
     
 ) {
     let mut tile_graphics_index: u16;
+    let mut rotation: f32;
 
     for mut ruin_properties in ruin_query.iter_mut() {
         tile_graphics_index = 49;
@@ -203,40 +207,54 @@ pub fn update_ruins(
             graphics_sector_memory.tile_array[ruin_properties.0.x as usize]
                 [ruin_properties.0.y as usize]
         {
-            TileType::Ruin1x1 => {}
+            TileType::Ruin1x1 => {
+                rotation = graphics_sector_memory.tile_array_variety[ruin_properties.0.x as usize]
+                [ruin_properties.0.y as usize].1 as f32;
+            }
 
             TileType::RuinBottomLeft => {
                 tile_graphics_index += 4;
+                rotation = 0.0
             }
             TileType::RuinBottomRight => {
                 tile_graphics_index += 4;
+                rotation = 3.0
             }
             TileType::RuinTopLeft => {
                 tile_graphics_index += 4;
+                rotation = 1.0
             }
             TileType::RuinTopRight => {
                 tile_graphics_index += 4;
+                rotation = 2.0
             }
 
             TileType::RuinBottomSide => {
                 tile_graphics_index += 8;
+                rotation = 3.0; 
             }
             TileType::RuinTopSide => {
                 tile_graphics_index += 8;
+                rotation = 1.0;
             }
             TileType::RuinLeftSide => {
                 tile_graphics_index += 8;
+                rotation = 0.0;
             }
             TileType::RuinRightSide => {
                 tile_graphics_index += 8;
+                rotation = 2.0;
             }
 
             _ => {
                 tile_graphics_index = 0;
+                rotation = 0.0;
             }
         }
 
         ruin_properties.1.index = tile_graphics_index as usize;
+        ruin_properties.2.rotation = Quat::IDENTITY;
+        ruin_properties.2.rotate_z(rotation * - (PI / 2.0) ); 
 
         if tile_graphics_index == 0 {
             *ruin_properties.3 = Hidden;

@@ -18,7 +18,7 @@ pub fn generate_ruins<R: Rng>(
     let mut x_start: i32;
     let mut y_start: i32;
 
-    for _n in 0..30 {
+    for _n in 0..40 {
         column_x = seeded_prng.gen_range(0..6);
         row_y = seeded_prng.gen_range(0..49);
 
@@ -54,7 +54,7 @@ pub fn generate_ruins<R: Rng>(
         );
     }
 
-    for _n in 0..30 {
+    for _n in 0..40 {
         row_y = seeded_prng.gen_range(0..6);
         column_x = seeded_prng.gen_range(0..49);
 
@@ -90,7 +90,7 @@ pub fn generate_ruins<R: Rng>(
         );
     }
 
-    for _n in 0..30 {
+    for _n in 0..50 {
         column_x = seeded_prng.gen_range(0..6);
         row_y = seeded_prng.gen_range(0..49);
 
@@ -126,7 +126,7 @@ pub fn generate_ruins<R: Rng>(
         );
     }
 
-    for _n in 0..30 {
+    for _n in 0..50 {
         row_y = seeded_prng.gen_range(0..6);
         column_x = seeded_prng.gen_range(0..49);
 
@@ -162,7 +162,7 @@ pub fn generate_ruins<R: Rng>(
         );
     }
 
-    for _n in 0..30 {
+    for _n in 0..60 {
         column_x = seeded_prng.gen_range(0..6);
         row_y = seeded_prng.gen_range(0..49);
 
@@ -198,7 +198,7 @@ pub fn generate_ruins<R: Rng>(
         );
     }
 
-    for _n in 0..30 {
+    for _n in 0..60 {
         row_y = seeded_prng.gen_range(0..6);
         column_x = seeded_prng.gen_range(0..49);
 

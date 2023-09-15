@@ -95,11 +95,6 @@ fn testing_mode_startup(
                 [(0, 0); crate::SECTOR_SIZE as usize];
                 crate::SECTOR_SIZE as usize
             ],
-            ruin_rotation: 
-            [[0; crate::SECTOR_SIZE as usize];
-            crate::SECTOR_SIZE as usize],
-
-
             orientation_to_camera: graphics::DirectionFromCamera::Center,
         },
     });

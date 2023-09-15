@@ -192,7 +192,7 @@ fn generate_map(
     if sector_base_type == SectorBaseType::Industrialist {
         clear_center(&mut gamesector_environment_array, 20);
     } else if sector_base_type == SectorBaseType::Guardian {
-        clear_center(&mut gamesector_environment_array, 32);
+        clear_center(&mut gamesector_environment_array, 30);
         generate_ruins::generate_ruins(&mut gamesector_environment_array,  &mut seeded_prng);
     }
 

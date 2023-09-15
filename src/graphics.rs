@@ -19,8 +19,10 @@ pub struct GamesectorGraphicsBasicsMemory {
         [crate::simulation::TileType; crate::SECTOR_SIZE as usize];
         crate::SECTOR_SIZE as usize
     ],
-    pub tile_array_variety: [[(u8, u8); crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
-    pub ruin_rotation: [[u8; crate::SECTOR_SIZE as usize]; crate::SECTOR_SIZE as usize],
+    pub tile_array_variety: [
+       [(u8,u8); crate::SECTOR_SIZE as usize];
+        crate::SECTOR_SIZE as usize
+    ],
     pub orientation_to_camera: DirectionFromCamera,
 }
 

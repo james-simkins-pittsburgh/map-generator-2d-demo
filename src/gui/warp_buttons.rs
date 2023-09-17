@@ -14,6 +14,8 @@ impl Plugin for HiveboticaWarpButtonPlugin {
     }
 }
 
+// This resource contains the information needed by the camera to warp and by the buttons to get bigger.
+
 #[derive(Resource, Default)]
 pub struct WarpInfo {
     pub warping_now: bool,
@@ -22,6 +24,8 @@ pub struct WarpInfo {
     pub cursor_over: [bool; 8],
     pub button_pressed: [bool; 8],
 }
+
+// This is the direction of warp.
 
 #[derive(Copy, Clone, PartialEq)]
 pub enum WarpSign {
@@ -36,10 +40,13 @@ impl Default for WarpSign {
     }
 }
 
+// This allows the 8 warp buttons to be numbered. 
+
 #[derive(Component)]
 pub struct WarpButton {
     button_number: u8,
 }
+// This spawns the warp button entities. 
 
 pub fn spawn_warp_buttons(
     mut game_control: ResMut<GameControl>,
@@ -142,6 +149,8 @@ pub fn spawn_warp_buttons(
 
 }
 
+// This checks to see if warp buttons have been pressed and initiates warp.
+
 pub fn check_warp_buttons(
     primary_window_query: Query<&Window, With<PrimaryWindow>>,
     main_camera_query: Query<(&Camera, &GlobalTransform), With<super::camera::MainCamera>>,
@@ -180,6 +189,8 @@ pub fn check_warp_buttons(
         }
     }
 }
+
+// This makes the warp buttons get slightly larger if the cursor is over them.
 
 fn check_for_cursor_over_button(cursor_x: f32, cursor_y: f32, button_number: u8) -> bool {
     let square_bl_x: f32;

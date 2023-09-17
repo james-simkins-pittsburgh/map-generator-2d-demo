@@ -28,6 +28,9 @@ pub struct SwitchVisibleSector;
 #[derive(Component)]
 pub struct MainCamera;
 
+// These are the coordinates of the sector within the coordinate system of the sectors within the game world.
+// The coordinates within the sector match the camera translation.
+
 #[derive(Resource, Default)]
 pub struct CameraSectorCoordinates {
     pub sector_x: i32,
@@ -55,6 +58,8 @@ pub fn set_initial_camera(
     }
 }
 
+// This controls the pan and zoom abilities of the camera.
+
 pub fn camera_pan_and_zoom(
     mut scroll_event_reader: EventReader<MouseWheel>,
     mut main_camera_query: Query<(&mut Transform, &mut OrthographicProjection, With<MainCamera>)>,
@@ -64,6 +69,10 @@ pub fn camera_pan_and_zoom(
     mut warp_information: ResMut<crate::gui::warp_buttons::WarpInfo>
 ) {
     for mut main_camera in main_camera_query.iter_mut() {
+
+
+        // This pans the camera quickly after the warp button has been pressed.
+
         if warp_information.warping_now {
             if warp_information.warp_timer < WARP_LENGTH {
                 warp_information.warp_timer += 1;
@@ -134,7 +143,7 @@ pub fn camera_pan_and_zoom(
             }
         }
 
-        // This adjust the camera if the pan goes outside of the allowed area.
+        // This adjust the camera if the pan goes outside of the allowed area and switches to the next sector.
 
         if main_camera.0.translation.x > ((SECTOR_SIZE * 96 * 3) as f32) {
             main_camera.0.translation.x =

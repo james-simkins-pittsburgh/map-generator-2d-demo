@@ -1,18 +1,22 @@
 use std::f32::consts::PI;
-
-use bevy::math::quat;
 use bevy::prelude::*;
 use crate::SECTOR_SIZE;
 use crate::simulation::TileType;
 use bevy::render::view::visibility::Visibility::Hidden;
 use bevy::render::view::visibility::Visibility::Inherited;
 
+// This is a marker component for the ruins graphics. 
+
 #[derive(Component)]
 pub struct RuinTile {}
+
+// This function spawns the entities that display the ruin graphics.
 
 pub fn spawn_ruins(env_texture_handle: Handle<TextureAtlas>, commands: &mut Commands) {
     let mut x_location: i32;
     let mut y_location: i32;
+
+    // Only spots that can potentially have ruins get a ruin entity ready to display.
 
     for column_x in 0..12 {
         for row_y in 0..53 {
@@ -135,6 +139,9 @@ pub fn spawn_ruins(env_texture_handle: Handle<TextureAtlas>, commands: &mut Comm
                 }
             }
 
+
+            // This checks to make sure the spot is in the sector (in case sector size is reduced) and also avoid duplicate entities in the corners.
+            
             if
                 (((SECTOR_SIZE - 1) / 2) as i32) + x_location >= 0 &&
                 (((SECTOR_SIZE - 1) / 2) as i32) + y_location >= 0 &&
@@ -157,6 +164,7 @@ fn spawn_ruins_helper(
     x_index: u16,
     y_index: u16
 ) {
+
     let sprite_transform = Transform::from_xyz(
         (((x_index as f32) - (((SECTOR_SIZE - 1) / 2) as f32)) * 96.0) as f32,
         (((y_index as f32) - (((SECTOR_SIZE - 1) / 2) as f32)) * 96.0) as f32,
@@ -175,6 +183,8 @@ fn spawn_ruins_helper(
         RuinTile {},
     ));
 }
+
+// This updated the ruins when the sector changes.
 
 pub fn update_ruins(
     graphics_sector_memory: &crate::graphics::GamesectorGraphicsBasicsMemory,

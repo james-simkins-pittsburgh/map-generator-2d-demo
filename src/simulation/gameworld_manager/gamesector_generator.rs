@@ -394,6 +394,8 @@ fn generate_patches<R: Rng>(
     }
 }
 
+// Clears a path from edge to center. Used for all biomes except mountain.
+
 fn clear_paths(
     gamesector_environment_array: &mut [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize]
 ) {
@@ -413,6 +415,8 @@ fn clear_paths(
         }
     }
 }
+
+// Clear a center from 0 to clear size in the the positive and negative x and y directions. Used for base sectors.
 
 fn clear_center(
     gamesector_environment_array: &mut [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize],

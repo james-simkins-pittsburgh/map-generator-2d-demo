@@ -58,24 +58,31 @@ pub struct GamesectorBasics {
     pub sector_base_type: SectorBaseType,
 }
 
+
+#[derive(Copy, Clone, PartialEq)]
 pub enum UnitClass {
     Trench,
-    AboveGroundFortification,
-    Building,
+    Track,
+    Depot,
+    Factory,
+    Mine,
     Mothership,
-    SupplyBot,
+    TrainBot,
+    TruckBot,
     EngineeringBot,
     GroundCombatBot,
-    Munition,
     AirCombatBot,
+    Munition,
 }
 
+
+#[derive(Copy, Clone, PartialEq)]
 pub enum UnitType {
     Trench,
     InfantryFactory,
     TankFactory,
     ArtilleryFactory,
-    AerialDroneHangar,
+    AerialDroneFactory,
     EngineeringFactory,
     SupplyDepot,
     IronMine,
@@ -84,14 +91,13 @@ pub enum UnitType {
     ArchaeologySite,
     SolarPanel,
     BarbedWire,
-    Mine,
     Hedgehog,
     TrainTrack,
     Mothership,
     TrainBot,
     TruckBot,
     EngineeringBot,
-    MineBot,
+    MinelayerBot,
     ScoutBot,
     SpecialBot,
     SniperBot,
@@ -118,6 +124,7 @@ pub enum UnitType {
     ClusterMunition,
     Bomblet,
     BombletMine,
+    Landmine,
     AntitankMissile,
     ManPadMissile,
     LightTankRound,
@@ -131,6 +138,8 @@ pub enum UnitType {
     AirtoGroundMissileCluster,
 }
 
+
+#[derive(Copy, Clone, PartialEq)]
 pub enum GraphicalVariation {
     Standing,
     Moving,
@@ -150,11 +159,14 @@ pub enum GraphicalVariation {
     Hidden,
     HiddenFiring,
     Ascending,
+    Descending,
     Exploding,
     ShutDown,
     Disintegrating,
     GivingSupply,
 }
+
+#[derive(Copy, Clone, PartialEq)]
 
 pub enum UnitFaction {
     Industrialist,
@@ -162,10 +174,12 @@ pub enum UnitFaction {
     Rogue,
 }
 
+
+#[derive(Copy, Clone, PartialEq)]
 pub struct UnitAttributes {
     pub x_location: u16,
     pub y_location: u16,
-    pub height: u16,
+    pub altitude: u16,
     pub xy_rotation: u16,
     pub xz_rotation: u16,
     pub unit_class: UnitClass,

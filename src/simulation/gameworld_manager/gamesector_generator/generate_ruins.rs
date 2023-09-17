@@ -17,6 +17,8 @@ pub fn generate_ruins<R: Rng>(
     let mut row_y: i32;
     let mut x_start: i32;
     let mut y_start: i32;
+    
+    // This part draws the vertical columns of 2x3 buildings.
 
     for _n in 0..40 {
         column_x = seeded_prng.gen_range(0..6);
@@ -53,6 +55,8 @@ pub fn generate_ruins<R: Rng>(
             RuinBlockDirection::Vertical
         );
     }
+    
+    // This part draws the horizontal columns of 2x3 buildings.
 
     for _n in 0..40 {
         row_y = seeded_prng.gen_range(0..6);
@@ -90,6 +94,8 @@ pub fn generate_ruins<R: Rng>(
         );
     }
 
+    // This part draws the vertical columns of 2x2 buildings.
+
     for _n in 0..50 {
         column_x = seeded_prng.gen_range(0..6);
         row_y = seeded_prng.gen_range(0..49);
@@ -126,6 +132,9 @@ pub fn generate_ruins<R: Rng>(
         );
     }
 
+    
+    // This part draws the horizontal columns of 2x2 buildings.
+
     for _n in 0..50 {
         row_y = seeded_prng.gen_range(0..6);
         column_x = seeded_prng.gen_range(0..49);
@@ -161,6 +170,8 @@ pub fn generate_ruins<R: Rng>(
             RuinBlockDirection::Horizontal
         );
     }
+
+    // This part draws the vertical columns of 1x1 buildings.
 
     for _n in 0..60 {
         column_x = seeded_prng.gen_range(0..6);
@@ -197,6 +208,9 @@ pub fn generate_ruins<R: Rng>(
             RuinBlockDirection::Vertical
         );
     }
+
+    
+    // This part draws the horizontal columns of 1x1 buildings.
 
     for _n in 0..60 {
         row_y = seeded_prng.gen_range(0..6);
@@ -271,6 +285,8 @@ fn draw_ruin_if_open(
             }
         }
     }
+
+    // If the space is clear, then this puts the building there. If not, nothing happens.
 
     if space_clear == true {
         for delta_x in 0..ruin_x_width {

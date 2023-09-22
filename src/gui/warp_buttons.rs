@@ -3,7 +3,7 @@ use std::f32::consts::PI;
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 use super::GUITextureHandle;
-use crate::GameControl;
+use crate::WarpButtonControl;
 pub struct HiveboticaWarpButtonPlugin;
 
 impl Plugin for HiveboticaWarpButtonPlugin {
@@ -49,14 +49,14 @@ pub struct WarpButton {
 // This spawns the warp button entities. 
 
 pub fn spawn_warp_buttons(
-    mut game_control: ResMut<GameControl>,
+    mut warp_button_control: ResMut<WarpButtonControl>,
     gui_texture_handle: Res<GUITextureHandle>,
     mut commands: Commands,
     mut texture_atlases: ResMut<Assets<TextureAtlas>>
 ) {
-    if game_control.warp_buttons_created == false {
+    if warp_button_control.warp_buttons_created == false {
 
-        game_control.warp_buttons_created = true;
+        warp_button_control.warp_buttons_created = true;
 
         let gui_texture_atlas = TextureAtlas::from_grid(
             gui_texture_handle.handle.clone(),

@@ -184,7 +184,7 @@ fn spawn_ruins_helper(
     ));
 }
 
-// This updated the ruins when the sector changes.
+// This updates the ruins when the sector changes.
 
 pub fn update_ruins(
     graphics_sector_memory: &crate::graphics::GamesectorGraphicsBasicsMemory,

@@ -33,21 +33,24 @@ fn main() {
         )
         .add_plugins(gui::HiveboticaGUIPluginGroup)
         .add_plugins(simulation::HiveboticaSimulationPluginGroup)
+        .add_systems(
+            Startup,
+            (graphics::tile_map::tile_texture_loader, graphics::tile_map::spawn_tile_map).chain()
+        )
+        .add_systems(Update, graphics::tile_map::update_tile_map)
+        .init_resource::<graphics::tile_map::EnvironmentalTextureHandle>()
+        .init_resource::<graphics::tile_map::TileControlForSectorSwitch>()
+        .init_resource::<GameworldSeed>()
+        .init_resource::<WarpButtonControl>()
+        .init_resource::<gui::GUITextureHandle>()
         // Everything below this in this expression is test code
         .add_systems(Startup, testing_mode_startup)
-        .add_systems(Startup, (graphics::tile_map::tile_texture_loader, graphics::tile_map::spawn_tile_map).chain())
         .add_systems(
             Update,
             simulation::testing_mode_simtographics_copier::testing_mode_simtographics_processor_copier
         )
-        .add_systems(Update, graphics::tile_map::update_tile_map)
-        .add_event::<GenerateNewSector>()
-        .init_resource::<graphics::tile_map::EnvironmentalTextureHandle>()
-        .init_resource::<graphics::tile_map::TileControlForSectorSwitch>()
-        .init_resource::<GameworldSeed>()
-        .init_resource::<GameControl>()
-        .init_resource::<gui::GUITextureHandle>()
 
+        .add_event::<GenerateNewSector>()
         .run();
 }
 
@@ -59,14 +62,13 @@ pub struct GenerateNewSector;
 
 fn testing_mode_startup(
     mut gameworld_seed: ResMut<GameworldSeed>,
-    mut game_control: ResMut<GameControl>,
+    mut game_control: ResMut<WarpButtonControl>,
     mut sector_to_be_generated: ResMut<simulation::gameworld_manager::SectorToBeGenerated>,
     mut writer: EventWriter<GenerateNewSector>,
     mut commands: Commands,
     mut tile_control: ResMut<graphics::tile_map::TileControlForSectorSwitch>
 ) {
-    
-    tile_control.gamesector_generated= false;
+    tile_control.gamesector_generated = false;
     tile_control.gamesector_copied = false;
     tile_control.gamesector_drawn = false;
 
@@ -106,6 +108,6 @@ pub struct GameworldSeed {
 }
 
 #[derive(Resource, Default)]
-pub struct GameControl {
+pub struct WarpButtonControl {
     pub warp_buttons_created: bool,
 }

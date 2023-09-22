@@ -43,7 +43,7 @@ fn main() {
         .init_resource::<GameworldSeed>()
         .init_resource::<WarpButtonControl>()
         .init_resource::<gui::GUITextureHandle>()
-        // Everything below this in this expression is test code
+        // v Everything between these comments are test code v
         .add_systems(Startup, testing_mode_startup)
         .add_systems(
             Update,
@@ -51,6 +51,8 @@ fn main() {
         )
 
         .add_event::<GenerateNewSector>()
+        // ^ Everything between these comments are test code ^
+        
         .run();
 }
 

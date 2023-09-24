@@ -175,7 +175,31 @@ pub enum UnitFaction {
 }
 
 
+
 #[derive(Copy, Clone, PartialEq)]
+
+pub enum UnitInstructionType {
+    MoveTo,
+    FireAt,
+    Build,
+    Repair,
+    Advance,
+    Sneak,
+    Retreat,
+    FireAtWill,
+    HoldFire,
+    DigIn,
+    Hide,
+    Produce,
+    Mine,
+    Wait,
+}
+
+
+
+
+
+#[derive(Copy, Clone)]
 pub struct UnitAttributes {
     pub x_location: u16,
     pub y_location: u16,
@@ -196,11 +220,38 @@ pub struct UnitAttributes {
     pub visibility_out_of_100: u8,
     pub visible_to_player: bool,
     pub additional_supply_address: u16,
+
+    // First two u16s are the x and y of the target. 
+    // The final u16 is the duration of the action in seconds.
+
+    pub instructions: [(UnitInstructionType, u16, u16, u8); 6]
+
 }
+
 
 #[derive(Component)]
 pub struct GamesectorUnits {
-   pub unit_array: Vec<UnitAttributes>,
+   pub unit_vec: Vec<UnitAttributes>,
+}
+
+
+
+#[derive(Copy, Clone, PartialEq)]
+
+pub enum NewInstructionType {
+
+    Replacement, 
+    Addition,
+    Override,
+    Immediate, 
+
+}
+
+pub struct SimulationUpdates {
+
+    arriving_unit_vec: Vec<UnitAttributes>,
+    new_instructions_vec: Vec <(NewInstructionType, (UnitInstructionType, u16, u16, u8))>,
+
 }
 
 #[derive(Bundle)]

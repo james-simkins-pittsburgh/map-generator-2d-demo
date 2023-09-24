@@ -26,6 +26,8 @@ const WARP_LENGTH: u8 = 20;
 // Zoom speed is just a matter of preference
 const ZOOM_SPEED: f32 = 0.1;
 
+
+// This is the Bevy app that organizes and runs everything from the game engine to the logic of Hivebotica.
 fn main() {
     App::new()
         .add_plugins(
@@ -56,7 +58,21 @@ fn main() {
         .run();
 }
 
-// This is test code to start the game before I add the menu.
+// This is the seed number for the gameworld. Eventually, it will represent a 6 letter word 
+// with a simple A = 1, B = 2, etc cipher. An additional 3 digits will be added for the millisecond the 
+// world was created for tournament worlds. 
+
+#[derive(Resource, Default)]
+pub struct GameworldSeed {
+    pub gameworld_seed_num: u64,
+}
+
+#[derive(Resource, Default)]
+pub struct WarpButtonControl {
+    pub warp_buttons_created: bool,
+}
+
+// The rest of this module is test code to start the game before I add the menu.
 // It will eventually be deleted when a proper menu and loading system are written.
 
 #[derive(Event, Default)]
@@ -102,14 +118,4 @@ fn testing_mode_startup(
             orientation_to_camera: graphics::DirectionFromCamera::Center,
         },
     });
-}
-
-#[derive(Resource, Default)]
-pub struct GameworldSeed {
-    pub gameworld_seed_num: u64,
-}
-
-#[derive(Resource, Default)]
-pub struct WarpButtonControl {
-    pub warp_buttons_created: bool,
 }

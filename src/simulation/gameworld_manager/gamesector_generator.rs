@@ -65,7 +65,7 @@ pub fn generate_sector(
                 },
 
                 // This copies over the units for the new sector.
-                gamesector_units: GamesectorUnits { unit_array: new_sector_units },
+                gamesector_units: GamesectorUnits { unit_vec: new_sector_units },
             });
 
         

@@ -222,7 +222,7 @@ pub struct UnitAttributes {
     pub additional_supply_address: u16,
 
     // First two u16s are the x and y of the target. 
-    // The final u16 is the duration of the action in seconds.
+    // The final u8 is the duration of the action in seconds.
 
     pub instructions: [(UnitInstructionType, u16, u16, u8); 6]
 
@@ -247,12 +247,22 @@ pub enum NewInstructionType {
 
 }
 
-pub struct SimulationUpdates {
+pub struct InputSimulationUpdates {
 
     arriving_unit_vec: Vec<UnitAttributes>,
     new_instructions_vec: Vec <(NewInstructionType, (UnitInstructionType, u16, u16, u8))>,
 
 }
+
+pub struct OutputToTravelator {
+
+    // The address number corresponds to the travelators starting from top left going clockwise.
+
+    departing_units: [(bool, UnitAttributes); 24],
+}
+
+
+
 
 #[derive(Bundle)]
 pub struct GamesectorBundle {

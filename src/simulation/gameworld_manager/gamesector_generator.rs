@@ -96,7 +96,7 @@ fn generate_map(
 ) {
     // This initially sets the array to open.
 
-    let mut gamesector_environment_array: [[TileType; 101]; 101] = [
+    let mut gamesector_environment_array: [[TileType; SECTOR_SIZE as usize]; SECTOR_SIZE as usize] = [
         [TileType::Open; SECTOR_SIZE as usize];
         SECTOR_SIZE as usize
     ];

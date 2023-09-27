@@ -4,6 +4,7 @@ use rand::prelude::*;
 // These use declaration are just to make the code more readable.
 
 use crate::SECTOR_SIZE;
+use crate::simulation::InputSimulationUpdates;
 use crate::simulation::TileType;
 use crate::simulation::SectorBiome;
 use crate::simulation::SectorBaseType;
@@ -66,6 +67,10 @@ pub fn generate_sector(
 
                 // This copies over the units for the new sector.
                 gamesector_units: GamesectorUnits { unit_vec: new_sector_units },
+
+                input_simulation_updates: InputSimulationUpdates {arriving_unit_vec: Vec::new(), new_instructions_vec: Vec::new()},
+                output_to_travelator: crate::simulation::OutputToTravelator {departing_units: [(false, crate::simulation::UnitAttributes::default()); 24]},
+
             });
 
         

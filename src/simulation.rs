@@ -73,7 +73,16 @@ pub enum UnitClass {
     GroundCombatBot,
     AirCombatBot,
     Munition,
+    Empty,
 }
+
+
+
+impl Default for UnitClass {
+    fn default() -> Self { UnitClass::Empty }
+}
+
+
 
 
 #[derive(Copy, Clone, PartialEq)]
@@ -136,7 +145,14 @@ pub enum UnitType {
     AirtoGroundMissileLight,
     AirtoGroundMissileHeavy,
     AirtoGroundMissileCluster,
+    Empty
 }
+
+
+impl Default for UnitType {
+    fn default() -> Self { UnitType::Empty }
+}
+
 
 
 #[derive(Copy, Clone, PartialEq)]
@@ -164,6 +180,11 @@ pub enum GraphicalVariation {
     ShutDown,
     Disintegrating,
     GivingSupply,
+    Empty
+}
+
+impl Default for GraphicalVariation {
+    fn default() -> Self { GraphicalVariation::Empty }
 }
 
 #[derive(Copy, Clone, PartialEq)]
@@ -172,6 +193,12 @@ pub enum UnitFaction {
     Industrialist,
     Guardian,
     Rogue,
+    Empty
+}
+
+
+impl Default for UnitFaction {
+    fn default() -> Self { UnitFaction::Empty }
 }
 
 
@@ -196,10 +223,15 @@ pub enum UnitInstructionType {
 }
 
 
+impl Default for UnitInstructionType{
+    fn default() -> Self { UnitInstructionType::Wait}
+}
 
 
 
-#[derive(Copy, Clone)]
+
+
+#[derive(Copy, Clone, Default)]
 pub struct UnitAttributes {
     pub x_location: u16,
     pub y_location: u16,
@@ -247,6 +279,7 @@ pub enum NewInstructionType {
 
 }
 
+#[derive(Component)]
 pub struct InputSimulationUpdates {
 
     arriving_unit_vec: Vec<UnitAttributes>,
@@ -254,6 +287,7 @@ pub struct InputSimulationUpdates {
 
 }
 
+#[derive(Component)]
 pub struct OutputToTravelator {
 
     // The address number corresponds to the travelators starting from top left going clockwise.
@@ -268,4 +302,6 @@ pub struct OutputToTravelator {
 pub struct GamesectorBundle {
     pub gamesector_basics: GamesectorBasics,
     pub gamesector_units: GamesectorUnits,
+    pub input_simulation_updates: InputSimulationUpdates,
+    pub output_to_travelator: OutputToTravelator,
 }

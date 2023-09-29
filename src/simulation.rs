@@ -282,8 +282,8 @@ pub enum NewInstructionType {
 #[derive(Component)]
 pub struct InputSimulationUpdates {
 
-    arriving_unit_vec: Vec<UnitAttributes>,
-    new_instructions_vec: Vec <(NewInstructionType, (UnitInstructionType, u16, u16, u8))>,
+    pub arriving_unit_vec: Vec<UnitAttributes>,
+    pub new_instructions_vec: Vec <(NewInstructionType, (UnitInstructionType, u16, u16, u8))>,
 
 }
 
@@ -292,7 +292,7 @@ pub struct OutputToTravelator {
 
     // The address number corresponds to the travelators starting from top left going clockwise.
 
-    departing_units: [(bool, UnitAttributes); 24],
+    pub departing_units: [(bool, UnitAttributes); 24],
 }
 
 

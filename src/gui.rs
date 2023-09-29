@@ -30,3 +30,27 @@ pub fn gui_texture_loader(
 ) {
     gui_texture_handle.handle = asset_server.load("gui.png");
 }
+
+
+#[derive(Component)]
+pub struct OutputToSector {
+
+    pub user_instructions_vec: Vec <(crate::simulation::NewInstructionType, (crate::simulation::UnitInstructionType, u16, u16, u8))>,
+
+}
+
+#[derive(Component)]
+pub struct SectorLocation {
+    pub x: i32, 
+    pub y: i32,
+}
+
+
+#[derive(Bundle)]
+
+pub struct SectorOutputBundle {
+
+    pub output_to_sector: OutputToSector,
+    pub sector_location: SectorLocation,
+    
+}

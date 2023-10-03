@@ -14,8 +14,8 @@ pub mod network;
 pub mod simulation;
 pub mod utility;
 
-// Sector size must be an odd number smaller than 32,768.
-const SECTOR_SIZE: u16 = 101;
+// Sector size must be an odd number greater than 101 and smaller than 32,768.
+const SECTOR_SIZE: u16 = 201;
 
 // If sector size is adjusted smaller than 101 then pan speed and zoom out max has to be changed at the same time.
 // Otherwise new graphical sectors might not be loaded before they become visible.

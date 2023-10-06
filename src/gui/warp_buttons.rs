@@ -78,14 +78,14 @@ pub fn spawn_warp_buttons(
 
             match n {
                 0 => {
-                    sprite_transform.translation.x = -2400.0;
+                    sprite_transform.translation.x = -96.0 * ((SECTOR_SIZE-1)/4) as f32;
                     sprite_transform.translation.y = ((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0 ;
                     sprite_transform.translation.z = 0.0;
                     sprite_transform.rotate_z((PI / 2.0) * 0.0);
                 }
 
                 1 => {
-                    sprite_transform.translation.x = 2400.0;
+                    sprite_transform.translation.x = 96.0 * ((SECTOR_SIZE-1)/4) as f32;
                     sprite_transform.translation.y = ((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0 ;
                     sprite_transform.translation.z = 0.0;
                     sprite_transform.rotate_z((PI / 2.0) * 0.0);
@@ -93,27 +93,27 @@ pub fn spawn_warp_buttons(
 
                 2 => {
                     sprite_transform.translation.x = ((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0 ;
-                    sprite_transform.translation.y = 2400.0;
+                    sprite_transform.translation.y = 96.0 * ((SECTOR_SIZE-1)/4) as f32;
                     sprite_transform.translation.z = 0.0;
                     sprite_transform.rotate_z(-(PI / 2.0) * 1.0);
                 }
 
                 3 => {
                     sprite_transform.translation.x = ((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0 ;
-                    sprite_transform.translation.y = -2400.0;
+                    sprite_transform.translation.y = -96.0 * ((SECTOR_SIZE-1)/4) as f32;
                     sprite_transform.translation.z = 0.0;
                     sprite_transform.rotate_z(-(PI / 2.0) * 1.0);
                 }
 
                 4 => {
-                    sprite_transform.translation.x = 2400.0;
+                    sprite_transform.translation.x = 96.0 * ((SECTOR_SIZE-1)/4) as f32;
                     sprite_transform.translation.y = -(((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0) ;
                     sprite_transform.translation.z = 0.0;
                     sprite_transform.rotate_z(-(PI / 2.0) * 2.0);
                 }
 
                 5 => {
-                    sprite_transform.translation.x = -2400.0;
+                    sprite_transform.translation.x = -96.0 * ((SECTOR_SIZE-1)/4) as f32;
                     sprite_transform.translation.y = -(((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0) ;
                     sprite_transform.translation.z = 0.0;
                     sprite_transform.rotate_z(-(PI / 2.0) * 2.0);
@@ -121,14 +121,14 @@ pub fn spawn_warp_buttons(
 
                 6 => {
                     sprite_transform.translation.x = -(((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0) ;
-                    sprite_transform.translation.y = -2400.0;
+                    sprite_transform.translation.y = -96.0 * ((SECTOR_SIZE-1)/4) as f32;
                     sprite_transform.translation.z = 0.0;
                     sprite_transform.rotate_z(-(PI / 2.0) * 3.0);
                 }
 
                 _ => {
                     sprite_transform.translation.x = -(((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0) ;
-                    sprite_transform.translation.y = 2400.0;
+                    sprite_transform.translation.y = 96.0 * ((SECTOR_SIZE-1)/4) as f32;
                     sprite_transform.translation.z = 0.0;
                     sprite_transform.rotate_z(-(PI / 2.0) * 3.0);
                 }
@@ -201,64 +201,64 @@ fn check_for_cursor_over_button(cursor_x: f32, cursor_y: f32, button_number: u8)
 
     match button_number {
         0 => {
-            square_bl_x = -2400.0 - 96.0;
+            square_bl_x = -96.0 * ((SECTOR_SIZE-1)/4) as f32 - 96.0;
             square_bl_y = (((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0) - 192.0;
-            triangle_bc_x = -2400.0;
+            triangle_bc_x = -96.0 * ((SECTOR_SIZE-1)/4) as f32;
             triangle_bc_y = 5184.0;
             triangle_direction = 0;
         }
         1 => {
-            square_bl_x = 2400.0 - 96.0;
+            square_bl_x = 96.0 * ((SECTOR_SIZE-1)/4) as f32 - 96.0;
             square_bl_y = (((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0)  - 192.0;
-            triangle_bc_x = 2400.0;
+            triangle_bc_x = 96.0 * ((SECTOR_SIZE-1)/4) as f32;
             triangle_bc_y = ((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0;
             triangle_direction = 0;
         }
 
         2 => {
             square_bl_x = (((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0)  - 192.0;
-            square_bl_y = 2400.0 - 96.0;
+            square_bl_y = 96.0 * ((SECTOR_SIZE-1)/4) as f32 - 96.0;
             triangle_bc_x = ((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0 ;
-            triangle_bc_y = 2400.0;
+            triangle_bc_y = 96.0 * ((SECTOR_SIZE-1)/4) as f32;
             triangle_direction = 1;
         }
         3 => {
             square_bl_x = (((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0)  - 192.0;
-            square_bl_y = -2400.0 - 96.0;
+            square_bl_y = -96.0 * ((SECTOR_SIZE-1)/4) as f32 - 96.0;
             triangle_bc_x = ((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0;
-            triangle_bc_y = -2400.0;
+            triangle_bc_y = -96.0 * ((SECTOR_SIZE-1)/4) as f32;
             triangle_direction = 1;
         }
 
         4 => {
-            square_bl_x = 2400.0 - 96.0;
+            square_bl_x = 96.0 * ((SECTOR_SIZE-1)/4) as f32 - 96.0;
             square_bl_y = -(((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0) ;
-            triangle_bc_x = 2400.0;
+            triangle_bc_x = 96.0 * ((SECTOR_SIZE-1)/4) as f32;
             triangle_bc_y = -(((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0) ;
             triangle_direction = 2;
         }
 
         5 => {
-            square_bl_x = -2400.0 - 96.0;
+            square_bl_x = -96.0 * ((SECTOR_SIZE-1)/4) as f32 - 96.0;
             square_bl_y = ((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0 ;
-            triangle_bc_x = -2400.0;
+            triangle_bc_x = -96.0 * ((SECTOR_SIZE-1)/4) as f32;
             triangle_bc_y = -(((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0) ;
             triangle_direction = 2;
         }
 
         6 => {
             square_bl_x = -(((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0) ;
-            square_bl_y = -2400.0 - 96.0;
+            square_bl_y = -96.0 * ((SECTOR_SIZE-1)/4) as f32 - 96.0;
             triangle_bc_x = -(((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0) ;
-            triangle_bc_y = -2400.0;
+            triangle_bc_y = -96.0 * ((SECTOR_SIZE-1)/4) as f32;
             triangle_direction = 3;
         }
 
         _ => {
             square_bl_x = -(((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0) ;
-            square_bl_y = 2400.0 - 96.0;
+            square_bl_y = 96.0 * ((SECTOR_SIZE-1)/4) as f32 - 96.0;
             triangle_bc_x = -(((SECTOR_SIZE-1)/2) as f32 * 96.0 + 384.0) ;
-            triangle_bc_y = 2400.0;
+            triangle_bc_y = 96.0 * ((SECTOR_SIZE-1)/4) as f32;
             triangle_direction = 3;
         }
     }

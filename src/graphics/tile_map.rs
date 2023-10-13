@@ -41,10 +41,10 @@ pub fn spawn_tile_map(
     let env_texture_atlas = TextureAtlas::from_grid(
         env_texture_handle.handle.clone(),
         Vec2::new(96.0, 96.0),
-        10,
-        10,
-        Some(Vec2::new(6.0, 6.0)),
-        Some(Vec2::new(3.0, 3.0))
+        9,
+        9,
+        Some(Vec2::new(10.0, 10.0)),
+        Some(Vec2::new(5.0, 5.0))
     );
 
     let env_texture_atlas_handle = texture_atlases.add(env_texture_atlas);

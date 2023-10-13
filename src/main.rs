@@ -20,7 +20,7 @@ const SECTOR_SIZE: u16 = 201;
 // If sector size is adjusted smaller than 101 then pan speed and zoom out max has to be changed at the same time.
 // Otherwise new graphical sectors might not be loaded before they become visible.
 const PAN_TOP_SPEED: f32 = 48.0;
-const ZOOM_OUT_MAX: f32 = 8.0;
+const ZOOM_OUT_MAX: f32 = 12.0;
 const WARP_LENGTH: u8 = 20;
 
 // Zoom speed is just a matter of preference

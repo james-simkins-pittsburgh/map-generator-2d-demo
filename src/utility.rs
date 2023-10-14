@@ -1,5 +1,7 @@
 // This function deterministically gets a sector seed from the gameworld seed.
 
+pub mod timer;
+
 pub fn generate_sector_seed_num_from_gameworld_seed_num(
     gameworld_seed_num: u64,
     x_coordinate: i32,

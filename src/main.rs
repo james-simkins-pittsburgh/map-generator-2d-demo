@@ -45,6 +45,7 @@ fn main() {
         .init_resource::<GameworldSeed>()
         .init_resource::<WarpButtonControl>()
         .init_resource::<gui::GUITextureHandle>()
+        .init_resource::<utility::timer::NTPAdjustment>()
         // v Everything between these comments are test code v
         .add_systems(Startup, testing_mode_startup)
         .add_systems(

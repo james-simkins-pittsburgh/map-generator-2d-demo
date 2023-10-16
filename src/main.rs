@@ -12,6 +12,7 @@ pub mod gui;
 pub mod menu;
 pub mod network;
 pub mod simulation;
+pub mod manager;
 pub mod utility;
 
 // Sector size must be an odd number greater than 101 and smaller than 32,768.

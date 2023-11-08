@@ -1,6 +1,7 @@
 // This is the manager module. It tells which systems to run on a given cycle of the Bevy engine.
 
 use bevy::prelude::*;
+use crate::utility::timer;
 
 #[derive(Resource, Default)]
 pub struct TaskChecklist {
@@ -34,9 +35,8 @@ pub struct ToDoList {
 
 }
 
-fn set_tasks(mut task_checklist: ResMut<TaskChecklist>, mut to_do_list: ResMut<ToDoList>) {
+fn set_tasks(mut task_checklist: ResMut<TaskChecklist>, mut to_do_list: ResMut<ToDoList>, ntp_adjustment: Res<crate::utility::timer::NTPAdjustment>) {
 
-
-
+let unix_time = timer::universal_unix_mill_time_is(ntp_adjustment.system_clock_error);
 
 }

@@ -11,8 +11,8 @@ pub struct TaskChecklist {
     pub simulation_updates: [[bool; 11]; 11],
     // This indicated whether or not all updates are finished.
     pub all_updates_finished: bool,
-    // This is the checklist to ensure al 121 worlds are ticked 20 times.
-    pub simulation_ticks: [[[[bool; 2]; 11]; 11]; 20],
+    // This is the checklist to ensure all 121 worlds are ticked 20 times both for the first and second parts of each tick.
+    pub simulation_ticks: [[[[bool; 11]; 11]; 20]; 2],
     // This indicates whether or not all ticks are finished.
     pub all_ticks_finished: bool,
     // This indicates when player moves have been sent.
@@ -44,7 +44,7 @@ fn set_tasks(
 ) {
     // This sets the time of the turn to the unix time UTC.
 
-    let mut unix_turn_time = timer::universal_unix_mill_time_is(ntp_adjustment.system_clock_error);
+    let unix_turn_time = timer::universal_unix_mill_time_is(ntp_adjustment.system_clock_error);
 
     // This sets the delta time of the turn based on the turn start time.
 
@@ -72,7 +72,7 @@ fn set_tasks(
             unix_turn_delta_time = 0;
         }
 
-        // This will set all the values for the checklists to 0.
+        // This will set all the values for the checklists to false (unchecked).
 
         for index_1 in 0..11 {
             for index_2 in 0..11 {
@@ -80,8 +80,42 @@ fn set_tasks(
             }
         }
 
+        task_checklist.all_updates_finished = false;
 
+        for index_1 in 0..11 {
+            for index_2 in 0..11 {
+                for index_3 in 0..20 {
+                    for index_4 in 0..2 {
+                        task_checklist.simulation_ticks[index_1][index_2][index_3][index_4] = false;
+                    }
+                }
+            }
+        }
 
+        task_checklist.all_ticks_finished = false;
 
+        for index_1 in 0..11 {
+            for index_2 in 0..11 {
+                task_checklist.player_moves_sent[index_1][index_2] = false;
+            }
+        }
+
+        task_checklist.all_player_moves_sent = false;
+
+        for index_1 in 0..11 {
+            for index_2 in 0..11 {
+                task_checklist.sector_updates_sent[index_1][index_2] = false;
+            }
+        }
+
+        task_checklist.all_sector_updates_sent = false;
+
+        for index_1 in 0..11 {
+            for index_2 in 0..11 {
+                task_checklist.sector_updates_received[index_1][index_2] = false;
+            }
+        }
+
+        task_checklist.all_sector_updates_received = false;
     }
 }
